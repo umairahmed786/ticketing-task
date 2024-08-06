@@ -1,0 +1,18 @@
+<h1><%= @project.title %></h1>
+
+
+<p><%= @project.description %></p>
+
+<p><%= @project.project_manager.name %></p>
+
+<p><%= @project.admin.name %></p>
+
+
+
+<ul>
+  <li><%= link_to "Edit", edit_project_path(@project) %></li>
+  <li><%= link_to "Destroy", project_path(@project),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" } %></li>
+</ul>
+
