@@ -7,9 +7,14 @@ ruby '3.1.4'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 # Use sqlite3 as the database for Active Record
 gem 'acts_as_tenant'
+gem 'bootstrap_form', '~> 5.4'
+gem 'bootstrap-sass'
+gem 'devise'
 gem 'mysql2', '=0.5.6'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
+gem 'pry', '=0.13.1'
+gem 'pry-rails', '=0.3.9'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
