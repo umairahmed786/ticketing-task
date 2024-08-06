@@ -1,0 +1,15 @@
+<div class="masked-background">
+    <div class="mask"></div>
+</div>
+<div class="content">
+  <div>
+    <h1><%= t('welcome_message') %></h1>
+    <div class="description">
+      <p><%= t('description') %></p>
+    </div>
+    <div class="buttons">
+      <%= link_to t('setup_new_organization'), new_organization_path %>
+      <%= link_to t('login_existing_organization') %>
+    </div>
+  </div>
+</div>
