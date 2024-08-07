@@ -2,3 +2,8 @@
 log/
 tmp/
 config/database.yml
+*.css
+node_modules/
+/public/packs
+/public/packs-test
+/public/assets

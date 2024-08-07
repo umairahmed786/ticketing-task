@@ -2,38 +2,38 @@
 class UserMailer < Devise::Mailer
   include Devise::Mailers::Helpers
 
-  def confirmation_instructions(record, token, opts = {})
-    opts[:subject] = "Confirmation instructions"
-    opts[:from] = 'your_email@example.com'
-    opts[:to] = record.email
-    opts[:template_path] = 'users/mailer'
-    opts[:template_name] = 'confirmation_instructions'
+  def confirmation_instructions(record, token, options = {})
+    options[:subject] = "Confirmation instructions"
+    options[:from] = 'your_email@example.com'
+    options[:to] = record.email
+    options[:template_path] = 'users/mailer'
+    options[:template_name] = 'confirmation_instructions'
 
     # Generate URL with the subdomain
     subdomain = record.organization.subdomain
-    opts[:url_options] = { host: "#{subdomain}.localhost", port: 3000 }
+    options[:url_options] = { host: "#{subdomain}.#{APP_HOST}", port: 3000 }
 
     @token = token
     @resource = record
-    mail(opts) do |format|
+    mail(options) do |format|
       format.html { render 'users/mailer/confirmation_instructions' }
     end
   end
 
-  def reset_password_instructions(record, token, opts = {})
-    opts[:subject] = "Reset Password Instructions"
-    opts[:from] = 'your_email@example.com'
-    opts[:to] = record.email
-    opts[:template_path] = 'users/mailer'
-    opts[:template_name] = 'reset_password_instructions'
+  def reset_password_instructions(record, token, options = {})
+    options[:subject] = "Reset Password Instructions"
+    options[:from] = 'your_email@example.com'
+    options[:to] = record.email
+    options[:template_path] = 'users/mailer'
+    options[:template_name] = 'reset_password_instructions'
 
     # Generate URL with the subdomain
     subdomain = record.organization.subdomain
-    opts[:url_options] = { host: "#{subdomain}.localhost", port: 3000 }
+    options[:url_options] = { host: "#{subdomain}.#{APP_HOST}", port: 3000 }
 
     @token = token
     @resource = record
-    mail(opts) do |format|
+    mail(options) do |format|
       format.html { render 'users/mailer/reset_password_instructions' }
     end
   end
