@@ -12,7 +12,7 @@ class Ability
         issue.project_id.project_manager == user.id
       end
       can :manage, Comment
-    elsif user.role.name == 'geeral_user'
+    elsif user.role.name == 'general_user'
       can :manage, Comment
       can :manage, Issue do |issue|
         issue.assignee_id == user.id
