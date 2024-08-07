@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_tenant
-    @organization = Organization.find_by!(site: request.subdomain)
+    @organization = Organization.find_by!(subdomain: request.subdomain)
     set_current_tenant(@organization)
   end
 end

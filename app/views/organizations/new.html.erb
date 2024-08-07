@@ -1,0 +1,18 @@
+  <div class="wrapper">
+    <div class="logo">
+      <%= image_tag 'TT logo.png', alt: 'TicketTask' %>
+    </div>
+    <div class="text-center mt-4 mb-4 name">
+      <%= t('project_title') %>
+    </div>
+    <%= form_with model: @organization do |form| %>
+      <div class="form-field d-flex align-items-center">
+        <%= form.text_field :name, class: "form-control", placeholder: "Name" %>
+      </div>
+      <div class="form-field d-flex align-items-center">
+        <%= form.text_field :subdomain, class: "form-control", placeholder: "Site" %>
+      </div>
+      <%= form.submit 'Create Organization', class: "btn mt-3" %>
+    <% end %>
+  </div>
+
