@@ -1,13 +1,11 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show edit update destroy]
-  before_action :set_project_managers, only: %i[create new edit] 
+  before_action :set_project_managers, only: %i[new create edit update] 
+  load_and_authorize_resource
 
   def index
-    @projects = Project.all
   end
 
   def new
-    @project = Project.new
   end
 
   def create
@@ -20,11 +18,9 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project
   end
 
   def edit
-    @project
   end
 
   def update
@@ -52,6 +48,6 @@ class ProjectsController < ApplicationController
 
   def set_project_managers
     project_manager_role = Role.find_by(name: 'project_manager')
-    @project_managers = User.where(role_id: project_manager_role.id).pluck(:id, :name) if project_manager_role
+    @project_managers = current_tenant.users.where(role_id: project_manager_role.id) if project_manager_role
   end
 end
