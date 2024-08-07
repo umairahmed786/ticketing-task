@@ -10,7 +10,7 @@ class UserMailer < Devise::Mailer
     opts[:template_name] = 'confirmation_instructions'
 
     # Generate URL with the subdomain
-    subdomain = record.organization.site
+    subdomain = record.organization.subdomain
     opts[:url_options] = { host: "#{subdomain}.localhost", port: 3000 }
 
     @token = token
@@ -28,7 +28,7 @@ class UserMailer < Devise::Mailer
     opts[:template_name] = 'reset_password_instructions'
 
     # Generate URL with the subdomain
-    subdomain = record.organization.site
+    subdomain = record.organization.subdomain
     opts[:url_options] = { host: "#{subdomain}.localhost", port: 3000 }
 
     @token = token

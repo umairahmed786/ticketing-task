@@ -9,9 +9,9 @@ class OrganizationsController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    owner_role = LookUp.find_by(name: 'owner')
+    owner_role = Role.find_by(name: 'owner')
     if @organization.save
-      subdomain = @organization.site
+      subdomain = @organization.subdomain
       host_with_subdomain = "#{subdomain}.localhost"
       port = 3000
       # Manually construct the URL with the subdomain using URI module
@@ -30,6 +30,6 @@ class OrganizationsController < ApplicationController
   private
 
   def organization_params
-    params.require(:organization).permit(:name, :site)
+    params.require(:organization).permit(:name, :subdomain)
   end
 end
