@@ -8,10 +8,10 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 # Use cancancan for authorization
 gem 'cancancan'
 # Use sqlite3 as the database for Active Record
-gem 'acts_as_tenant'
 gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'acts_as_tenant', '~> 1.0.1'
 gem 'mysql2', '=0.5.6'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
