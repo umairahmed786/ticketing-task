@@ -1,5 +1,5 @@
 class IssueHistory < ApplicationRecord
-  belongs_to :fieldChange
+  belongs_to :field_change
   belongs_to :attachment
   belongs_to :comment
   belongs_to :issue
