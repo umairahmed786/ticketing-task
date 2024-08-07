@@ -5,8 +5,9 @@ ruby '3.1.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
-# Use sqlite3 as the database for Active Record
-gem 'acts_as_tenant'
+# Use cancancan for authorization
+gem 'acts_as_tenant', '~> 1.0.1'
+gem 'cancancan', '~> 3.6.1'
 gem 'mysql2', '=0.5.6'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
