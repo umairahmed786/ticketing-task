@@ -1,18 +1,17 @@
 class ProjectsController < ApplicationController
-  # load_and_authorize_resource
+  before_action :set_project, only: %i[show edit update destroy]
+  before_action :set_project_managers, only: %i[create new edit] 
+
   def index
     @projects = Project.all
   end
-  
+
   def new
     @project = Project.new
-    @project_managers = get_project_managers
   end
 
   def create
-    @project = Project.new(project_params)
-    @project.save!
-
+    @project = Project.new(project_params.merge(admin_id: current_user.id))
     if @project.save
       redirect_to @project
     else
@@ -21,17 +20,14 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = Project.find(params[:id])
+    @project
   end
 
   def edit
-    @project = Project.find(params[:id])
-    @users = get_project_managers
+    @project
   end
 
   def update
-    @project = Project.find(params[:id])
-
     if @project.update(project_params)
       redirect_to @project
     else
@@ -40,20 +36,22 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:id])
-
     @project.destroy
     redirect_to projects_path
   end
 
   private
 
-  def project_params
-    params.require(:project).permit(:title, :description, :project_manager_id, :admin_id)
+  def set_project
+    @project = Project.find(params[:id])
   end
 
-  def get_project_managers
-    project_manager_id = LookUp.where(name: 'owner', category: 'role').select(:id)
-    User.select(:id, :name).where(role_id: project_manager_id)
+  def project_params
+    params.require(:project).permit(:title, :description, :project_manager_id)
+  end
+
+  def set_project_managers
+    project_manager_role = Role.find_by(name: 'project_manager')
+    @project_managers = User.where(role_id: project_manager_role.id).pluck(:id, :name) if project_manager_role
   end
 end

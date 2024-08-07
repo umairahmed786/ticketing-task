@@ -18,13 +18,12 @@
   <div>
     <%= form.label :project_manager_id, "Project Manager" %><br>
     <%= form.select :project_manager_id, options_from_collection_for_select(@project_managers, 'id', 'name', project.project_manager_id) %>
+    <% project.errors.full_messages_for(:project_manager).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
   </div>
 
-  <div>
-    <%= form.label :admin_id, "Admin" %><br>
-    <%= form.select :admin_id, options_from_collection_for_select(@project_managers, 'id', 'name', project.admin_id) %>
-  </div>
-
+  
   <div>
     <%= form.submit %>
   </div>
