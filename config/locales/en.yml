@@ -7,3 +7,5 @@ en:
   organization:
     create:
       failure_message: "Organization could not be created."
+    not_found: "Organization not found."
+
