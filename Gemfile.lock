@@ -71,9 +71,9 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
-    bootstrap-sass (3.4.1)
-      autoprefixer-rails (>= 5.2.1)
-      sassc (>= 2.0.0)
+    bootstrap (5.3.3)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 2.11.8, < 3)
     bootstrap_form (5.4.0)
       actionpack (>= 6.1)
       activemodel (>= 6.1)
@@ -141,6 +141,7 @@ GEM
     nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    popper_js (2.11.8)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -260,12 +261,12 @@ PLATFORMS
 DEPENDENCIES
   acts_as_tenant (~> 1.0.1)
   bootsnap (>= 1.4.4)
-  bootstrap-sass
+  bootstrap (~> 5.3.3)
   bootstrap_form (~> 5.4)
   byebug
   cancancan (~> 3.6.1)
   capybara (>= 3.26)
-  devise
+  devise (= 4.9.4)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2 (= 0.5.6)
