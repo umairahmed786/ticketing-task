@@ -1,0 +1,31 @@
+<h1><%= @project.title %></h1>
+
+
+<p><%= @project.description %></p>
+
+<p><%= @project.project_manager.name %></p>
+
+<p><%= @project.admin.name %></p>
+
+<h3>Users in this Project</h3>
+<ul>
+  <% @project_general_users_name.each do |name| %>
+    <li><%= name %></li>
+  <% end %>
+</ul>
+
+<%= form_with url: add_user_project_path, method: :post, local: true do |form| %>
+  <p>
+    <%= form.submit 'Add Users' %>
+  </p>
+
+  <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true} %>
+<% end %>
+
+<ul>
+  <li><%= link_to "Edit", edit_project_path(@project) %></li>
+  <li><%= link_to "Destroy", project_path(@project),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" } %></li>
+</ul>
+
