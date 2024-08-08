@@ -10,5 +10,5 @@ class User < ApplicationRecord
          :confirmable
   acts_as_tenant :organization
 
-  belongs_to :role, class_name: 'LookUp', foreign_key: 'role_id'
+  belongs_to :role, class_name: 'Role', foreign_key: 'role_id'
 end

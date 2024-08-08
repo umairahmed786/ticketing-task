@@ -1,5 +1,9 @@
 en:
+  project_title: "TicketTask"
   welcome_message: "Welcome to TicketTask"
-  description: "TicketTask, your go-to solution for seamless project and issue management. Empower your team with robust authentication, role-based access, and comprehensive dashboards. Stay informed with automated email alerts, manage tasks with ease using document attachments and comments, and track progress with detailed reporting. Elevate your project management experience with TicketTask today."
+  TT_description: "TicketTask, your go-to solution for seamless project and issue management. Empower your team with robust authentication, role-based access, and comprehensive dashboards. Stay informed with automated email alerts, manage tasks with ease using document attachments and comments, and track progress with detailed reporting. Elevate your project management experience with TicketTask today."
   setup_new_organization: "Setup New Organization"
   login_existing_organization: "Login to Existing Organization"
+  organization:
+    create:
+      failure_message: "Organization could not be created."

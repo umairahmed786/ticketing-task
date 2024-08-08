@@ -1,0 +1,9 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: ticketing_system
+  username: root
+  password: 7vals
+  pool: 5
+  variables:
+    sql_mode: TRADITIONAL
