@@ -12,12 +12,19 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    if resource.role.name == 'owner'
+    case resource.role.name
+    when 'owner'
       flash[:notice] = t('devise.sessions.signed_in')
       owners_path
-    elsif resource.role.name == 'general_user'
+    when 'general_user'
       flash[:notice] = t('devise.sessions.signed_in')
       user_index_path
+    when 'admin'
+      flash[:notice] = t('devise.sessions.signed_in')
+      admins_path
+    when 'project_manager'
+      flash[:notice] = t('devise.sessions.signed_in')
+      project_managers_path
     else
       super
     end

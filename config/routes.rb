@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
     }
     resources :owners, only: %i[index]
-    resources :user, only: %i[new create]
+    resources :user, only: %i[index new create edit update]
+    resources :project_managers, only: %i[index]
+    resources :admins, only: %i[index]
   end
 end

@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
-
   # GET /resource/sign_up
   def new
     @user = User.new
@@ -29,10 +26,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def sign_up_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :role_id, :organization_id)
-  end
-
-  def after_update_path_for(_resource)
-    flash[:notice] = t('devise.updated')
-    new_user_session_path
   end
 end
