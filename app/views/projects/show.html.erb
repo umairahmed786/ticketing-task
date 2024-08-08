@@ -22,6 +22,11 @@
   <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true} %>
 <% end %>
 
+
+<p>
+  <%= link_to 'Issue', project_issues_path(@project) %>
+</p>
+
 <ul>
   <li><%= link_to "Edit", edit_project_path(@project) %></li>
   <li><%= link_to "Destroy", project_path(@project),

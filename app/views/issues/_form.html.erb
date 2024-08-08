@@ -1,0 +1,47 @@
+<%# <%= form_with model: issue , url: project_issues_path do |form| %>
+<%= form_with model: issue, url: issue.persisted? ? project_issue_path(@project, issue) : project_issues_path(@project), method: issue.persisted? ? :patch : :post do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+    <% issue.errors.full_messages_for(:title).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :description %><br>
+    <%= form.text_area :description %><br>
+    <% issue.errors.full_messages_for(:description).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :complexity_point, "Complexity Point" %><br>
+    <%= form.number_field :complexity_point %><br>
+    <% @issue.errors.full_messages_for(:complexity_point).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :state %><br>
+    <%= form.select :state, options_for_select([["New", "New"], ["In Progress", "In Progress"], ["Resolved", "Resolved"]], issue.state) %><br>
+    <% issue.errors.full_messages_for(:state).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :assignee_id, "Issue Assigne" %><br>
+    <%= form.select :assignee_id, options_from_collection_for_select(@project.users, 'id', 'name', issue.assignee_id) %>
+    <% issue.errors.full_messages_for(:assigne).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
