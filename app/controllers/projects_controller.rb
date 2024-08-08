@@ -40,14 +40,16 @@ class ProjectsController < ApplicationController
   end
 
   def add_user
+    @project = Project.find(params[:id])
     to_be_added_users = params[:to_be_added_users].reject(&:blank?)
     if to_be_added_users.present?
       project_users = to_be_added_users.map { |user_id|
-        {user_id: user_id, project_id: @project.id, created_at: Time.now, updated_at: Time.now}
+        {user_id: user_id, project_id: params[:id], created_at: Time.now, updated_at: Time.now}
       }
       ProjectUser.insert_all(project_users)
     end
     redirect_to @project
+
   end
 
   private
