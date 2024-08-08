@@ -8,6 +8,10 @@ Rails.application.routes.draw do
       registrations: 'users/registrations',
       confirmations: 'users/confirmations'
     }
-    resources :projects
+    resources :projects do
+      member do
+        post 'add_user'
+      end
+    end
   end
 end
