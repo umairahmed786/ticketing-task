@@ -1,2 +1,0 @@
-class LookUp < ApplicationRecord
-end
