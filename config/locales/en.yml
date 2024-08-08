@@ -4,6 +4,30 @@ en:
   TT_description: "TicketTask, your go-to solution for seamless project and issue management. Empower your team with robust authentication, role-based access, and comprehensive dashboards. Stay informed with automated email alerts, manage tasks with ease using document attachments and comments, and track progress with detailed reporting. Elevate your project management experience with TicketTask today."
   setup_new_organization: "Setup New Organization"
   login_existing_organization: "Login to Existing Organization"
+  logout: "Logout"
+  logout_confirmation: "Are you sure you want to logout?"
+  greetings: "Greetings"
+  edit_account: "Edit Account"
+  name: "Name: "
+  email: "Email: "
+  password: "Password: "
+  role: "Role: "
   organization:
     create:
       failure_message: "Organization could not be created."
+    not_found: "Organization not found."
+  user:
+    invite_email: "User invited successfully and email sent."
+    invitation: "Invite User"
+    updated: "Update Account"
+  user_mailer:
+    invite_user:
+      title: "Invite User"
+      subject: "You have been invited to join the organization."
+      welcome: "Welcome to our Organization"
+      body: "You have been invited to join the organization. Please click on the link below to accept the invitation."
+      edit_account: "Click the link below to edit your account."
+  projects:
+    create:
+      title: "Create Projects"
+
