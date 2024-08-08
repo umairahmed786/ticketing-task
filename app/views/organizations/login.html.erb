@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Find Your Organization</h1>
+  <%= form_with url: process_login_organizations_path, method: :post, local: true do |form| %>
+    <div class="mb-3">
+      <div class="input-group mb-3">
+        <%= content_tag(:span, "https://", class: "input-group-text", id: "basic-addon3") %>
+        <%= form.text_field :subdomain, placeholder: "Enter your Subdomain", class: "form-control", id: "basic-url", "aria-describedby" => "basic-addon3" %>
+        <%= content_tag(:span, ".localhost:3000", class: "input-group-text", id: "basic-addon3") %>
+      </div>
+
+    </div>
+    <%= form.submit "Login", class: "btn btn-primary mt-4" %>
+  <% end %>
+  <%= link_to "Forgot Password?", new_user_password_path, class: "text-decoration-none mt-4" %>
+</div>
