@@ -11,5 +11,6 @@ class User < ApplicationRecord
   acts_as_tenant :organization
   has_many :project_users     
   has_many :projects, through: :project_users
+
   belongs_to :role, class_name: 'Role', foreign_key: 'role_id'
 end

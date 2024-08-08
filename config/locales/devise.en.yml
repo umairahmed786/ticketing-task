@@ -17,19 +17,17 @@ en:
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
+      welcome_message: "Welcome to TicketTask"
+      confirmation_instructions_description: "Please confirm your account by clicking the link in the email we sent you."
+      reset_password_instructions_description: "Someone has requested a link to change your password. You can do this through the link below."
+      reset_password_instructions_ignore_message: "If you didn't request this, please ignore this email.Your password won't change until you access the link above and create a new one."
+      password_change_description: "We're contacting you to notify you that your password has been changed."
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
-      unlock_instructions:
-        subject: "Unlock instructions"
-      email_changed:
-        subject: "Email Changed"
       password_change:
         subject: "Password Changed"
-    omniauth_callbacks:
-      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
-      success: "Successfully authenticated from %{kind} account."
     passwords:
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
       send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."
@@ -37,6 +35,7 @@ en:
       updated: "Your password has been changed successfully. You are now signed in."
       updated_not_active: "Your password has been changed successfully."
     registrations:
+      signed_up_title: 'Sign Up Here'
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
       signed_up: "Welcome! You have signed up successfully."
       signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
@@ -49,10 +48,6 @@ en:
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
-    unlocks:
-      send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
-      send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
-      unlocked: "Your account has been unlocked successfully. Please sign in to continue."
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"
