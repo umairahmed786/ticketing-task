@@ -17,7 +17,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.organization_id = params[:user][:organization_id]
     @user.role_id = params[:user][:role_id]
     if @user.save
-      redirect_to new_user_session_path, 
+      redirect_to new_user_session_path,
                   notice: t('devise.confirmations.send_instructions')
     else
       flash[:alert] = @user.errors.full_messages.join(', ')
@@ -29,5 +29,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def sign_up_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :role_id, :organization_id)
+  end
+
+  def after_update_path_for(_resource)
+    flash[:notice] = t('devise.updated')
+    new_user_session_path
   end
 end

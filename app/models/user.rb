@@ -11,4 +11,8 @@ class User < ApplicationRecord
   acts_as_tenant :organization
 
   belongs_to :role, class_name: 'Role', foreign_key: 'role_id'
+  def mark_as_confirmed
+    self.confirmation_token = nil
+    self.confirmed_at = Time.now
+  end
 end

@@ -15,6 +15,9 @@ class Users::SessionsController < Devise::SessionsController
     if resource.role.name == 'owner'
       flash[:notice] = t('devise.sessions.signed_in')
       owners_path
+    elsif resource.role.name == 'general_user'
+      flash[:notice] = t('devise.sessions.signed_in')
+      user_index_path
     else
       super
     end

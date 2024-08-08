@@ -37,4 +37,11 @@ class UserMailer < Devise::Mailer
       format.html { render 'users/mailer/reset_password_instructions' }
     end
   end
+
+  def invite_email(user)
+    @user = user
+    @organization = user.organization
+    mail(to: @user.email, subject: t('user_mailer.invite_user.subject'),
+         url_options: { host: "#{@organization.subdomain}.#{APP_HOST}", port: 3000 })
+  end
 end

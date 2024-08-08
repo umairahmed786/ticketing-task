@@ -8,4 +8,14 @@ en:
     create:
       failure_message: "Organization could not be created."
     not_found: "Organization not found."
+  user:
+    invite_email: "User invited successfully and email sent."
+    invitation: "Invite User"
+    updated: "Update Account"
+  user_mailer:
+    invite_user:
+      subject: "You have been invited to join the organization."
+      welcome: "Welcome to %{organization.name}"
+      body: "You have been invited to join the organization: %{organization.name}. Please click on the link below to accept the invitation."
+      edit_account: "Click the link below to edit your account."
 
