@@ -9,6 +9,34 @@
 <h3>Assignee</h3>
 <p><%= @issue.assignee.name %></p>
 
+
+<h3>Attached Files</h3>
+<ul>
+  <% @issue.files.each do |file| %>
+    <li>
+      <%= link_to file.filename.to_s, rails_blob_path(file, disposition: "inline"), target: "_blank" %>
+      (<%= link_to "Download", rails_blob_path(file, disposition: "attachment") %>)
+    </li>
+  <% end %>
+</ul>
+
+
+
+<%= form_with url: attach_file_project_issue_path(@issue.project, @issue), local: true, html: { multipart: true } do |form| %>
+  <!-- Other form fields -->
+
+  <div>
+    <%= form.label :files, 'Attach Files' %><br>
+    <%= form.file_field :files, multiple: true %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+
   <li><%= link_to "Edit", edit_project_issue_path(@issue.project_id,@issue) %></li>
   <li><%= link_to "Destroy", project_issue_path(),
                   method: :delete,

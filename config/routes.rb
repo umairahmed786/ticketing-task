@@ -16,7 +16,11 @@ Rails.application.routes.draw do
       member do
         post 'add_user'
       end
-      resources :issues
+      resources :issues do
+        member do
+          post 'attach_file' 
+        end
+      end
     end
 
     resources :owners, only: %i[index]
