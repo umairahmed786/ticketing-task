@@ -20,6 +20,8 @@ Rails.application.routes.draw do
         member do
           post 'attach_file' 
         end
+
+        resources :comments
       end
     end
 

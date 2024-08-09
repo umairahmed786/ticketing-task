@@ -1,0 +1,10 @@
+<%= form_with url: attach_file_project_issue_path(@issue.project, @issue), local: true, html: { multipart: true } do |form| %>
+  <div>
+    <%= form.label :files, 'Attach Files' %><br>
+    <%= form.file_field :files, multiple: true %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

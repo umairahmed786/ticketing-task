@@ -1,0 +1,11 @@
+
+<ol>
+    <% @issue.issue_histories.each do |issue_history|%>
+        <% if issue_history.comment%>
+            <li>
+                <p><%= issue_history.user.name%></p>
+                <p><%= issue_history.comment.content %></p>
+            </li>
+        <% end %>
+    <% end %>
+</ol>

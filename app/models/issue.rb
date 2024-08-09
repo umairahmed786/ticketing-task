@@ -3,8 +3,10 @@ class Issue < ApplicationRecord
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id', optional: true
   acts_as_tenant :organization
 
-  has_many :issue_histories
-  has_many_attached :files
+  has_many :issue_histories, dependent: :destroy
+  has_many_attached :files, dependent: :destroy
+
+  has_many :comments, through: :issue_histories, dependent: :destroy
 
   validates :title, presence: true
   validates :description, presence: true, length: { minimum: 10 }
