@@ -11,6 +11,12 @@
   </head>
 
   <body>
+    <% flash.each do |type, message| %>
+      <% type = (type == 'notice' ? 'success' : (type == 'alert' ? 'danger' : type)) %>
+      <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert" style="width: 100%;">
+        <%= message %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>

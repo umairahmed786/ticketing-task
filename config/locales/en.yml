@@ -4,6 +4,16 @@ en:
   TT_description: "TicketTask, your go-to solution for seamless project and issue management. Empower your team with robust authentication, role-based access, and comprehensive dashboards. Stay informed with automated email alerts, manage tasks with ease using document attachments and comments, and track progress with detailed reporting. Elevate your project management experience with TicketTask today."
   setup_new_organization: "Setup New Organization"
   login_existing_organization: "Login to Existing Organization"
+  http: "https://"
+  domain: ".localhost:3000"
+  login: "Login"
+  logout: "Logout"
+  greeting: "Greetings"
+  forgot_password: "Forgot Password?"
   organization:
     create:
       failure_message: "Organization could not be created."
+    not_found: "Organization not found."
+    login_existing:
+      title: "Find your organization"
+
