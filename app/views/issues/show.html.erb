@@ -1,0 +1,17 @@
+<h1><%= @issue.title %></h1>
+
+
+<p><%= @issue.description %></p>
+
+<p><%= @issue.state %></p>
+
+
+<h3>Assignee</h3>
+<p><%= @issue.assignee.name %></p>
+
+  <li><%= link_to "Edit", edit_project_issue_path(@issue.project_id,@issue) %></li>
+  <li><%= link_to "Destroy", project_issue_path(),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" } %></li>
+</ul>
+

@@ -18,6 +18,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @organization_general_users = User.where.not(id: @project.users.pluck(:id))
+    @project_general_users_name = @project.users.pluck('name')
   end
 
   def edit
@@ -34,6 +36,18 @@ class ProjectsController < ApplicationController
   def destroy
     @project.destroy
     redirect_to projects_path
+  end
+
+  def add_user
+    to_be_added_users = params[:to_be_added_users].reject(&:blank?)
+    if to_be_added_users.present?
+      project_users = to_be_added_users.map { |user_id|
+        {user_id: user_id, project_id: @project.id, created_at: Time.now, updated_at: Time.now}
+      }
+      ProjectUser.insert_all(project_users)
+    end
+    redirect_to @project
+
   end
 
   private
