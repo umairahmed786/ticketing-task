@@ -8,9 +8,13 @@ class Issue < ApplicationRecord
 
   has_many :comments, through: :issue_histories, dependent: :destroy
 
-  validates :title, presence: true
-  validates :description, presence: true, length: { minimum: 10 }
-  validates :assignee_id, presence: true
+  validates :title, presence: true 
+  validates :title, length: { minimum: 3 }, if: -> { title.present? }
+  validates :title, uniqueness: true 
+
+  validates :description, presence: true
+  validates :description, length: { minimum: 10 }, if: -> { description.present? } 
+
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
   validates :state, inclusion: { in: ["New", "In Progress", "Resolved"], message: "%{value} is not a valid state" }

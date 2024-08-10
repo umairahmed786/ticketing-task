@@ -18,8 +18,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @organization_general_users = User.where.not(id: @project.users.pluck(:id))
-    @project_general_users_name = @project.users.pluck('name')
+    @organization_general_users = User.where.not(id: @project.users.pluck(:id) + [@project.project_manager_id, @project.admin_id].compact)
+    @project_general_users = @project.users.select('id', 'name', 'email')
     @issues = @project.issues
   end
 
@@ -47,6 +47,11 @@ class ProjectsController < ApplicationController
       }
       ProjectUser.insert_all(project_users)
     end
+    redirect_to @project
+  end
+
+  def remove_user
+    @project.users.destroy(params[:user_id])
     redirect_to @project
   end
 

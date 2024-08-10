@@ -10,6 +10,10 @@ gem 'cancancan', '~> 3.6.1'
 # Use sqlite3 as the database for Active Record
 gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap', '~> 5.3.3'
+
+gem 'select2-rails'
+
+
 gem 'devise', '=4.9.4'
 gem 'acts_as_tenant', '~> 1.0.1'
 gem 'mysql2', '=0.5.6'
