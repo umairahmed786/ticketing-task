@@ -22,7 +22,7 @@
       </div>
     <% end %>
 
-    <% unless request.path.start_with?('/','/organizations', '/users/sign_up', '/users/sign_in', '/users/sign_out') %>
+    <% unless request.path.start_with?('/organizations', '/users/sign_up', '/users/sign_in', '/users/sign_out') %>
       <%= render 'shared/navbar' %>
     <% end %>
 
