@@ -1,0 +1,10 @@
+<h1><%= t('user_mailer.invite_user.welcome') %></h1>
+<p><%= t('greetings') @resource.name %>,</p>
+<p> <%= t('user_mailer.invite_user.body') %></p>
+<ul>
+  <li><%= t('name') @resource.name %></li>
+  <li><%= t('email') @resource.email %></li>
+  <li><%= t('password') @resource.password %></li>
+  <li><%= t('role') @resource.role.name %></li>
+  <p><%= link_to t('user_mailer.invite_user.edit_account'), edit_user_url(@resource, invitation_token: @resource.invitation_token, host: "#{@resource.organization.subdomain}.#{APP_HOST}", port: 3000) %></p>
+</ul>

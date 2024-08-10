@@ -2,12 +2,16 @@
 <div class="container mt-5 bg-light p-3">
   <div class="row">
     <div class="col-md-7">
-      <h2 class="mb-4">Welcome <%= current_user.name %></h2>
+      <h2 class="mb-4"><%= t('greetings') current_user.name %></h2>
     </div>
     <div class="col-md-5">
       <div class="d-flex justify-content-end">
-        <%= button_to 'Invite Users', new_user_password_path, class: "btn btn-primary me-2" %>
-        <%= button_to 'Create Projects', new_project_path, class: "btn btn-primary", method: :get %>
+        <% if can?(:create, User) %>
+          <%= button_to t('user_mailer.invite_user.title'), new_user_path, class: "btn btn-primary me-2", method: :get %>
+        <% end %>
+        <% if can?(:create, Project) %>
+          <%= button_to t('projects.create.title'), new_project_path, class: "btn btn-primary", method: :get %>
+        <% end %>
       </div>
     </div>
   </div>
