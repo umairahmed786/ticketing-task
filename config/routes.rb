@@ -3,12 +3,16 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[new create index] do
     collection do
-      get 'login'
-      post 'process_login'
+      get 'render_login_form'
+      post 'login_existing'
     end
   end
 
   constraints subdomain: /.*/ do
+    devise_for :users, controllers: {
+      sessions: 'users/sessions',
+      registrations: 'users/registrations'
+    }
     devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
     resources :projects do
       member do
