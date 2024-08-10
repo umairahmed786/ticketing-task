@@ -21,7 +21,7 @@
       </div>
     <% end %>
 
-    <% unless request.path.start_with?('/organizations', '/users/sign_up', '/users/sign_in', '/users/sign_out') %>
+    <% if user_signed_in? %>
       <%= render 'shared/navbar' %>
     <% end %>
 

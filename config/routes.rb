@@ -9,10 +9,6 @@ Rails.application.routes.draw do
   end
 
   constraints subdomain: /.*/ do
-    devise_for :users, controllers: {
-      sessions: 'users/sessions',
-      registrations: 'users/registrations'
-    }
     devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
     resources :projects do
       member do
