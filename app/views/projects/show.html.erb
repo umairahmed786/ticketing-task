@@ -1,0 +1,51 @@
+<div class="container mt-4 p-4 bg-light">
+  <nav aria-label="breadcrumb">
+  <ol class="breadcrumb mt-4 mb-4">
+    <li class="breadcrumb-item"><%= link_to t('project.header'), projects_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= @project.title %></li>
+  </ol>
+  </nav>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1><%= @project.title %></h1>
+    <div>
+      <%= link_to edit_project_path(@project), class: 'btn btn-warning me-2' do %>
+        <i class="bi bi-pencil"></i>
+      <% end %>
+      <%= link_to project_path(@project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger' do %>
+        <i class="bi bi-trash"></i>
+      <% end %>
+    </div>
+  </div>
+  <p class="lead fw-bold fst-italic"><%= t('project.description') %></p>
+  <p class="text-muted ms-3"><%= @project.description %></p>
+
+  <p class="lead fw-bold fst-italic"><%= t('project.project_manager') %></p>
+  <p class="text-muted ms-3"><%= @project.project_manager.name %></p>
+  <p class="lead fw-bold fst-italic"><%= t('project.admin') %></p>
+  <p class="text-muted ms-3"><%= @project.admin.name %></p>
+
+  <p class="lead fw-bold fst-italic"><%= t('project.add_users_to_project') %></p>
+  <ul class="list-group mb-3 ms-4 w-50">
+    <% @project_general_users_name.each do |name| %>
+      <li class="list-group-item">
+        <i class="bi bi-dash-circle me-2"></i>
+        <%= name %>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if @organization_general_users.empty? %>
+  <p class="badge bg-secondary ms-4"><%= t('project.no_users_exist') %></p>
+<% else %>
+  <%= form_with url: add_user_project_path, method: :post, local: true, class: 'mb-3 ms-4' do |form| %>
+    <div class="mb-3 w-50">
+      <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true, class: 'form-select' } %>
+    </div>
+    <div class="mb-3">
+      <%= form.submit t('project.add_users'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+<% end %>
+
+  <%= render 'issues/index', issues: @issues %>
+</div>

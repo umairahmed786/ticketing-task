@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_07_012417) do
+ActiveRecord::Schema.define(version: 2024_08_08_180611) do
 
   create_table "attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "file_path"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2024_08_07_012417) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.string "invitation_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"

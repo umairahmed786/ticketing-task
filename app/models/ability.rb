@@ -5,14 +5,16 @@ class Ability
     if user.role.name == 'owner'
       can :manage, :all
     elsif user.role.name == 'admin'
-      can :manage, :all 
+      can :manage, :all
     elsif user.role.name == 'project_manager'
+      can %i[read update create], User
       can :manage, Project, project_manager: user.id
       can :mange, Issue do |issue|
         issue.project_id.project_manager == user.id
       end
       can :manage, Comment
     elsif user.role.name == 'general_user'
+      can %i[read update], User, id: user.id
       can :manage, Comment
       can :manage, Issue do |issue|
         issue.assignee_id == user.id
