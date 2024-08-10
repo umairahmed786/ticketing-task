@@ -1,47 +1,53 @@
-<%# <%= form_with model: issue , url: project_issues_path do |form| %>
-<%= form_with model: issue, url: issue.persisted? ? project_issue_path(@project, issue) : project_issues_path(@project), method: issue.persisted? ? :patch : :post do |form| %>
-  <div>
-    <%= form.label :title %><br>
-    <%= form.text_field :title %>
+<%= form_with model: issue, url: issue.persisted? ? project_issue_path(@project, issue) : project_issues_path(@project), method: issue.persisted? ? :patch : :post, class: "needs-validation", novalidate: true do |form| %>
+  <nav aria-label="breadcrumb">
+  <ol class="breadcrumb mt-4 mb-4">
+    <% if @issue.persisted? %>
+      <li class="breadcrumb-item"><%= link_to @issue.title, project_issue_path(@issue) %></li>
+    <% end %>
+    <li class="breadcrumb-item active" aria-current="page"><%= t(@issue.new_record? ? 'issues.create' : 'issues.edit') %></li>
+  </ol>
+  </nav>
+  <div class="mb-3">
+    <%= form.label :title, "#{t('title')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
     <% issue.errors.full_messages_for(:title).each do |message| %>
-      <div><%= message %></div>
+      <div class="text-danger"><%= message %></div>
     <% end %>
   </div>
 
-  <div>
-    <%= form.label :description %><br>
-    <%= form.text_area :description %><br>
+  <div class="mb-3">
+    <%= form.label :description, "#{t('description')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control" %>
     <% issue.errors.full_messages_for(:description).each do |message| %>
-      <div><%= message %></div>
+      <div class="text-danger"><%= message %></div>
     <% end %>
   </div>
 
-  <div>
-    <%= form.label :complexity_point, "Complexity Point" %><br>
-    <%= form.number_field :complexity_point %><br>
+  <div class="mb-3">
+    <%= form.label :complexity_point, "#{t('complexity_point')} <span class='text-danger'>*</span>".html_safe,  class: "form-label" %>
+    <%= form.number_field :complexity_point, class: "form-control" %>
     <% @issue.errors.full_messages_for(:complexity_point).each do |message| %>
-      <div><%= message %></div>
+      <div class="text-danger"><%= message %></div>
     <% end %>
   </div>
 
-  <div>
-    <%= form.label :state %><br>
-    <%= form.select :state, options_for_select([["New", "New"], ["In Progress", "In Progress"], ["Resolved", "Resolved"]], issue.state) %><br>
+  <div class="mb-3">
+    <%= form.label :state, class: "form-label" %>
+    <%= form.select :state, options_for_select([["New", "New"], ["In Progress", "In Progress"], ["Resolved", "Resolved"]], issue.state), {}, class: "form-select" %>
     <% issue.errors.full_messages_for(:state).each do |message| %>
-      <div><%= message %></div>
+      <div class="text-danger"><%= message %></div>
     <% end %>
   </div>
 
-  <div>
-    <%= form.label :assignee_id, "Issue Assigne" %><br>
-    <%= form.select :assignee_id, options_from_collection_for_select(@project.users, 'id', 'name', issue.assignee_id) %>
-    <% issue.errors.full_messages_for(:assigne).each do |message| %>
-      <div><%= message %></div>
+  <div class="mb-3">
+    <%= form.label :assignee_id, t('issue_assignee'), class: "form-label" %>
+    <%= form.select :assignee_id, options_from_collection_for_select(@project.users, 'id', 'name', issue.assignee_id), {}, class: "form-select" %>
+    <% issue.errors.full_messages_for(:assignee_id).each do |message| %>
+      <div class="text-danger"><%= message %></div>
     <% end %>
   </div>
 
-  
-  <div>
-    <%= form.submit %>
-  </div>
+  <div class="mb-3 text-center">
+    <%= form.submit t(@issue.new_record? ? 'issues.create' : 'issues.edit'), class: 'btn btn-primary', style: 'width: 50%;' %>
+</div>
 <% end %>

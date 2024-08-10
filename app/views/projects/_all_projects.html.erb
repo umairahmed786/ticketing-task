@@ -1,0 +1,17 @@
+<div class="container p-4 bg-light">
+  <h1 class="text-center fw-bold fst-italic" ><%= t('project.header') %></h1>
+  <div class="row mt-4">
+    <% @projects.each do |project| %>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title fw-bold"><%= project.title %></h5>
+          <p class="card-text text-muted"><%= project.description %></p>
+          <p class="card-text"><span class="fw-bold fst-italic"><%= t('project.project_manager') %>: </span><%= project.project_manager.name %></p>
+          <a href="<%= project_path(project) %>" class="btn btn-primary"><%= t('project.view') %></a>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

@@ -20,6 +20,7 @@ class ProjectsController < ApplicationController
   def show
     @organization_general_users = User.where.not(id: @project.users.pluck(:id))
     @project_general_users_name = @project.users.pluck('name')
+    @issues = @project.issues
   end
 
   def edit
@@ -47,7 +48,6 @@ class ProjectsController < ApplicationController
       ProjectUser.insert_all(project_users)
     end
     redirect_to @project
-
   end
 
   private
