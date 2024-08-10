@@ -11,16 +11,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(organization_params)
     owner_role_id = Role.find_by(name: 'owner').id
     if @organization.save
-      subdomain = @organization.subdomain
-      host_with_subdomain = "#{subdomain}.#{APP_HOST}"
-      port = 3000
-      # Manually construct the URL with the subdomain using URI module
-      url_with_subdomain = URI::HTTP.build(
-        host: host_with_subdomain,
-        port:,
-        path: new_user_registration_path,
-        query: { role_id: owner_role_id }.to_query
-      ).to_s
+      url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_registration_path)
       redirect_to url_with_subdomain
     else
       flash[:alert] = @organization.errors.full_messages.join(', ')
@@ -28,28 +19,19 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  def login
+  def render_login_form
     # This action renders the form where the user inputs their organization site
   end
 
-  def process_login
+  def login_existing
     @organization = Organization.find_by(subdomain: params[:subdomain])
     owner_role_id = Role.find_by(name: 'owner').id
     if @organization.present?
-      subdomain = @organization.subdomain
-      host_with_subdomain = "#{subdomain}.#{APP_HOST}"
-      port = 3000
-      # Manually construct the URL with the subdomain using URI module
-      url_with_subdomain = URI::HTTP.build(
-        host: host_with_subdomain,
-        port:,
-        path: new_user_session_path, # Redirect to the login page
-        query: { role_id: owner_role_id }.to_query
-      ).to_s
+      url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_session_path)
       redirect_to url_with_subdomain
     else
       flash[:alert] = t('organization.not_found')
-      render :login
+      render :render_login_form
     end
   end
 
@@ -57,5 +39,17 @@ class OrganizationsController < ApplicationController
 
   def organization_params
     params.require(:organization).permit(:name, :subdomain)
+  end
+
+  def build_url_with_subdomain(owner_role_id, path)
+    host_with_subdomain = "#{@organization.subdomain}.#{APP_HOST}"
+    port = 3000
+    # Manually construct the URL with the subdomain using URI module
+    URI::HTTP.build(
+      host: host_with_subdomain,
+      port:,
+      path: path,
+      query: { role_id: owner_role_id }.to_query
+    ).to_s
   end
 end

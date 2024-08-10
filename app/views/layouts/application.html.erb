@@ -8,16 +8,23 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Include Bootstrap Icons CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
   </head>
 
   <body>
     <% flash.each do |type, message| %>
-      <% type = 'success' if type == 'notice' %>
-      <% type = 'danger' if type == 'alert' %>
+      <% type = (type == 'notice' ? 'success' : (type == 'alert' ? 'danger' : type)) %>
       <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert" style="width: 100%;">
         <%= message %>
       </div>
     <% end %>
+
+    <% if user_signed_in? %>
+      <%= render 'shared/navbar' %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

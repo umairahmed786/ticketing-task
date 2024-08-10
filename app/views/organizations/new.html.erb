@@ -3,16 +3,16 @@
       <%= image_tag 'TT logo.png', alt: 'TicketTask' %>
     </div>
     <div class="text-center mt-4 mb-4 name">
-      <%= t('project_title') %>
+      <%= t('organization.create_org') %>
     </div>
     <%= form_with model: @organization do |form| %>
       <div class="form-field d-flex align-items-center">
-        <%= form.text_field :name, class: "form-control", placeholder: "Name" %>
+        <%= form.text_field :name, class: "form-control", placeholder: t('name') %>
       </div>
       <div class="form-field d-flex align-items-center">
-        <%= form.text_field :subdomain, class: "form-control", placeholder: "Site" %>
+        <%= form.text_field :subdomain, class: "form-control", placeholder: t('subdomain') %>
       </div>
-      <%= form.submit 'Create Organization', class: "btn mt-3" %>
+      <%= form.submit t('organization.create.title'), class: "btn mt-3" %>
     <% end %>
   </div>
 

@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-7 mb-4">
+      <h1 class="lead fw-bold fst-italic"><%= t('issues.header') %></h1>
+    </div>
+    <div class="col-md-5">
+      <div class="d-flex justify-content-end">
+        <%= link_to t('issues.new'), new_project_issue_path(@project), class: "btn btn-primary px-4 py-2" %>
+      </div>
+    <div>
+  </div>
+</div>
+<div class="container mt-4 bg-light">
+<% grouped_issues = @issues.group_by(&:state) %>
+
+<div class="row">
+  <% grouped_issues.each do |state, issues| %>
+    <div class="col-md-4 mb-4 mt-4">
+      <div class="container">
+        <h4 class="text-center fw-bold fst-italic" ><%= state.capitalize %></h4>
+        <div class="row">
+          <% issues.each do |issue| %>
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h5 class="card-title"><%= issue.title %></h5>
+                  <p class="card-text"><%= issue.description %></p>
+                  <a href="<%= project_issue_path(issue.project_id, issue) %>" class="btn btn-primary">View Issue</a>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+</div>
+</div>

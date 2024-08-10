@@ -1,3 +1,5 @@
 class OwnersController < ApplicationController
-  def index; end
+  def index
+    @projects = @organization.projects
+  end
 end
