@@ -25,7 +25,7 @@
 
   <div class="mb-3">
     <%= form.label :complexity_point, "#{t('complexity_point')} <span class='text-danger'>*</span>".html_safe,  class: "form-label" %>
-    <%= form.number_field :complexity_point, class: "form-control" %>
+    <%= form.number_field :complexity_point, step: '0.01', class: "form-control" %>
     <% @issue.errors.full_messages_for(:complexity_point).each do |message| %>
       <div class="text-danger"><%= message %></div>
     <% end %>
@@ -40,12 +40,13 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :assignee_id, t('issue_assignee'), class: "form-label" %>
-    <%= form.select :assignee_id, options_from_collection_for_select(@project.users, 'id', 'name', issue.assignee_id), {}, class: "form-select" %>
-    <% issue.errors.full_messages_for(:assignee_id).each do |message| %>
-      <div class="text-danger"><%= message %></div>
-    <% end %>
+  <%= form.label :assignee_id, t('issue_assignee'), class: "form-label" %>
+  <%= form.select :assignee_id, options_for_select([['Select an Assignee', ''], [@project.project_manager.name, @project.project_manager.id], [@project.admin.name, @project.admin.id]] + @project.users.map { |user| [user.name, user.id] }, issue.assignee_id), {}, class: "form-select" %>
+  <% issue.errors.full_messages_for(:assignee_id).each do |message| %>
+    <div class="text-danger"><%= message %></div>
+  <% end %>
   </div>
+
 
   <div class="mb-3 text-center">
     <%= form.submit t(@issue.new_record? ? 'issues.create' : 'issues.edit'), class: 'btn btn-primary', style: 'width: 50%;' %>

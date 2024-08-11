@@ -11,3 +11,19 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+
+import $ from 'jquery';
+import 'select2';
+
+
+
+document.addEventListener('shown.bs.modal', function () {
+  $('.js-multiple-select').select2({
+    placeholder: 'Select users',
+    allowClear: true,
+    tags: true,
+    width: 'resolve',
+    dropdownParent: $('#addUserModal') // Ensures the dropdown is correctly placed within the modal
+  });
+});

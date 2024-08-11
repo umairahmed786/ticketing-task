@@ -10,14 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_08_180611) do
+ActiveRecord::Schema.define(version: 2024_08_09_062031) do
 
-  create_table "attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "file_path"
-    t.bigint "organization_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["organization_id"], name: "index_attachments_on_organization_id"
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -40,14 +60,14 @@ ActiveRecord::Schema.define(version: 2024_08_08_180611) do
 
   create_table "issue_histories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "field_change_id"
-    t.bigint "attachment_id"
     t.bigint "comment_id"
     t.bigint "issue_id", null: false
     t.bigint "user_id", null: false
     t.bigint "organization_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["attachment_id"], name: "index_issue_histories_on_attachment_id"
+    t.bigint "active_storage_attachment_id"
+    t.index ["active_storage_attachment_id"], name: "index_issue_histories_on_active_storage_attachment_id"
     t.index ["comment_id"], name: "index_issue_histories_on_comment_id"
     t.index ["field_change_id"], name: "index_issue_histories_on_field_change_id"
     t.index ["issue_id"], name: "index_issue_histories_on_issue_id"
@@ -130,10 +150,11 @@ ActiveRecord::Schema.define(version: 2024_08_08_180611) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  add_foreign_key "attachments", "organizations"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "organizations"
   add_foreign_key "field_changes", "organizations"
-  add_foreign_key "issue_histories", "attachments"
+  add_foreign_key "issue_histories", "active_storage_attachments", on_delete: :nullify
   add_foreign_key "issue_histories", "comments"
   add_foreign_key "issue_histories", "field_changes"
   add_foreign_key "issue_histories", "issues"

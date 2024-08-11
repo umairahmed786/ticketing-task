@@ -1,0 +1,21 @@
+/* Ensure modal content doesn't clip the dropdown */
+.modal {
+  overflow: visible;
+}
+
+/* Specific style to ensure the dropdown appears above the modal */
+.js-multiple-select {
+  position: relative;
+  z-index: 1050; /* Should be higher than the modal’s z-index */
+}
+
+/* Ensure Bootstrap's dropdown menu is visible above modal */
+.form-select {
+  z-index: 1060 !important; /* Force a high z-index on the select dropdown */
+}
+
+.modal-dialog {
+  z-index: 1050;
+}
+
+

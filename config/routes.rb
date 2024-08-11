@@ -17,6 +17,14 @@ Rails.application.routes.draw do
     resources :projects do
       member do
         post 'add_user'
+        delete 'remove_user'
+      end
+      resources :issues do
+        member do
+          post 'attach_file'
+        end
+
+        resources :comments
       end
       resources :issues
     end
