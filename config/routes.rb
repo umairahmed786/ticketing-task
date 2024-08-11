@@ -21,11 +21,12 @@ Rails.application.routes.draw do
       end
       resources :issues do
         member do
-          post 'attach_file' 
+          post 'attach_file'
         end
 
         resources :comments
       end
+      resources :issues
     end
 
     resources :dashboards, only: %i[index]
