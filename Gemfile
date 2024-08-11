@@ -7,6 +7,8 @@ ruby '3.1.4'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 # Use cancancan for authorization
 gem 'cancancan', '~> 3.6.1'
+gem 'chartkick', '=5.0.7'
+gem "groupdate"
 # Use sqlite3 as the database for Active Record
 gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap', '~> 5.3.3'
