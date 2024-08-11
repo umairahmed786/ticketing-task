@@ -102,7 +102,7 @@
 
 
   <!-- Issues List -->
-  <%= link_to t('issues.show'), project_issues_path(@project) %>
+  <%= render 'issues/index', issues: @issues %>
 </div>
 
 

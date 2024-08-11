@@ -1,7 +1,6 @@
 class UserController < ApplicationController
   load_and_authorize_resource class: 'User'
   before_action :find_user_by_invitation_token, only: [:edit]
-  before_action :set_roles, only: %i[new create edit update]
   after_action :after_update_path, only: [:update]
 
   def index
@@ -25,15 +24,22 @@ class UserController < ApplicationController
   end
 
   def new
+    case current_user.role.name
+    when 'owner'
+      @roles = Role.where.not(name: 'owner')
+    when 'admin'
+      @roles = Role.where.not(name: %w[owner admin])
+    when 'project_manager'
+      @roles = Role.where(name: 'general_user')
+    end
   end
 
   def create
     @user.mark_as_confirmed
     if @user.save
       UserMailer.invite_email(@user).deliver_now
-      redirect_to dashboards_path, notice: t('user.invite_email')
+      redirect_to owners_path, notice: t('user.invite_email')
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
       render :new
     end
   end
@@ -59,17 +65,6 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :role_id, :organization_id)
-  end
-
-  def set_roles
-    case current_user.role.name
-    when 'owner'
-      @roles = Role.where.not(name: 'owner')
-    when 'admin'
-      @roles = Role.where.not(name: %w[owner admin])
-    when 'project_manager'
-      @roles = Role.where(name: 'general_user')
-    end
   end
 
   def find_user_by_invitation_token

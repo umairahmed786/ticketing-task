@@ -10,29 +10,27 @@
  *= require select2
  */
 
- @import "bootstrap";
-
- $primary-color: #1679AB;
- $background-custom-color: #DDE6ED;
- 
- .bg-light {
-   background: var(--background-custom-color);
- }
- 
- .btn-primary {
-   color: var(--primary-color);
-   border: 2px solid var(--primary-color);
-   background: transparent; 
-   transition: background-color 0.3s, color 0.3s; 
- 
-   &:hover {
-     background: var(--primary-color);
-     color: #fff;
-   }
- }
-
+@import "bootstrap";
 @import "pagination";
-@import 'sidebar';
+
+ $primary-color: #007bff;
+ $background-color: #DDE6ED;
+
+ .bg-light {
+   background: $background-color;
+ }
+
+ .btn-primary {
+  color: $primary-color;
+  border: 2px solid $primary-color;
+  background: transparent; 
+  transition: background-color 0.3s, color 0.3s; 
+
+  &:hover {
+    background: $primary-color;
+    color: #fff;
+  }
+}
 
  .flash {
   padding: 10px;
@@ -57,19 +55,3 @@
   max-width: 15ch; /* Limit the width to 15 characters */
 }
 
-.main-content {
-  margin-left: 250px;
-  transition: margin-left 0.3s;
-
-  &.collapsed {
-    margin-left: 80px;
-  }
-
-  @media (max-width: 768px) {
-    margin-left: 80px;
-
-    &.expanded {
-      margin-left: 250px;
-    }
-  }
-}

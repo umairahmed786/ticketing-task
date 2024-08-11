@@ -1,43 +1,18 @@
-<div class="container mt-5 p-3">
+
+<div class="container mt-5 bg-light p-3">
   <div class="row">
-    <div class="col-md-6">
-      <% if @issues_count_by_state.present? %>
-        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), loading: t('loading'), download: true %>
-      <% else %>
-        <h3><%= t('issues_statistics') %></h3>
-        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), loading: t('loading'), download: true %>
-      <% end %>
+    <div class="col-md-7">
+      <h2 class="mb-4"><%= t('greetings') %> <%= current_user.name %></h2>
     </div>
-    <div class="col-md-6">
-      <% if @users_count_by_role.present? %>
-        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), loading: t('loading'), download: true %>
-      <% else %>
-        <h3>Users Statistics by role</h3>
-        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), loading: t('loading'), download: true %>
-      <% end %>
-    </div>
-  </div>
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <% if @projects_count_by_day.present? %>
-        <%= line_chart @projects_count_by_day, title: t('project_statistics'), loading: t('loading'), download: true %>
-      <% else %>
-        <h3>Projects Statistics by day</h3>
-        <%= line_chart @projects_count_by_day, title: t('project_statistics'), loading: t('loading'), download: true %>
-      <% end %>
-    </div>
-    <div class="col-md-6">
-      <% if @users_count_by_day.present? %>
-        <%= area_chart @users_count_by_day, title: t('users_statistics'), loading: t('loading'), download: true %>
-      <% else %>
-        <h3>Users Statistics</h3>
-        <%= area_chart @users_count_by_day, title: t('users_statistics'), loading: t('loading'), download: true %>
-      <% end %>
-    </div>
-  </div>
-  <div class="row mt-4">
-    <div class="col-12">
-      <%= line_chart @combined_counts_by_week, title: t('project_isssues_comments_stats'), loading: t('loading'), download: true %>
+    <div class="col-md-5">
+      <div class="d-flex justify-content-end">
+        <% if can?(:create, User) %>
+          <%= button_to t('user_mailer.invite_user.title'), new_user_path, class: "btn btn-primary me-2", method: :get %>
+        <% end %>
+        <% if can?(:create, Project) %>
+          <%= button_to t('project.create'), new_project_path, class: "btn btn-primary", method: :get %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
