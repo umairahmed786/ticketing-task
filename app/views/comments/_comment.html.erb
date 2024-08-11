@@ -1,0 +1,28 @@
+<ol class="list-unstyled">
+  <% @issue.issue_histories.each do |issue_history| %>
+    <% if issue_history.comment %>
+      <li class="media mb-4">
+        <div class="media-body">
+          <h5 class="mt-0 mb-1"><%= issue_history.user.name %></h5>
+          <p><%= issue_history.comment.content %></p>
+
+          <!-- Display attached files if present -->
+          <% if issue_history.comment.files.attached? %>
+            <p>
+              <strong>Attachments:</strong>
+              <ul class="list-unstyled">
+                <% issue_history.comment.files.each do |file| %>
+                  <li>
+                    <%= link_to file.filename.to_s, url_for(file), class: "btn btn-link" %>
+                  </li>
+                <% end %>
+              </ul>
+            </p>
+          <% end %>
+
+          <small class="text-muted"><%= time_ago_in_words(issue_history.created_at) %> ago</small>
+        </div>
+      </li>
+    <% end %>
+  <% end %>
+</ol>

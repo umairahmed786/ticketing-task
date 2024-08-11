@@ -67,6 +67,7 @@ en:
     add_users_to_project: "Add Users to Project"
     no_users_exist: "No users exist to be added to the project."
     view: "View Project"
+    no_project_manager_assigned: "No project manager assigned"
   issues:
     header: "Project Issues"
     new: "New Issue"
@@ -74,6 +75,7 @@ en:
     edit: "Edit Issue"
     delete: "Delete Issue"
     assignee: "Assignee"
+    no_assigned: "This issue is not currently assigned to anyone."
   projects_assigned_number: "No. of Projects Assigned"
   actions: "Actions"
   no_of_issues: "No. of Issues"

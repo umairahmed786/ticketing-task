@@ -11,6 +11,11 @@ Rails.application.configure do
   config.cache_classes = false
   config.action_dispatch.tld_length = 0
 
+
+  # Store files locally.
+  config.active_storage.service = :local
+
+
   # Do not eager load code on boot.
   config.eager_load = false
 
