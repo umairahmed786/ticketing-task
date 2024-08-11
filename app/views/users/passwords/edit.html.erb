@@ -1,25 +1,26 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+<div class="container mt-5 p-4 bg-light w-50">
+  <div class="text-center mt-4 mb-4 name">
+    <h2><%= t('devise.passwords.edit_title') %></h2>
   </div>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "users/shared/error_messages", resource: resource %>
+    <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="mb-3">
+      <%= f.label :password, "#{t('new_password')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+      <% end %>
+      <%= f.password_field :password, class: 'form-control', autofocus: true, autocomplete: "new-password", required: true %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+    <div class="mb-3">
+      <%= f.label :password_confirmation, "#{t('confirm_new_password')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= f.password_field :password_confirmation, class: 'form-control', autocomplete: "new-password", required: true %>
+    </div>
 
-<%= render "users/shared/links" %>
+    <div class="mb-3 text-center">
+      <%= f.submit t('reset_password'), class: 'btn btn-primary px-5 py-2' %>
+    </div>
+  <% end %>
+</div>

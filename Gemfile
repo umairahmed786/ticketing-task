@@ -17,6 +17,7 @@ gem 'select2-rails'
 gem 'devise', '=4.9.4'
 gem 'acts_as_tenant', '~> 1.0.1'
 gem 'mysql2', '=0.5.6'
+gem 'will_paginate', '~> 3.3.1'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 gem 'pry', '=0.13.1'

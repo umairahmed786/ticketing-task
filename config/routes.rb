@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   end
 
   constraints subdomain: /.*/ do
-    devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
+    devise_for :users, controllers: {
+      sessions: 'users/sessions',
+      registrations: 'users/registrations',
+      passwords: 'users/passwords'
+    }
     resources :projects do
       member do
         post 'add_user'
@@ -24,9 +28,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :owners, only: %i[index]
-    resources :user, only: %i[index new create edit update]
-    resources :project_managers, only: %i[index]
-    resources :admins, only: %i[index]
+    resources :dashboards, only: %i[index]
+    resources :user
   end
 end

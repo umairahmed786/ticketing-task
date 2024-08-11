@@ -1,18 +1,22 @@
-  <div class="wrapper">
-    <div class="logo">
-      <%= image_tag 'TT logo.png', alt: 'TicketTask' %>
-    </div>
-    <div class="text-center mt-4 mb-4 name">
-      <%= t('organization.create_org') %>
-    </div>
-    <%= form_with model: @organization do |form| %>
-      <div class="form-field d-flex align-items-center">
-        <%= form.text_field :name, class: "form-control", placeholder: t('name') %>
-      </div>
-      <div class="form-field d-flex align-items-center">
-        <%= form.text_field :subdomain, class: "form-control", placeholder: t('subdomain') %>
-      </div>
-      <%= form.submit t('organization.create.title'), class: "btn mt-3" %>
-    <% end %>
+<div class="container mt-5 p-4 bg-light w-50">
+  <div class="logo text-center">
+    <%= image_tag 'TT logo.png', alt: 'TicketTask' %>
   </div>
+  <div class="text-center mt-4 mb-4 name">
+    <%= t('organization.create_org') %>
+  </div>
+  <%= form_with model: @organization do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, "#{t('name')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.text_field :name, class: "form-control", placeholder: t('name'), required: true %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :subdomain, "#{t('subdomain')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.text_field :subdomain, class: "form-control", placeholder: t('subdomain'), required: true %>
+    </div>
+    <div class="mb-3 text-center">
+      <%= form.submit t('organization.create.title'), class: "btn btn-primary px-5 py-2" %>
+    </div>
+  <% end %>
+</div>
 

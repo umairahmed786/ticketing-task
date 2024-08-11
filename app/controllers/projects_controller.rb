@@ -3,6 +3,18 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource
 
   def index
+    @projects = Project.includes(:project_manager, :admin, :issues, :users).paginate(page: params[:page], per_page: 7)
+    @project_issues_count = {}
+    @project_users_count = {}
+    @project_admins = {}
+    @project_project_managers = {}
+
+    @projects.find_each do |project|
+      @project_issues_count[project.id] = project.issues.size
+      @project_users_count[project.id] = project.users.size
+      @project_admins[project.id] = project.admin.name
+      @project_project_managers[project.id] = project.project_manager.name
+    end
   end
 
   def new

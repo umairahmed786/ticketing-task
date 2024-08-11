@@ -1,15 +1,18 @@
-<div class="container mt-4">
-  <h1 class="mb-4"><%= t('organization.login_existing.title') %></h1>
+<div class="container mt-5 p-4 bg-light w-50">
+  <div class="text-center mt-4 mb-4 name">
+    <h1 class="mb-4"><%= t('organization.login_existing.title') %></h1>
+  </div>
   <%= form_with url: login_existing_organizations_path, method: :post, local: true do |form| %>
     <div class="mb-3">
+      <%= form.label :subdomain, "#{t('enter_subdomain')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
       <div class="input-group mb-3">
         <%= content_tag(:span, t('http'), class: "input-group-text", id: "basic-addon3") %>
-        <%= form.text_field :subdomain, placeholder: "Enter your Subdomain", class: "form-control", id: "basic-url", "aria-describedby" => "basic-addon3" %>
+        <%= form.text_field :subdomain, class: "form-control", id: "basic-url", "aria-describedby" => "basic-addon3", required: true %>
         <%= content_tag(:span, t('domain'), class: "input-group-text", id: "basic-addon3") %>
       </div>
-
     </div>
-    <%= form.submit t('login'), class: "btn btn-primary mt-4" %>
+    <div class="mb-3 text-center">
+      <%= form.submit t('login'), class: "btn btn-primary px-5 py-2" %>
+    </div>
   <% end %>
-  <%= link_to t('forgot_password'), new_user_password_path, class: "text-decoration-none mt-4" %>
 </div>

@@ -1,0 +1,35 @@
+// app/assets/stylesheets/pagination.scss
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .page-item {
+    margin: 0 5px;
+
+    a,
+    span {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      color: #007bff;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: #f8f9fa;
+        color: #0056b3;
+      }
+    }
+
+    &.active span {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    &.disabled span {
+      color: #6c757d;
+    }
+  }
+}

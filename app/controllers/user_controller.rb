@@ -3,7 +3,25 @@ class UserController < ApplicationController
   before_action :find_user_by_invitation_token, only: [:edit]
   after_action :after_update_path, only: [:update]
 
-  def index; end
+  def index
+    @users = case current_user.role.name
+             when 'owner'
+               User.where.not(id: current_user.id)
+             when 'admin'
+               User.where(role_id: Role.where(name: %w[project_manager general_user]).ids)
+             when 'project_manager'
+               User.where(role_id: Role.where(name: 'general_user').ids)
+             end
+    @users = @users
+             .select('users.*, COUNT(DISTINCT projects.id) AS projects_count')
+             .left_joins(:projects)
+             .group('users.id')
+             .paginate(page: params[:page], per_page: 10)
+             .to_a
+  end
+
+  def show
+  end
 
   def new
     case current_user.role.name
@@ -36,6 +54,11 @@ class UserController < ApplicationController
       flash[:alert] = @user.errors.full_messages.join(', ')
       render :edit
     end
+  end
+
+  def destroy
+    @user.destroy
+    redirect_to user_index_path
   end
 
   private
