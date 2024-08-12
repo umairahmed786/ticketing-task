@@ -2,36 +2,36 @@
   <div class="row">
     <div class="col-md-6">
       <% if @issues_count_by_state.present? %>
-        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), loading: t('loading'), download: true %>
+        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), download: true %>
       <% else %>
         <h3><%= t('issues_statistics') %></h3>
-        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), loading: t('loading'), download: true %>
+        <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), download: true %>
       <% end %>
     </div>
     <div class="col-md-6">
       <% if @users_count_by_role.present? %>
-        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), loading: t('loading'), download: true %>
+        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), download: true %>
       <% else %>
         <h3>Users Statistics by role</h3>
-        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), loading: t('loading'), download: true %>
+        <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), download: true %>
       <% end %>
     </div>
   </div>
   <div class="row mt-4">
     <div class="col-md-6">
       <% if @projects_count_by_day.present? %>
-        <%= line_chart @projects_count_by_day, title: t('project_statistics'), loading: t('loading'), download: true %>
+        <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% else %>
         <h3>Projects Statistics by day</h3>
-        <%= line_chart @projects_count_by_day, title: t('project_statistics'), loading: t('loading'), download: true %>
+        <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% end %>
     </div>
     <div class="col-md-6">
       <% if @users_count_by_day.present? %>
-        <%= area_chart @users_count_by_day, title: t('users_statistics'), loading: t('loading'), download: true %>
+        <%= area_chart @users_count_by_day, title: t('users_statistics'), download: true %>
       <% else %>
         <h3>Users Statistics</h3>
-        <%= area_chart @users_count_by_day, title: t('users_statistics'), loading: t('loading'), download: true %>
+        <%= area_chart @users_count_by_day, title: t('users_statistics'), download: true %>
       <% end %>
     </div>
   </div>
