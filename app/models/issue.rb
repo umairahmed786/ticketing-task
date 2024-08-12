@@ -17,7 +17,6 @@ class Issue < ApplicationRecord
 
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
-  validates :state, inclusion: { in: ["New", "In Progress", "Resolved"], message: "%{value} is not a valid state" }
 
   after_update :track_changes
 
@@ -42,6 +41,34 @@ class Issue < ApplicationRecord
         field_change: field_change,
         created_at: Time.current
       )
+    end
+  end
+
+
+  include AASM
+
+  aasm column: 'state' do
+    # after_all_transitions :notify_resolved
+
+    state :new, initial: true
+    state :in_progress
+    state :resolved
+    state :closed  
+
+    event :start do
+      transitions from: [:new, :resolved], to: :in_progress
+    end
+
+    event :resolved do
+      transitions from: :in_progress, to: :resolved
+    end
+
+    event :close do
+      transitions from: [:new, :resolved], to: :closed
+    end
+
+    event :reopen do
+      transitions from: :closed, to: :in_progress
     end
   end
 end

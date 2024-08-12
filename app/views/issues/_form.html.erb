@@ -33,7 +33,7 @@
 
   <div class="mb-3">
     <%= form.label :state, class: "form-label" %>
-    <%= form.select :state, options_for_select([["New", "New"], ["In Progress", "In Progress"], ["Resolved", "Resolved"]], issue.state), {}, class: "form-select" %>
+    <%= form.select :state, options_for_select(@available_states.map { |state| [state.to_s.humanize, state] }, issue.state), {}, class: "form-select" %>
     <% issue.errors.full_messages_for(:state).each do |message| %>
       <div class="text-danger"><%= message %></div>
     <% end %>

@@ -75,7 +75,7 @@ en:
     edit: "Edit Issue"
     delete: "Delete Issue"
     assignee: "Assignee"
-    no_assigned: "This issue is not currently assigned to anyone."
+    no_assigned: "Not assigned to anyone."
     show: "Show Issues"
   projects_assigned_number: "No. of Projects Assigned"
   actions: "Actions"

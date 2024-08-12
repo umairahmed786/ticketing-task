@@ -1,11 +1,16 @@
 <div class="container mt-4 p-4 bg-light">
-  <!-- Breadcrumb -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb mt-4 mb-4">
-      <li class="breadcrumb-item"><%= link_to t('project.header'), projects_path %></li>
-      <li class="breadcrumb-item active" aria-current="page"><%= @project.title %></li>
-    </ol>
-  </nav>
+  <!-- Breadcrumb and View Issues Button -->
+  <div class="d-flex justify-content-between align-items-center">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mt-4 mb-4">
+        <li class="breadcrumb-item"><%= link_to t('project.header'), projects_path %></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= @project.title %></li>
+      </ol>
+    </nav>
+    <div class="mt-4">
+      <%= link_to t('View All Issues'), project_issues_path(@project), class: "btn btn-primary btn-sm me-2" %>
+    </div>
+  </div>
 
   <!-- Project Details Card -->
   <div class="card mb-4">

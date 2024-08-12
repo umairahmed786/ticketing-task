@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_09_062031) do
+ActiveRecord::Schema.define(version: 2024_08_12_004709) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 2024_08_09_062031) do
   add_foreign_key "comments", "organizations"
   add_foreign_key "field_changes", "organizations"
   add_foreign_key "issue_histories", "active_storage_attachments", on_delete: :nullify
-  add_foreign_key "issue_histories", "comments"
+  add_foreign_key "issue_histories", "comments", on_delete: :cascade
   add_foreign_key "issue_histories", "field_changes"
   add_foreign_key "issue_histories", "issues"
   add_foreign_key "issue_histories", "organizations"

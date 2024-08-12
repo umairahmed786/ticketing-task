@@ -1,6 +1,6 @@
 <h2>Add a Comment</h2>
 
-<%= form_with( url: project_issue_comments_path(@project, @issue), local: true, html: { multipart: true }) do |form| %>
+<%= form_with(model: Comment, url: project_issue_comments_path(@project, @issue), local: true, html: { multipart: true }) do |form| %>
   <div class="form-group">
     <%= form.label :content %>
     <%= form.text_area :content, rows: 3, class: "form-control", required: true %>
