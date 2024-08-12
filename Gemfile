@@ -13,6 +13,9 @@ gem 'bootstrap', '~> 5.3.3'
 
 gem 'select2-rails'
 
+gem 'aasm', '~> 5.3.1'
+
+
 
 gem 'devise', '=4.9.4'
 gem 'acts_as_tenant', '~> 1.0.1'

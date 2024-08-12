@@ -19,7 +19,11 @@
           <td class="description" ><%= issue.description %></td>
           <td><%= issue.project.project_manager.name %></td>
           <td><%= issue.project.title %></td>
-          <td><%= issue.assignee.name %></td>
+          <% if issue.assignee %>
+            <td><%= issue.assignee&.name %></td>
+          <% else %>
+            <td><%= t('issues.no_assigned') %></td>
+          <% end %>
           <td><%= issue.complexity_point %></td>
           <td><%= issue.state %></td>
 

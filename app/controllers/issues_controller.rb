@@ -7,6 +7,7 @@ class IssuesController < ApplicationController
   end
 
   def new
+    @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
   end
 
   def create
@@ -22,6 +23,7 @@ class IssuesController < ApplicationController
   end
 
   def edit
+    @available_states = [@issue.state] + @issue.aasm.states(permitted: true).map(&:name).map(&:to_s)
   end
 
   def update
