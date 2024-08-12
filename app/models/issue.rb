@@ -34,7 +34,7 @@ class Issue < ApplicationRecord
       transitions from: [:new, :resolved], to: :in_progress
     end
 
-    event :resolved do
+    event :resolved  do
       transitions from: :in_progress, to: :resolved, after: :notify_resolved
     end
 
@@ -45,10 +45,10 @@ class Issue < ApplicationRecord
     event :reopen do
       transitions from: :closed, to: :in_progress
     end
-    notify_resolved = Proc.new {
-      binding.pry
-      NotifierMailer.issue_mark_as_resolved(self.assignee.email).deliver_now if self.assignee
-    }
+  end
 
+  def notify_resolved
+    NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
   end
 end
+

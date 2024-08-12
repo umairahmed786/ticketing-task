@@ -1,0 +1,56 @@
+<% @issue_histories.reverse.each do |history| %>
+  <% next if history.comment.nil? && history.field_change.nil? && history.active_storage_attachment_id.nil? %>
+
+  <div class="alert mb-3" role="alert">
+    <div class="d-flex align-items-start">
+      <% if history.comment %>
+        <div class="me-2">
+          <i class="bi bi-chat-dots text-primary" style="font-size: 1.5rem;"></i>
+        </div>
+        <div class="flex-grow-1">
+          <strong><%= history.user.name %></strong> added a comment:
+          <blockquote class="blockquote">
+            <p class="mb-0"><%= history.comment.content %></p>
+          </blockquote>
+
+          <% if history.comment.files.attached? %>
+            <p class="mb-1">
+              <strong>Attachments:</strong>
+              <% history.comment.files.each do |file| %>
+                <a href="<%= url_for(file) %>" target="_blank" class="btn btn-link">
+                  <%= file.filename.to_s %>
+                </a><br>
+              <% end %>
+              (<%= history.comment.files.count %> attachments)
+            </p>
+          <% end %>
+
+          <small class="text-muted d-block mt-1">
+            <%= time_ago_in_words(history.created_at) %> ago
+          </small>
+        </div>
+      <% elsif history.field_change %>
+        <div class="me-2">
+          <i class="bi bi-pencil text-warning" style="font-size: 1.5rem;"></i>
+        </div>
+        <div class="flex-grow-1">
+          <strong><%= history.user.name %></strong> changed the field "<%= history.field_change.field %>" from "<%= history.field_change.old_value %>" to "<%= history.field_change.new_value %>".
+          <small class="text-muted d-block mt-1">
+            <%= time_ago_in_words(history.created_at) %> ago
+          </small>
+        </div>
+      <% elsif history.active_storage_attachment_id %>
+        <div class="me-2">
+          <i class="bi bi-paperclip text-success" style="font-size: 1.5rem;"></i>
+        </div>
+        <div class="flex-grow-1">
+          <strong><%= history.user.name %></strong> added an attachment:
+          <%= link_to "View Attachment", url_for(ActiveStorage::Attachment.find(history.active_storage_attachment_id).blob), target: "_blank", class: "btn btn-link" %>
+          <small class="text-muted d-block mt-1">
+            <%= time_ago_in_words(history.created_at) %> ago
+          </small>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

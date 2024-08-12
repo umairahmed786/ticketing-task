@@ -15,11 +15,13 @@ class IssuesController < ApplicationController
     if @issue.save
       redirect_to project_issues_path
     else
+      @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
       render :new
     end
   end
 
   def show
+    @issue_histories = @issue.issue_histories.includes(:user, :field_change, :comment)
   end
 
   def edit
@@ -27,10 +29,15 @@ class IssuesController < ApplicationController
   end
 
   def update
-    if @issue.update(issue_params)
+    @issue.assign_attributes(issue_params.except(:state))
+    if @issue.state != issue_params[:state]
+      trigger_state_event(issue_params[:state])
+      redirect_to project_issue_path(@issue.project_id, @issue)
+    elsif @issue.save
       redirect_to project_issue_path(@issue.project_id, @issue)
     else
-      render :edit
+      @available_states = [@issue.state] + @issue.aasm.states(permitted: true).map(&:name).map(&:to_s)
+      render :edit  
     end
   end
 
@@ -58,4 +65,20 @@ class IssuesController < ApplicationController
   def issue_params
     params.require(:issue).permit(:title, :description, :assignee_id, :complexity_point, :state)
   end
+
+  def trigger_state_event(new_state)
+  case new_state
+  when 'new'
+  when 'in_progress'
+      @issue.start! 
+  when 'resolved'
+      @issue.resolved! unless @issue.aasm.current_state == 'resolved'
+  when 'closed'
+      @issue.close! unless @issue.aasm.current_state == 'closed'
+  when 'reopened'
+      @issue.reopen! unless @issue.aasm.current_state == 'in_progress'
+  end
+end
+
+
 end
