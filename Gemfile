@@ -14,6 +14,7 @@ gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap', '~> 5.3.3'
 
 gem 'select2-rails'
+gem 'whenever', require: false
 
 
 gem 'devise', '=4.9.4'

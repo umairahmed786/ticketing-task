@@ -11,13 +11,26 @@
   <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h1 class="card-title mb-0"><%= @project.title %></h1>
-      <div>
+      <div class="d-flex justify-content-end">
         <%= link_to edit_project_path(@project), class: 'btn btn-warning me-2' do %>
           <i class="bi bi-pencil"></i>
         <% end %>
-        <%= link_to project_path(@project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger' do %>
+        <%= button_to project_path(@project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger me-2' do %>
           <i class="bi bi-trash"></i>
         <% end %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= t('issues.header') %>
+          </button>
+          <ul class="dropdown-menu">
+            <% if @project.project_manager.nil? %>
+              <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item disabled' %></li>
+            <% else %>
+              <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
+            <% end %>
+            <li><%= link_to t('issue.show'), project_issues_path(@project), class: 'dropdown-item' %></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -99,10 +112,6 @@
       </div>
     </div>
   </div>
-
-
-  <!-- Issues List -->
-  <%= link_to t('issues.show'), project_issues_path(@project) %>
 </div>
 
 

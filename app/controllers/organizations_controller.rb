@@ -14,7 +14,7 @@ class OrganizationsController < ApplicationController
       url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_registration_path)
       redirect_to url_with_subdomain
     else
-      flash[:alert] = @organization.errors.full_messages.join(', ')
+      flash.now[:alert] = @organization.errors.full_messages.join(', ')
       render :new
     end
   end
@@ -30,7 +30,7 @@ class OrganizationsController < ApplicationController
       url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_session_path)
       redirect_to url_with_subdomain
     else
-      flash[:alert] = t('organization.not_found')
+      flash.now[:alert] = t('organization.not_found')
       render :render_login_form
     end
   end

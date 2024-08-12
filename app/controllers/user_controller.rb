@@ -33,19 +33,22 @@ class UserController < ApplicationController
       UserMailer.invite_email(@user).deliver_now
       redirect_to dashboards_path, notice: t('user.invite_email')
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:alert] = @user.errors.full_messages.join(', ')
       render :new
     end
   end
 
-  def edit; end
+  def edit
+    @user = User.find_by(id: params[:id])
+  end
 
   def update
+    @user = User.find_by(id: params[:id])
     if @user.update(user_params)
-      flash[:notice] = t('devise.registrations.updated')
+      flash.now[:notice] = t('devise.registrations.updated')
       redirect_to after_update_path
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:alert] = @user.errors.full_messages.join(', ')
       render :edit
     end
   end
@@ -78,7 +81,7 @@ class UserController < ApplicationController
   end
 
   def after_update_path
-    flash[:notice] = t('devise.updated')
+    flash.now[:notice] = t('devise.updated')
     new_user_session_path
   end
 end

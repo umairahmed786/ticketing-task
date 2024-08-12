@@ -94,3 +94,5 @@ en:
   folder: "folder"
   group: "group"
   users: "Users"
+  project_manager: "Project Manager"
+  not_assigned: "Not yet Assigned"

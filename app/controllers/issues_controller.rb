@@ -1,6 +1,7 @@
 class IssuesController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :issue, through: :project
+  
 
   def index
     @issues = @issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)

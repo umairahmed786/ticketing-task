@@ -17,6 +17,14 @@ class User < ApplicationRecord
   end
   before_create :generate_invitation_token
 
+  def admin?
+    role == 'admin'
+  end
+
+  def project_manager?
+    role == 'project_manager'
+  end
+
   private
 
   def generate_invitation_token

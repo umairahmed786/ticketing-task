@@ -71,6 +71,16 @@
   margin-bottom: 0.5rem;
 }
 
+.no-border-button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 .sublist {
   display: none;
 
