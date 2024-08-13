@@ -22,6 +22,7 @@ gem 'daemons'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'searchkick'
+gem 'will_paginate-bootstrap', '~> 1.0'
 
 gem 'devise', '=4.9.4'
 gem 'acts_as_tenant', '~> 1.0.1'

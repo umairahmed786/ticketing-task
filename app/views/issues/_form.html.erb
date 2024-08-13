@@ -41,7 +41,7 @@
 
   <div class="mb-3">
   <%= form.label :assignee_id, t('issue_assignee'), class: "form-label" %>
-  <%= form.select :assignee_id, options_for_select([['Select an Assignee', ''], [@project.project_manager&.name, @project.project_manager&.id], [@project.admin.name, @project.admin.id]] + @project.users.map { |user| [user.name, user.id] }, issue.assignee_id), {}, class: "form-select" %>
+  <%= form.select :assignee_id, options_for_select([['Select an Assignee','']] +  @project_users.map { |user| [user.name, user.id] },  issue.assignee_id ), {}, class: "form-select" %>
   <% issue.errors.full_messages_for(:assignee_id).each do |message| %>
     <div class="text-danger"><%= message %></div>
   <% end %>

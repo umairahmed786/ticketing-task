@@ -32,8 +32,8 @@ class Issue < ApplicationRecord
       transitions from: [:new, :resolved], to: :in_progress
     end
 
-    event :resolved do
-      transitions from: :in_progress, to: :resolved
+    event :resolved  do
+      transitions from: :in_progress, to: :resolved, after: :notify_resolved
     end
 
     event :close do
@@ -78,6 +78,12 @@ class Issue < ApplicationRecord
         field_change: field_change,
         created_at: Time.current
       )
+    end
+  end
+
+  def notify_resolved
+    if(self.project.project_manager)
+      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
     end
   end
 end

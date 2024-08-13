@@ -1,34 +1,47 @@
 <ol class="list-unstyled">
-  <% @issue.issue_histories.each do |issue_history| %>
-    <% if issue_history.comment %>
-      <li class="media mb-4">
-        <div class="media-body">
-          <h5 class="mt-0 mb-1">
-            <%= issue_history.user.name %>
-            <!-- Delete icon -->
-            <%= link_to project_issue_comment_path(@issue.project, @issue, issue_history.comment), method: :delete, data: { confirm: "Are you sure?" }, class: "text-danger float-right" do %>
-              <i class="fas fa-trash-alt"></i>
-            <% end %>
-          </h5>
-          <p><%= issue_history.comment.content %></p>
-
-          <!-- Display attached files if present -->
-          <% if issue_history.comment.files.attached? %>
-            <p>
-              <strong>Attachments:</strong>
-              <ul class="list-unstyled">
-                <% issue_history.comment.files.each do |file| %>
-                  <li>
-                    <%= link_to file.filename.to_s, url_for(file), class: "btn btn-link" %>
-                  </li>
-                <% end %>
-              </ul>
+  <% @issue_comments.each do |comment| %>
+      <li class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <!-- Header with User and Delete Button -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mt-0 mb-1">
+                <%= comment.issue_history.user.name %>
+              </h5>
+              <!-- Delete icon -->
+              <%= link_to project_issue_comment_path(@issue.project, @issue, comment), method: :delete, data: { confirm: "Are you sure to delete the comment?" }, class: "text-danger" do %>
+                <i class="fas fa-trash-alt"></i>
+              <% end %>
+            </div>
+            <!-- Comment Content -->
+            <p class="card-text mb-2">
+              <%= comment.content %>
             </p>
-          <% end %>
 
-          <small class="text-muted"><%= time_ago_in_words(issue_history.created_at) %> ago</small>
+            <!-- Display attached files if present -->
+            <% if comment.files.attached? %>
+              <div class="mb-2">
+                <strong>Attachments:</strong>
+                <div class="d-flex flex-wrap">
+                  <% comment.files.each do |file| %>
+                    <div class="me-2 mb-2">
+                      <%= link_to file.filename.to_s, url_for(file), class: "btn btn-link" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Timestamp -->
+            <small class="text-muted"><%= time_ago_in_words(comment.created_at) %> ago</small>
+          </div>
         </div>
       </li>
     <% end %>
-  <% end %>
 </ol>
+
+<div class="d-flex justify-content-center mt-4">
+  <%= will_paginate @issue_comments, param_name: 'comments_card', renderer: BootstrapPaginationRenderer %>
+</div>
+
+

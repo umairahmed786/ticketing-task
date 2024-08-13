@@ -4,11 +4,17 @@ class IssuesController < ApplicationController
   load_and_authorize_resource :issue, through: :project
   
 
+  before_action :set_users, only: %i[new edit update create] 
+  before_action :set_states, only: %i[new edit update create] 
+
+
+
   def index
     @issues = @issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
   end
 
   def new
+    
     @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
   end
 
@@ -17,22 +23,30 @@ class IssuesController < ApplicationController
     if @issue.save
       redirect_to project_issues_path
     else
+      # @project_users = @project.project_users+ [@project.project_manager, @project.admin].compact
+      @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
       render :new
     end
   end
 
   def show
+    @issue_histories = @issue.issue_histories.includes(:user, :field_change, :comment).order(created_at: :desc).paginate(page: params[:histories_card], per_page: 10)
+    @issue_comments = @issue.comments.order(created_at: :desc).paginate(page: params[:comments_card], per_page: 10)
+    @issue_files = @issue.files.order(created_at: :desc).paginate(page: params[:files_card], per_page: 10)
   end
 
   def edit
-    @available_states = [@issue.state] + @issue.aasm.states(permitted: true).map(&:name).map(&:to_s)
   end
 
   def update
-    if @issue.update(issue_params)
+    @issue.assign_attributes(issue_params.except(:state))
+    if @issue.state != issue_params[:state]
+      trigger_state_event(issue_params[:state])
+      redirect_to project_issue_path(@issue.project_id, @issue)
+    elsif @issue.save
       redirect_to project_issue_path(@issue.project_id, @issue)
     else
-      render :edit
+      render :edit  
     end
   end
 
@@ -59,5 +73,29 @@ class IssuesController < ApplicationController
 
   def issue_params
     params.require(:issue).permit(:title, :description, :assignee_id, :complexity_point, :state)
+  end
+
+  def trigger_state_event(new_state)
+    case new_state
+    when 'new'
+    when 'in_progress'
+        @issue.start! 
+    when 'resolved'
+        @issue.resolved! unless @issue.aasm.current_state == 'resolved'
+    when 'closed'
+        @issue.close! unless @issue.aasm.current_state == 'closed'
+    when 'reopened'
+        @issue.reopen! unless @issue.aasm.current_state == 'in_progress'
+    end
+  end
+
+  def set_states
+    @available_states = [@issue.state] + @issue.aasm.states(permitted: true).map(&:name).map(&:to_s)
+  end
+
+  def set_users
+    @project_users = @project.project_users
+    @project_users = @project_users.map {|project_user| project_user.user}
+    @project_users += [@project.project_manager, @project.admin].compact
   end
 end
