@@ -1,7 +1,7 @@
 class DailySummaryMailer < ApplicationMailer
-  def daily_summary(user, issues)
+  def daily_summary(user, issue)
     @user = user
-    @issues = issues
-    mail(to: @user.email, subject: 'Daily Issue State Change Summary')
+    @issue = issue
+    mail(to: @user.email, subject: 'Daily Summary Regarding Issue Changes')
   end
 end

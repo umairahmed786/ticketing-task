@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_project_managers, only: %i[new create edit update] 
   load_and_authorize_resource
 

@@ -3,7 +3,7 @@
   <!-- Container wrapper -->
   <div class="container">
     <a class="navbar-brand mx-auto text-white fw-bold fst-italic" href="/dashboards" style="font-size: 2rem; text-shadow: 2px 2px 4px #000000;">
-      <%= @organization.name %>
+      <%= @organization&.name %>
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +35,14 @@
         <% end %>
       </ul>
       <div class="d-flex align-items-center ms-auto">
-        <i class="fas fa-user-circle fa-2x text-white me-2"></i>
-        <span class="text-white me-2"><%= current_user.name %></span>
+        <%= form_with url: search_path, method: :get, local: true, class: "d-flex" do %>
+          <%= text_field_tag :query, params[:query], placeholder: "Search...", class: "form-control me-2" %>
+          <%= submit_tag "Search", class: "btn btn-outline-light" %>
+        <% end %>
+        <%= link_to user_path(current_user), class: "d-flex align-items-center text-white text-decoration-none ms-3" do %>
+          <i class="fas fa-user-circle fa-2x text-white me-2"></i>
+          <span class="text-white me-2"><%= current_user.name %></span>
+        <% end %>
       </div>
     </div>
   </div>

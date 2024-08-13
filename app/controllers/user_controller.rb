@@ -1,8 +1,8 @@
 class UserController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource class: 'User'
   before_action :find_user_by_invitation_token, only: [:edit]
-  before_action :set_roles, only: %i[new create edit update]
-  after_action :after_update_path, only: [:update]
+  before_action :set_roles, only: %i[new create edit update edit_user_profile update_user_profile]
 
   def index
     @users = case current_user.role.name
@@ -17,11 +17,12 @@ class UserController < ApplicationController
              .select('users.*, COUNT(DISTINCT projects.id) AS projects_count')
              .left_joins(:projects)
              .group('users.id')
-             .paginate(page: params[:page], per_page: 10)
+             .paginate(page: params[:page], per_page: 1)
              .to_a
   end
 
   def show
+    @user = User.find_by(id: params[:id])
   end
 
   def new
@@ -38,15 +39,34 @@ class UserController < ApplicationController
     end
   end
 
+  def edit_user_profile
+    @user = User.find_by(id: params[:id])
+  end
+
+  def update_user_profile
+    @user = User.find_by(id: params[:id])
+    @user.skip_reconfirmation!
+    if @user.update(user_params)
+      changes = @user.previous_changes.slice(:name, :email, :role_id)
+      UserMailer.data_updated_email(@user, changes).deliver_now
+      flash[:notice] = t('user_updated')
+      redirect_to user_index_path
+    else
+      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      render :edit_user_profile
+    end
+  end
+
   def edit
     @user = User.find_by(id: params[:id])
   end
 
   def update
     @user = User.find_by(id: params[:id])
+    @user.skip_reconfirmation!
     if @user.update(user_params)
-      flash.now[:notice] = t('devise.registrations.updated')
-      redirect_to after_update_path
+      flash[:notice] = t('devise.registrations.updated')
+      redirect_to user_path(current_user)
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
       render :edit
@@ -61,7 +81,7 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :role_id, :organization_id)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role_id, :organization_id)
   end
 
   def set_roles
@@ -78,10 +98,5 @@ class UserController < ApplicationController
   def find_user_by_invitation_token
     @user = User.find_by(invitation_token: params[:invitation_token])
     sign_in(@user) if @user
-  end
-
-  def after_update_path
-    flash.now[:notice] = t('devise.updated')
-    new_user_session_path
   end
 end

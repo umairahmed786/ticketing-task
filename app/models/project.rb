@@ -17,4 +17,16 @@ class Project < ApplicationRecord
 
   # validates :project_manager, presence: true, if: -> { project_manager_id.present? } 
   validates :admin, presence: true
+
+  searchkick highlight: [:title, :description, :project_manager]
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      project_manager: project_manager.name
+    }
+  end
 end
+
+Project.reindex

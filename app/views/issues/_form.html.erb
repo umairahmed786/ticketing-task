@@ -1,12 +1,12 @@
 <%= form_with model: issue, url: issue.persisted? ? project_issue_path(@project, issue) : project_issues_path(@project), method: issue.persisted? ? :patch : :post, class: "needs-validation", novalidate: true do |form| %>
-  <nav aria-label="breadcrumb">
+  <%# <nav aria-label="breadcrumb">
   <ol class="breadcrumb mt-4 mb-4">
-    <% if @issue.persisted? %>
-      <li class="breadcrumb-item"><%= link_to @issue.title, project_issue_path(@issue) %></li>
-    <% end %>
-    <li class="breadcrumb-item active" aria-current="page"><%= t(@issue.new_record? ? 'issues.create' : 'issues.edit') %></li>
-  </ol>
-  </nav>
+    <%# <% if @issue.persisted? %>
+      <%# <li class="breadcrumb-item"><%= link_to @issue.title, project_issue_path(@issue.project_id, @issue) %></li>
+    <%# <% end %>
+    <%# <li class="breadcrumb-item active" aria-current="page"><%= t(@issue.new_record? ? 'issues.create' : 'issues.edit') %></li>
+  <%# </ol> %>
+  <%# </nav> %>
   <div class="mb-3">
     <%= form.label :title, "#{t('title')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
     <%= form.text_field :title, class: "form-control" %>

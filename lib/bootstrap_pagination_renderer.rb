@@ -28,7 +28,7 @@ class BootstrapPaginationRenderer < WillPaginate::ActionView::LinkRenderer
   private
 
   def link(text, target, attributes = {})
-    attributes['data-remote'] = true
+    # attributes['data-remote'] = true
     super
   end
 end

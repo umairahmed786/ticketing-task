@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource :project
   load_and_authorize_resource :issue, through: :project
   load_and_authorize_resource :comment, through: :issue

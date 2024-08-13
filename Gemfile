@@ -17,8 +17,11 @@ gem 'select2-rails'
 gem 'whenever', require: false
 
 gem 'aasm', '~> 5.3.1'
-
-
+gem 'delayed_job_active_record'
+gem 'daemons'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'searchkick'
 
 gem 'devise', '=4.9.4'
 gem 'acts_as_tenant', '~> 1.0.1'

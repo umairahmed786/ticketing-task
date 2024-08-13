@@ -18,33 +18,6 @@ class Issue < ApplicationRecord
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
 
-  after_update :track_changes
-
-  private
-
-  def track_changes
-    saved_changes.each do |field, values|
-      next if field == 'updated_at' # Skip the updated_at field
-
-      old_value, new_value = values
-      field_change = FieldChange.create(
-        field: field,
-        old_value: old_value,
-        new_value: new_value,
-        organization_id: organization.id
-      )
-
-      IssueHistory.create(
-        issue: self,
-        user: self.assignee, # or the user who made the change
-        organization: self.organization,
-        field_change: field_change,
-        created_at: Time.current
-      )
-    end
-  end
-
-
   include AASM
 
   aasm column: 'state' do
@@ -71,4 +44,42 @@ class Issue < ApplicationRecord
       transitions from: :closed, to: :in_progress
     end
   end
+
+  after_update :track_changes
+
+  searchkick highlight: [:title, :description, :state]
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      state: state
+    }
+  end
+
+  private
+
+  def track_changes
+    saved_changes.each do |field, values|
+      next if field == 'updated_at' # Skip the updated_at field
+
+      old_value, new_value = values
+      field_change = FieldChange.create(
+        field: field,
+        old_value: old_value,
+        new_value: new_value,
+        organization_id: organization.id
+      )
+
+      IssueHistory.create(
+        issue: self,
+        user: self.assignee, # or the user who made the change
+        organization: self.organization,
+        field_change: field_change,
+        created_at: Time.current
+      )
+    end
+  end
 end
+
+Issue.reindex
