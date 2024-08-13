@@ -28,7 +28,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :dashboards, only: %i[index]
+    resources :dashboards, only: %i[index] do
+      collection do
+        post 'add_custom_state', to: 'dashboards#add_custom_state', as: 'custom_states'
+      end
+    end
     resources :user
   end
 end

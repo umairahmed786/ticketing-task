@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_12_004709) do
+ActiveRecord::Schema.define(version: 2024_08_13_151540) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +56,17 @@ ActiveRecord::Schema.define(version: 2024_08_12_004709) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["organization_id"], name: "index_field_changes_on_organization_id"
+  end
+
+  create_table "from_transitions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "state_id", null: false
+    t.bigint "transition_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_from_transitions_on_organization_id"
+    t.index ["state_id"], name: "index_from_transitions_on_state_id"
+    t.index ["transition_id"], name: "index_from_transitions_on_transition_id"
   end
 
   create_table "issue_histories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -127,6 +138,26 @@ ActiveRecord::Schema.define(version: 2024_08_12_004709) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "states", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "initial", default: false
+    t.index ["organization_id"], name: "index_states_on_organization_id"
+  end
+
+  create_table "transitions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "event_name", null: false
+    t.bigint "to_state_id", null: false
+    t.bigint "organization_id", null: false
+    t.boolean "notify", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_transitions_on_organization_id"
+    t.index ["to_state_id"], name: "index_transitions_on_to_state_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.bigint "role_id", null: false
@@ -154,6 +185,8 @@ ActiveRecord::Schema.define(version: 2024_08_12_004709) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "organizations"
   add_foreign_key "field_changes", "organizations"
+  add_foreign_key "from_transitions", "states"
+  add_foreign_key "from_transitions", "transitions"
   add_foreign_key "issue_histories", "active_storage_attachments", on_delete: :nullify
   add_foreign_key "issue_histories", "comments", on_delete: :cascade
   add_foreign_key "issue_histories", "field_changes"
@@ -169,6 +202,9 @@ ActiveRecord::Schema.define(version: 2024_08_12_004709) do
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users", column: "admin_id"
   add_foreign_key "projects", "users", column: "project_manager_id"
+  add_foreign_key "states", "organizations"
+  add_foreign_key "transitions", "organizations"
+  add_foreign_key "transitions", "states", column: "to_state_id"
   add_foreign_key "users", "organizations"
   add_foreign_key "users", "roles"
 end

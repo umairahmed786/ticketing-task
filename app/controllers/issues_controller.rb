@@ -13,7 +13,7 @@ class IssuesController < ApplicationController
 
   def new
     
-    @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
+    @issue.aasm.states.select { |s| s.options[:initial] }.map(&:name)
   end
 
   def create
@@ -21,8 +21,7 @@ class IssuesController < ApplicationController
     if @issue.save
       redirect_to project_issues_path
     else
-      # @project_users = @project.project_users+ [@project.project_manager, @project.admin].compact
-      @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
+      @issue.aasm.states.select { |s| s.options[:initial] }.map(&:name)
       render :new
     end
   end
@@ -74,17 +73,11 @@ class IssuesController < ApplicationController
   end
 
   def trigger_state_event(new_state)
-    case new_state
-    when 'new'
-    when 'in_progress'
-        @issue.start! 
-    when 'resolved'
-        @issue.resolved! unless @issue.aasm.current_state == 'resolved'
-    when 'closed'
-        @issue.close! unless @issue.aasm.current_state == 'closed'
-    when 'reopened'
-        @issue.reopen! unless @issue.aasm.current_state == 'in_progress'
-    end
+    event_method = "#{ new_state }!"
+
+    if @issue.respond_to?(event_method)
+      @issue.send( event_method )
+    end 
   end
 
   def set_states

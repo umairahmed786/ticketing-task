@@ -17,40 +17,41 @@ class Issue < ApplicationRecord
 
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
-  # validates :state, inclusion: { in: ["New", "In Progress", "Resolved"], message: "%{value} is not a valid state" }
-
 
   include AASM
 
-  aasm column: 'state' do
-    # after_all_transitions :notify_resolved
+  after_initialize :load_states_and_events
 
-    state :new, initial: true
-    state :in_progress
-    state :resolved
-    state :closed  
+  def load_states_and_events
+    # Load states and transitions dynamically
+    self.class.aasm do
+      states = State.all
+      transitions = Transition.all
 
-    event :start do
-      transitions from: [:new, :resolved], to: :in_progress
-    end
+      states.each do |state|
+        state state.name.to_sym, initial: state.initial
+      end
 
-    event :resolved  do
-      transitions from: :in_progress, to: :resolved, after: :notify_resolved
-    end
+      transitions.each do |transition|
+        event_name = transition.event_name.to_sym
+        if transition.from_transitions.present?
+          from_states = transition.from_transitions.map { |ft| ft.state.name.to_sym }
+          to_state = transition.state.name.to_sym
 
-    event :close do
-      transitions from: [:new, :resolved], to: :closed
-    end
+          event event_name do
+            transitions from: from_states, to: to_state
 
-    event :reopen do
-      transitions from: :closed, to: :in_progress
+            # Uncomment this if you need notifications
+            # after { notify if transition.notify }
+          end
+        end
+      end
     end
   end
 
-  def notify_resolved
-    if(self.project.project_manager)
-      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
+  def notify
+    if self.project.project_manager
+      NotifierMailer.issue_mark_as_resolved(self.title, self.project.project_manager.email).deliver_now
     end
   end
 end
-
