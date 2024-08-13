@@ -1,8 +1,35 @@
 <ul>
-  <% @issue.files.each do |file| %>
+  <% @issue_files.each do |file| %>
     <li>
       <%= link_to file.filename.to_s, rails_blob_path(file, disposition: "inline"), target: "_blank" %>
       (<%= link_to "Download", rails_blob_path(file, disposition: "attachment") %>)
     </li>
   <% end %>
 </ul>
+
+
+<div class="d-flex justify-content-center mt-4">
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <% if @issue_files.previous_page %>
+        <li class="page-item">
+          <%= link_to 'Previous', url_for(params.permit(:files_card).merge(files_card: @issue_files.previous_page)), class: 'page-link' %>
+        </li>
+      <% else %>
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+      <% end %>
+
+      <% if @issue_files.next_page %>
+        <li class="page-item">
+          <%= link_to 'Next', url_for(params.permit(:files_card).merge(files_card: @issue_files.next_page)), class: 'page-link' %>
+        </li>
+      <% else %>
+        <li class="page-item disabled">
+          <span class="page-link">Next</span>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+</div>

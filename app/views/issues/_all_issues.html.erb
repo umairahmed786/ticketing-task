@@ -17,7 +17,11 @@
         <tr>
           <td><%= issue.title %></td>
           <td class="description" ><%= issue.description %></td>
-          <td><%= issue.project.project_manager.name %></td>
+          <% if issue.project.project_manager.present? %>
+            <td><%= issue.project.project_manager.name %></td>
+          <% else %>
+            <td><%= t('project.no_project_manager_assigned') %></td>
+          <% end %>  
           <td><%= issue.project.title %></td>
           <% if issue.assignee %>
             <td><%= issue.assignee&.name %></td>

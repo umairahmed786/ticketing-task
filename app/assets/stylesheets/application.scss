@@ -55,3 +55,22 @@
   max-width: 15ch; /* Limit the width to 15 characters */
 }
 
+
+/* Ensure pagination buttons have the correct text color */
+.page-link {
+  color: #007bff; /* Change to your desired color */
+}
+
+/* Change color of page-link when hovered */
+.page-link:hover {
+  color: #0056b3; /* Change to your desired hover color */
+  background-color: #e9ecef; /* Light background for hover effect */
+}
+
+/* Styling for disabled state */
+.page-item.disabled .page-link {
+  color: #6c757d; /* Grey color for disabled state */
+  background-color: #f8f9fa; /* Light background for disabled state */
+  cursor: not-allowed; /* Cursor style for disabled state */
+}
+

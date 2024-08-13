@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
       @project_issues_count[project.id] = project.issues.size
       @project_users_count[project.id] = project.users.size
       @project_admins[project.id] = project.admin.name
-      @project_project_managers[project.id] = project.project_manager.name
+      @project_project_managers[project.id] = project.project_manager&.name
     end
   end
 
