@@ -1,71 +1,102 @@
-<!-- app/views/search/index.html.erb -->
-<h1>Search Results for "<%= @query %>"</h1>
-
-<% if @users.present? %>
-  <h2>Users</h2>
-  <table class="table mt-5 table-hover table-striped">
-    <thead>
-      <tr>
-        <th scope="col"><%= t('name') %></th>
-        <th scope="col"><%= t('email') %></th>
-        <th scope="col"><%= t('role') %></th>
-      </tr>
-    </thead>
-    <tbody class="table-group-divider">
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.try(:highlight).try(:name).try(:first) || user.name %></td>
-          <td><%= user.try(:highlight).try(:email).try(:first) || user.email %></td>
-          <td><%= user.role.name %></td>
-        </tr>
+<div class="container mt-5">
+  <h3 class="mb-4 text-center">Search Results for "<span class="text-primary"><%= @query %></span>"</h3>
+    <% if @users.present? %>
+      <% if current_user.role.name == ('owner' || 'admin') %>
+        <div class="card mb-4 table-responsive">
+          <div class="card-header">
+            <h3 class="card-title">Users</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th scope="col"><%= t('name') %></th>
+                  <th scope="col"><%= t('email') %></th>
+                  <th scope="col"><%= t('role') %></th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% @users.each do |user| %>
+                  <tr>
+                    <td><%= user.try(:highlight).try(:name).try(:first) || user.name %></td>
+                    <td><%= user.try(:highlight).try(:email).try(:first) || user.email %></td>
+                    <td><%= user.role.name %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= will_paginate @users, renderer: BootstrapPaginationRenderer %>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-  <%= will_paginate @users, renderer: BootstrapPaginationRenderer %>
-<% end %>
+    <% end %>
 
-<% if @projects.present? %>
-  <h2>Projects</h2>
-  <table class="table mt-5 table-hover table-striped">
-    <thead>
-      <tr>
-        <th scope="col"><%= t('title') %></th>
-        <th scope="col"><%= t('description') %></th>
-        <th scope="col"><%= t('project.project_manager') %></th>
-      </tr>
-    </thead>
-    <tbody class="table-group-divider">
-      <% @projects.each do |project| %>
-        <tr>
-          <td><%= project.try(:highlight).try(:title).try(:first) || project.title %></td>
-          <td><%= project.try(:highlight).try(:description).try(:first) || project.description %></td>
-          <td><%= project.project_manager&.name %></td>
-        </tr>
+    <% if @projects.present? %>
+      <% if can?(:read, Project) %>
+        <div class="card mb-4 table-responsive">
+          <div class="card-header">
+            <h3 class="card-title">Projects</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th scope="col"><%= t('title') %></th>
+                  <th scope="col"><%= t('description') %></th>
+                  <th scope="col"><%= t('project.project_manager') %></th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% @projects.each do |project| %>
+                  <tr>
+                    <td><%= project.try(:highlight).try(:title).try(:first) || project.title %></td>
+                    <td><%= project.try(:highlight).try(:description).try(:first) || project.description %></td>
+                    <td><%= project.project_manager&.name %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= will_paginate @projects, renderer: BootstrapPaginationRenderer %>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-  <%= will_paginate @projects, renderer: BootstrapPaginationRenderer %>
-<% end %>
+    <% end %>
 
-<% if @issues.present? %>
-  <h2>Issues</h2>
-  <table class="table mt-5 table-hover table-striped">
-    <thead>
-      <tr>
-        <th scope="col"><%= t('title') %></th>
-        <th scope="col"><%= t('description') %></th>
-        <th scope="col"><%= t('state') %></th>
-      </tr>
-    </thead>
-    <tbody class="table-group-divider">
-      <% @issues.each do |issue| %>
-        <tr>
-          <td><%= issue.try(:highlight).try(:title).try(:first) || issue.title %></td>
-          <td><%= issue.try(:highlight).try(:description).try(:first) || issue.description %></td>
-          <td><%= issue.state %></td>
-        </tr>
+    <% if @issues.present? %>
+      <% if can?(:read, Issue) %>
+        <div class="card mb-4 table-responsive">
+          <div class="card-header">
+            <h3 class="card-title">Issues</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th scope="col"><%= t('title') %></th>
+                  <th scope="col"><%= t('description') %></th>
+                  <th scope="col"><%= t('state') %></th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% @issues.each do |issue| %>
+                  <tr>
+                    <td><%= issue.try(:highlight).try(:title).try(:first) || issue.title %></td>
+                    <td><%= issue.try(:highlight).try(:description).try(:first) || issue.description %></td>
+                    <td><%= issue.state %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= will_paginate @issues, renderer: BootstrapPaginationRenderer %>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-  <%= will_paginate @issues, renderer: BootstrapPaginationRenderer %>
-<% end %>
+    <% end %>
+
+    <% if @users.blank? && @projects.blank? && @issues.blank? %>
+      <div class="text-center">
+        <img src="<%= asset_path('no_record_found.gif') %>" alt="No record found" class="img-fluid">
+      </div>
+    <% end %>
+
+</div>

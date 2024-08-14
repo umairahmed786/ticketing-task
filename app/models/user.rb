@@ -27,7 +27,7 @@ class User < ApplicationRecord
     role == 'project_manager'
   end
 
-  searchkick highlight: [:name, :email, :role]
+  searchkick highlight: %i[name email role]
 
   def search_data
     {

@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         post 'add_user'
         delete 'remove_user'
       end
-      resources :issues do
+      resources :issues, only: %i[index new create edit update destroy] do
         member do
           post 'attach_file'
         end
@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       end
       resources :issues
     end
+
+    resources :issues, only: %i[show index]
 
     resources :dashboards, only: %i[index]
     resources :user do
@@ -37,6 +39,6 @@ Rails.application.routes.draw do
     end
     get 'search', to: 'search#index'
   end
-  # Catch-all route for routing errors
-  match '*unmatched', to: 'application#routing_error', via: :all
+  # # Catch-all route for routing errors
+  # match '*unmatched', to: 'application#routing_error', via: :all
 end

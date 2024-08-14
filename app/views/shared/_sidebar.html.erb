@@ -11,21 +11,26 @@
         <span class="link-text"><%= t('dashboard') %></span>
       </a>
     </li>
-    <h4 class="fw-bold mt-4">
-      <div class="menu-separator my-2"></div>
-    </h4>
-    <li class="mb-2">
-      <%= link_to projects_path, class: "text-white d-flex align-items-center" do %>
-        <span class="material-symbols-outlined me-2"><%= t('folder') %></span>
-        <span class="link-text"><%= t('project.header') %></span>
-      <% end %>
-    </li>
-    <li class="mb-2">
-      <%= link_to user_index_path, class: "text-white d-flex align-items-center" do %>
-        <span class="material-symbols-outlined me-2"><%= t('group') %></span>
-        <span class="link-text"><%= t('users') %></span>
-      <% end %>
-    </li>
+    <% if can?(:read, Project) %>
+      <h4 class="fw-bold mt-4">
+        <div class="menu-separator my-2"></div>
+      </h4>
+    
+      <li class="mb-2">
+        <%= link_to projects_path, class: "text-white d-flex align-items-center" do %>
+          <span class="material-symbols-outlined me-2"><%= t('folder') %></span>
+          <span class="link-text"><%= t('project.header') %></span>
+        <% end %>
+      </li>
+    <% end %>
+    <% if current_user.role.name == ('owner' || 'admin') %>
+      <li class="mb-2">
+        <%= link_to user_index_path, class: "text-white d-flex align-items-center" do %>
+          <span class="material-symbols-outlined me-2"><%= t('group') %></span>
+          <span class="link-text"><%= t('users') %></span>
+        <% end %>
+      </li>
+    <% end %>
     <h4 class="fw-bold mt-4">
       <div class="menu-separator my-2"></div>
     </h4>

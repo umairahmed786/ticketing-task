@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   before_action :authenticate_user!
+  before_action :authorize_owner_or_admin, only: [:index]
   load_and_authorize_resource class: 'User'
   before_action :find_user_by_invitation_token, only: [:edit]
   before_action :set_roles, only: %i[new create edit update edit_user_profile update_user_profile]
@@ -14,10 +15,12 @@ class UserController < ApplicationController
                User.where(role_id: Role.where(name: 'general_user').ids)
              end
     @users = @users
-             .select('users.*, COUNT(DISTINCT projects.id) AS projects_count')
-             .left_joins(:projects)
+             .select('users.*, COUNT(DISTINCT project_managers.id) AS projects_managed_count, COUNT(DISTINCT project_users_projects.id) AS projects_user_count, (COUNT(DISTINCT project_managers.id) + COUNT(DISTINCT project_users_projects.id)) AS total_projects_count')
+             .joins('LEFT JOIN projects AS project_managers ON project_managers.project_manager_id = users.id')
+             .joins('LEFT JOIN project_users ON project_users.user_id = users.id')
+             .joins('LEFT JOIN projects AS project_users_projects ON project_users_projects.id = project_users.project_id')
              .group('users.id')
-             .paginate(page: params[:page], per_page: 1)
+             .paginate(page: params[:page], per_page: 10)
              .to_a
   end
 
@@ -98,5 +101,11 @@ class UserController < ApplicationController
   def find_user_by_invitation_token
     @user = User.find_by(invitation_token: params[:invitation_token])
     sign_in(@user) if @user
+  end
+
+  def authorize_owner_or_admin
+    unless current_user.role.name.in?(%w[owner admin])
+      redirect_to dashboards_path, alert: 'You are not authorized to access this page.'
+    end
   end
 end

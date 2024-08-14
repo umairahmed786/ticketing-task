@@ -13,7 +13,7 @@ class Issue < ApplicationRecord
   validates :title, uniqueness: true
 
   validates :description, presence: true
-  validates :description, length: { minimum: 10 }, if: -> { description.present? } 
+  validates :description, length: { minimum: 10 }, if: -> { description.present? }
 
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
@@ -26,7 +26,7 @@ class Issue < ApplicationRecord
     state :new, initial: true
     state :in_progress
     state :resolved
-    state :closed  
+    state :closed
 
     event :start do
       transitions from: [:new, :resolved], to: :in_progress

@@ -4,7 +4,19 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @projects = Project.includes(:project_manager, :admin, :issues, :users).paginate(page: params[:page], per_page: 7)
+    @projects = if current_user.role.name == 'project_manager'
+                  Project.includes(:project_manager, :admin, :issues, :users)
+                         .where(project_manager_id: current_user.id)
+                         .paginate(page: params[:page], per_page: 10)
+                elsif current_user.role.name == 'general_user'
+                  Project.includes(:project_manager, :admin, :issues, :users)
+                         .joins(:users)
+                         .where(users: { id: current_user.id })
+                         .paginate(page: params[:page], per_page: 10)
+                else
+                  Project.includes(:project_manager, :admin, :issues, :users)
+                         .paginate(page: params[:page], per_page: 10)
+                end
     @project_issues_count = {}
     @project_users_count = {}
     @project_admins = {}
@@ -55,8 +67,14 @@ class ProjectsController < ApplicationController
   def add_user
     to_be_added_users = params[:to_be_added_users].reject(&:blank?)
     if to_be_added_users.present?
-      project_users = to_be_added_users.map { |user_id|
-        {user_id: user_id, project_id: @project.id, created_at: Time.now, updated_at: Time.now}
+      project_users = to_be_added_users.map { |id|
+        {
+          user_id: id,
+          project_id: @project.id,
+          organization_id: @organization.id,
+          created_at: Time.now,
+          updated_at: Time.now
+        }
       }
       ProjectUser.insert_all(project_users)
     end

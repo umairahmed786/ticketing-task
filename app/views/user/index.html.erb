@@ -22,7 +22,7 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td><%= user.role.name %></td>
-            <td><%= user.projects_count %></td>
+            <td><%= user.total_projects_count %></td>
             <td>
               <div class="btn-group" role="group" aria-label="User Actions">
                 <%= link_to edit_user_profile_user_path(user), class: 'btn btn-warning btn-sm me-2', title: 'Edit', data: { toggle: 'tooltip' } do %>

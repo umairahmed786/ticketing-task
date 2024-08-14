@@ -12,32 +12,28 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item me-3">
-          <%= link_to t('home'), dashboards_path, class: "nav-link text-white" %>
-        </li>
+        <% if current_user.role.name != 'general_user' %>
+          <li class="nav-item me-3">
+            <%= link_to t('home'), dashboards_path, class: "nav-link text-white" %>
+          </li>
+        <% end %>
         <% if can?(:create, User) %>
           <li class="nav-item me-3">
             <%= link_to t('user_mailer.invite_user.title'), new_user_path, class: "nav-link text-white" %>
-          </li>
-        <% else %>
-          <li class="nav-item me-3">
-            <a class="nav-link text-white disabled" href="#" tabindex="-1" aria-disabled="true"><%= t('user_mailer.invite_user.title') %></a>
           </li>
         <% end %>
         <% if can?(:create, Project) %>
           <li class="nav-item me-3">
             <%= link_to t('project.create'), new_project_path, class: "nav-link text-white" %>
           </li>
-        <% else %>
-          <li class="nav-item me-3">
-            <a class="nav-link text-white disabled" href="#" tabindex="-1" aria-disabled="true"><%= t('project.create') %></a>
-          </li>
         <% end %>
       </ul>
       <div class="d-flex align-items-center ms-auto">
         <%= form_with url: search_path, method: :get, local: true, class: "d-flex" do %>
-          <%= text_field_tag :query, params[:query], placeholder: "Search...", class: "form-control me-2" %>
-          <%= submit_tag "Search", class: "btn btn-outline-light" %>
+          <%= text_field_tag :query, params[:query], placeholder: "Search...", class: "form-control me-2", style: "width: 300px;" %>
+          <button type="submit" class="btn btn-outline-light">
+            <i class="fas fa-search"></i>
+          </button>
         <% end %>
         <%= link_to user_path(current_user), class: "d-flex align-items-center text-white text-decoration-none ms-3" do %>
           <i class="fas fa-user-circle fa-2x text-white me-2"></i>

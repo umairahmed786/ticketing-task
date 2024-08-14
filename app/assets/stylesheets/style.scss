@@ -7,7 +7,15 @@ $danger-color: #dc3545; // Define your danger color
  .bg-light {
    background: $background-custom-color;
  }
- 
+
+.text-primary {
+  color: $primary-color;
+}
+
+ .bg-info{
+    background-color: $primary-color;
+    color: $primary-color;
+ }
  .btn-primary {
    color: $primary-color;
    border: 2px solid $primary-color;
