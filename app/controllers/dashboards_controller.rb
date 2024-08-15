@@ -41,7 +41,7 @@ class DashboardsController < ApplicationController
           @transition = Transition.create(
             event_name: @state.name,
             to_state_id: @state.id,
-            notify: custom_state_params[:notify] == '0'
+            notify: custom_state_params[:notify] 
           )
 
           if @transition.persisted?
