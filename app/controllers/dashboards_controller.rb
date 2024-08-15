@@ -3,13 +3,34 @@ class DashboardsController < ApplicationController
   def index
       @available_from_states = State.all
       @available_to_states = State.where.not( initial: true )
+      @projects = @organization.projects
+      @issues_count_by_state = Issue.group(:state).count
+      @users_count_by_role = User.joins(:role).where(users: { organization_id: @organization.id }).group('roles.name').count
+      @projects_count_by_day = Project.where(projects: { organization_id: @organization.id }).group_by_day(:created_at, format: '%d %b %Y').count
+      @users_count_by_day = User.where(users: { organization_id: @organization.id }).group_by_day(:created_at, format: '%d %b %Y').count
+
+      @projects_count_by_week = Project.group_by_week(:created_at, format: '%b %d, %Y').count
+      @issues_count_by_week = Issue.group_by_week(:created_at, format: '%b %d, %Y').count
+      @comments_count_by_week = Comment.group_by_week(:created_at, format: '%b %d, %Y').count
+
+      @combined_counts_by_week = {
+        'Projects' => @projects_count_by_week,
+        'Issues' => @issues_count_by_week,
+        'Comments' => @comments_count_by_week
+      }
   end
 
   def add_custom_state
     state_name = custom_state_params[:state_name]
-    from_states = custom_state_params[:from_state].reject(&:blank?)
-    to_states = custom_state_params[:to_state].reject(&:blank?)
+    if state_name.include?(' ')
+      flash[:alert] = 'State name cannot contain spaces.'
+      return redirect_to '/dashboards'
+    end
+
+    from_states = custom_state_params[:from_state]&.reject(&:blank?)
+    to_states = custom_state_params[:to_state]&.reject(&:blank?)
     is_initial = custom_state_params[:initial_state]
+    
     if state_name.present? && (is_initial == "1" ?  from_states.blank? && to_states.present? : from_states.present?)
       ActiveRecord::Base.transaction do
         @state = State.create(name: state_name, initial: is_initial)
@@ -52,20 +73,5 @@ class DashboardsController < ApplicationController
 
   def custom_state_params
     params.require(:state).permit(:state_name, :notify, :initial_state, from_state: [], to_state: [] )
-    @projects = @organization.projects
-    @issues_count_by_state = Issue.group(:state).count
-    @users_count_by_role = User.joins(:role).where(users: { organization_id: @organization.id }).group('roles.name').count
-    @projects_count_by_day = Project.where(projects: { organization_id: @organization.id }).group_by_day(:created_at, format: '%d %b %Y').count
-    @users_count_by_day = User.where(users: { organization_id: @organization.id }).group_by_day(:created_at, format: '%d %b %Y').count
-
-    @projects_count_by_week = Project.group_by_week(:created_at, format: '%b %d, %Y').count
-    @issues_count_by_week = Issue.group_by_week(:created_at, format: '%b %d, %Y').count
-    @comments_count_by_week = Comment.group_by_week(:created_at, format: '%b %d, %Y').count
-
-    @combined_counts_by_week = {
-      'Projects' => @projects_count_by_week,
-      'Issues' => @issues_count_by_week,
-      'Comments' => @comments_count_by_week
-    }
   end
 end

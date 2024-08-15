@@ -24,7 +24,7 @@ class Project < ApplicationRecord
     {
       title: title,
       description: description,
-      project_manager: project_manager.name
+      project_manager: project_manager&.name
     }
   end
 end

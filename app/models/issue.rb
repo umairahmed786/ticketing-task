@@ -24,6 +24,7 @@ class Issue < ApplicationRecord
 
   def load_states_and_events
     self.class.aasm.states.clear
+    self.class.aasm.events.clear
     self.class.aasm column: 'state' do
       states = State.all
       transitions = Transition.all
@@ -83,7 +84,7 @@ class Issue < ApplicationRecord
     end
   end
 
-  def notify_resolved
+  def notify
     if(self.project.project_manager)
       NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
     end
