@@ -8,6 +8,21 @@
         <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% end %>
     </div>
+    <div class="col-md-5">
+      <div class="d-flex justify-content-end">
+        <% if can?(:create, User) %>
+          <%= button_to t('user_mailer.invite_user.title'), new_user_path, class: "btn btn-primary me-2", method: :get %>
+        <% end %>
+        <% if can?(:create, Project) %>
+          <%= button_to t('project.create'), new_project_path, class: "btn btn-primary me-2", method: :get %>
+        <% end %>
+        <%= button_to "Custom State", '#', class: "btn btn-primary", data: { bs_toggle: "modal", bs_target: "#customStateModal" }, method: :get %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render 'dashboards/custom_state_modal' %>
     <% if ['owner', 'admin'].include?(current_user.role.name) %>
       <div class="col-md-6">
         <% if @users_count_by_role.present? %>

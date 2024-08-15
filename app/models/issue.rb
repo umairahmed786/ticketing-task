@@ -20,28 +20,31 @@ class Issue < ApplicationRecord
 
   include AASM
 
-  aasm column: 'state' do
-    # after_all_transitions :notify_resolved
+  after_initialize :load_states_and_events
 
-    state :new, initial: true
-    state :in_progress
-    state :resolved
-    state :closed
+  def load_states_and_events
+    self.class.aasm.states.clear
+    self.class.aasm.events.clear
+    self.class.aasm column: 'state' do
+      states = State.all
+      transitions = Transition.all
+      states.each do |state|
+        state state.name.to_sym, initial: state.initial
+      end
 
-    event :start do
-      transitions from: [:new, :resolved], to: :in_progress
-    end
+      transitions.each do |transition|
+        event_name = transition.event_name.to_sym
+        if transition.from_transitions.present?
+          from_states = transition.from_transitions.map { |ft| ft.state.name.to_sym }
+          to_state = transition.state.name.to_sym
 
-    event :resolved  do
-      transitions from: :in_progress, to: :resolved, after: :notify_resolved
-    end
+          event event_name do
+            transitions from: from_states, to: to_state
 
-    event :close do
-      transitions from: [:new, :resolved], to: :closed
-    end
-
-    event :reopen do
-      transitions from: :closed, to: :in_progress
+            after { notify if transition.notify }
+          end
+        end
+      end
     end
   end
 
@@ -81,7 +84,7 @@ class Issue < ApplicationRecord
     end
   end
 
-  def notify_resolved
+  def notify
     if(self.project.project_manager)
       NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_later
     end

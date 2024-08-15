@@ -3,7 +3,7 @@ development:
   encoding: utf8
   database: ticketing_system
   username: root
-  password: 7vals
+  password: umair786*
   pool: 5
   variables:
     sql_mode: TRADITIONAL

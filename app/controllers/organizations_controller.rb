@@ -54,6 +54,7 @@ class OrganizationsController < ApplicationController
     end
   end
 
+
   private
 
   def organization_params
