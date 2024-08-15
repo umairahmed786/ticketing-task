@@ -52,10 +52,10 @@
                 <span class="badge bg-warning text-dark">In Progress</span>
               <% when 'resolved' %>
                 <span class="badge bg-info">Resolved</span>
-              <% when 'closed' %>
+              <% when 'close' %>
                 <span class="badge bg-info">Closed</span>
               <% else %>
-                <span class="badge bg-secondary">Unknown</span>
+                <span class="badge bg-secondary"><%= @issue.state%></span>
             <% end %>
           </p>
 

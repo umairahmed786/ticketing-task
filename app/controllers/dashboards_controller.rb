@@ -10,7 +10,6 @@ class DashboardsController < ApplicationController
     from_states = custom_state_params[:from_state].reject(&:blank?)
     to_states = custom_state_params[:to_state].reject(&:blank?)
     is_initial = custom_state_params[:initial_state]
-    # binding.pry
     if state_name.present? && (is_initial == "1" ?  from_states.blank? && to_states.present? : from_states.present?)
       ActiveRecord::Base.transaction do
         @state = State.create(name: state_name, initial: is_initial)
@@ -32,7 +31,7 @@ class DashboardsController < ApplicationController
 
             if to_states.present?
               @to_transitions = to_states.map do |to_state_id|
-                existing_transition = Transition.find_by(id: to_state_id)
+                existing_transition = Transition.find_by_to_state_id(to_state_id)
                 if existing_transition
                   { transition_id: existing_transition.id, state_id: @state.id, created_at: Time.now, updated_at: Time.now }
                 end
@@ -49,11 +48,8 @@ class DashboardsController < ApplicationController
     redirect_to '/dashboards'
   end
 
-
-
-
   private
-  
+
   def custom_state_params
     params.require(:state).permit(:state_name, :notify, :initial_state, from_state: [], to_state: [] )
   end

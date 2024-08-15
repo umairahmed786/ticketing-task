@@ -23,11 +23,10 @@ class Issue < ApplicationRecord
   after_initialize :load_states_and_events
 
   def load_states_and_events
-    # Load states and transitions dynamically
-    self.class.aasm do
+    self.class.aasm.states.clear
+    self.class.aasm column: 'state' do
       states = State.all
       transitions = Transition.all
-
       states.each do |state|
         state state.name.to_sym, initial: state.initial
       end
@@ -41,8 +40,7 @@ class Issue < ApplicationRecord
           event event_name do
             transitions from: from_states, to: to_state
 
-            # Uncomment this if you need notifications
-            # after { notify if transition.notify }
+            after { notify if transition.notify }
           end
         end
       end

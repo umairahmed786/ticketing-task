@@ -12,8 +12,7 @@ class IssuesController < ApplicationController
   end
 
   def new
-    
-    @issue.aasm.states.select { |s| s.options[:initial] }.map(&:name)
+    @available_states = @issue.aasm.states.select { |s| s.options[:initial] == true }.map(&:name)
   end
 
   def create
@@ -21,7 +20,7 @@ class IssuesController < ApplicationController
     if @issue.save
       redirect_to project_issues_path
     else
-      @issue.aasm.states.select { |s| s.options[:initial] }.map(&:name)
+      @available_states = @issue.aasm.states.select { |s| s.options[:initial] == true }.map(&:name)
       render :new
     end
   end
