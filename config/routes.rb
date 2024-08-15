@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  root 'organizations#index'
-
+  root 'organizations#index' # root path
   resources :organizations, only: %i[new create index] do
     collection do
       get 'render_login_form'

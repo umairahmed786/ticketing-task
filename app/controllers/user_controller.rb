@@ -32,13 +32,20 @@ class UserController < ApplicationController
   end
 
   def create
-    @user.mark_as_confirmed
-    if @user.save
-      UserMailer.invite_email(@user).deliver_now
-      redirect_to dashboards_path, notice: t('user.invite_email')
-    else
-      flash.now[:alert] = @user.errors.full_messages.join(', ')
+    @user = User.new(user_params)
+    @user.organization_id = current_user.organization_id
+    if User.exists?(email: @user.email, organization_id: current_user.organization_id)
+      flash[:alert] = t('user_exists')
       render :new
+    else
+      @user.mark_as_confirmed
+      if @user.save
+        UserMailer.invite_email(@user).deliver_now
+        redirect_to dashboards_path, notice: t('user.invite_email')
+      else
+        flash.now[:alert] = @user.errors.full_messages.join(', ')
+        render :new
+      end
     end
   end
 
@@ -84,7 +91,7 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role_id, :organization_id)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role_id, :organization_id, :organization_name)
   end
 
   def set_roles

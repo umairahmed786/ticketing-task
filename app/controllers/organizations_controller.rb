@@ -1,7 +1,9 @@
 class OrganizationsController < ApplicationController
   skip_before_action :set_tenant
 
-  def index; end
+  def index
+    redirect_to dashboards_path if user_signed_in?
+  end
 
   def new
     @organization = Organization.new

@@ -8,16 +8,17 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 # Use cancancan for authorization
 gem 'cancancan', '~> 3.6.1'
 gem 'chartkick', '=5.0.7'
-gem 'groupdate'
+gem 'groupdate', '=6.4.0'
 # Use sqlite3 as the database for Active Record
 gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap', '~> 5.3.3'
 
-gem 'select2-rails'
+gem 'select2-rails', '=4.0.13'
 gem 'whenever', require: false
 
 gem 'aasm', '~> 5.3.1'
 gem 'delayed_job_active_record'
+gem 'delayed_job'
 gem 'daemons'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'

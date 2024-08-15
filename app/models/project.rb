@@ -10,7 +10,7 @@ class Project < ApplicationRecord
 
   validates :title, presence: true 
   validates :title, length: { minimum: 3 }, if: -> { title.present? }
-  validates :title, uniqueness: true 
+  validates_uniqueness_to_tenant :title
 
   validates :description, presence: true
   validates :description, length: { minimum: 10 }, if: -> { description.present? } 
@@ -24,7 +24,7 @@ class Project < ApplicationRecord
     {
       title: title,
       description: description,
-      project_manager: project_manager.name
+      project_manager: project_manager&.name
     }
   end
 end

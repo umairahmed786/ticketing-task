@@ -159,7 +159,6 @@ ActiveRecord::Schema.define(version: 2024_08_13_010401) do
     t.string "unconfirmed_email"
     t.string "invitation_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
-    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
@@ -179,8 +178,9 @@ ActiveRecord::Schema.define(version: 2024_08_13_010401) do
   add_foreign_key "issues", "projects"
   add_foreign_key "issues", "users", column: "assignee_id"
   add_foreign_key "project_users", "organizations"
+  add_foreign_key "project_users", "organizations", name: "fk_organization_id"
+  add_foreign_key "project_users", "projects", name: "fk_project_id"
   add_foreign_key "project_users", "users"
-  add_foreign_key "project_users", "users", column: "project_id"
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users", column: "admin_id"
   add_foreign_key "projects", "users", column: "project_manager_id"

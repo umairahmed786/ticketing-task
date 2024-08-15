@@ -10,7 +10,7 @@ class Issue < ApplicationRecord
 
   validates :title, presence: true
   validates :title, length: { minimum: 3 }, if: -> { title.present? }
-  validates :title, uniqueness: true
+  validates_uniqueness_to_tenant :title
 
   validates :description, presence: true
   validates :description, length: { minimum: 10 }, if: -> { description.present? }
@@ -83,7 +83,7 @@ class Issue < ApplicationRecord
 
   def notify_resolved
     if(self.project.project_manager)
-      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
+      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_later
     end
   end
 end

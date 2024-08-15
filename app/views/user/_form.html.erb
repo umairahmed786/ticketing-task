@@ -1,4 +1,11 @@
 <%= form_with(model: @user, url: @user.persisted? ? user_path(@user) : user_index_path, local: true) do |form| %>
+  <% if current_user.role.name == 'owner' && @user.persisted? %>
+    <div class="form-group mb-3">
+      <%= form.label :organization_name, t('organization_name'), class: "form-label" %>
+      <%= form.text_field :organization_name, value: @organization.name, class: "form-control" %>
+    </div>
+  <% end %>
+
   <div class="form-group mt-3">
     <%= form.label :name, "#{t('name')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
     <%= form.text_field :name, class: "form-control", required: !@user.persisted? %>

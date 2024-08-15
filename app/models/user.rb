@@ -1,16 +1,24 @@
 require 'elasticsearch/model'
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :confirmable
   acts_as_tenant :organization
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable,
+         :confirmable
+
+  attr_accessor :organization_name
+
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users, dependent: :destroy
 
   belongs_to :role, class_name: 'Role', foreign_key: 'role_id'
   validates :name, presence: true
-  validates_uniqueness_to_tenant :email
-  validates :password, presence: true, confirmation: true, if: :password_required?
+
+  validates :email, presence: true,
+                    uniqueness: { scope: :organization_id, case_sensitive: false },
+                    format: { with: Devise.email_regexp }
+  # Password validations
+  validates :password, presence: true,
+                       confirmation: true, length: { within: 6..128 }, if: :password_required?
   validates :password_confirmation, presence: true, if: :password_required?
 
   def mark_as_confirmed
@@ -18,6 +26,7 @@ class User < ApplicationRecord
     self.confirmed_at = Time.now
   end
   before_create :generate_invitation_token
+  before_save :update_organization_name, if: :organization_name_changed?
 
   def admin?
     role == 'admin'
@@ -33,7 +42,7 @@ class User < ApplicationRecord
     {
       name: name,
       email: email,
-      role: role.name
+      role: role&.name
     }
   end
 
@@ -45,6 +54,14 @@ class User < ApplicationRecord
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def update_organization_name
+    organization.update(name: organization_name)
+  end
+
+  def organization_name_changed?
+    organization_name.present? && organization.name != organization_name
   end
 end
 
