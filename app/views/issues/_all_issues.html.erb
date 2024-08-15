@@ -34,7 +34,7 @@
               <td><%= t('issues.no_assigned') %></td>
             <% end %>
             <td><%= issue.complexity_point %></td>
-            <td><%= issue.state %></td>
+            <td><%= issue.state.humanize %></td>
 
               <td>
                 <% if can?(:read, Issue) %>
