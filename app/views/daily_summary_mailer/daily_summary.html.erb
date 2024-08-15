@@ -1,0 +1,11 @@
+<% binding.pry %>
+<h1>Daily Issue State Change Summary</h1>
+<p>Hello, <%= @user.name %>!</p>
+<p>Here is your daily summary of issues:</p>
+<ul>
+  <% @issue.each do |issue_history| %>
+    <li>
+      Issue <%= issue_history.issue.title %> changed <%= issue_history.field_change&.field %> from <%= issue_history.field_change&.old_value %> to <%= issue_history.field_change&.new_value %> at <%= issue_history.created_at %>
+    </li>
+  <% end %>
+</ul>

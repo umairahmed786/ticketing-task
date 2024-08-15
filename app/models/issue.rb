@@ -8,12 +8,12 @@ class Issue < ApplicationRecord
 
   has_many :comments, through: :issue_histories, dependent: :destroy
 
-  validates :title, presence: true 
+  validates :title, presence: true
   validates :title, length: { minimum: 3 }, if: -> { title.present? }
-  validates :title, uniqueness: true 
+  validates :title, uniqueness: true
 
   validates :description, presence: true
-  validates :description, length: { minimum: 10 }, if: -> { description.present? } 
+  validates :description, length: { minimum: 10 }, if: -> { description.present? }
 
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
@@ -47,9 +47,47 @@ class Issue < ApplicationRecord
     end
   end
 
-  def notify
-    if self.project.project_manager
-      NotifierMailer.issue_mark_as_resolved(self.title, self.project.project_manager.email).deliver_now
+  after_update :track_changes
+
+  searchkick highlight: [:title, :description, :state]
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      state: state
+    }
+  end
+
+  private
+
+  def track_changes
+    saved_changes.each do |field, values|
+      next if field == 'updated_at' # Skip the updated_at field
+
+      old_value, new_value = values
+      field_change = FieldChange.create(
+        field: field,
+        old_value: old_value,
+        new_value: new_value,
+        organization_id: organization.id
+      )
+
+      IssueHistory.create(
+        issue: self,
+        user: self.assignee, # or the user who made the change
+        organization: self.organization,
+        field_change: field_change,
+        created_at: Time.current
+      )
+    end
+  end
+
+  def notify_resolved
+    if(self.project.project_manager)
+      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
     end
   end
 end
+
+Issue.reindex

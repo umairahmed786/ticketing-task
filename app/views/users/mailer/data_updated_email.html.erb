@@ -1,0 +1,13 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>Your account data has been updated. Here are the changes:</p>
+
+<ul>
+  <% @changes.each do |attribute, values| %>
+    <li><%= attribute.humanize %>: <%= values.first %> -> <%= values.last %></li>
+  <% end %>
+</ul>
+
+<p>If you did not make this change, please contact support immediately.</p>
+
+<p>Best regards</p>

@@ -11,66 +11,8 @@
  */
 
 @import "bootstrap";
+@import "style";
 @import "pagination";
+@import 'sidebar';
 
- $primary-color: #007bff;
- $background-color: #DDE6ED;
-
- .bg-light {
-   background: $background-color;
- }
-
- .btn-primary {
-  color: $primary-color;
-  border: 2px solid $primary-color;
-  background: transparent; 
-  transition: background-color 0.3s, color 0.3s; 
-
-  &:hover {
-    background: $primary-color;
-    color: #fff;
-  }
-}
-
- .flash {
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  .notice{
-    background-color: #e7f3fe;
-    color: #31708f;
-  }
-  .alert{
-    background-color: #f2dede;
-    color: #a94442;
-  }
- }
-
- .description {
-  white-space: pre-wrap; /* CSS3 */
-  white-space: -moz-pre-wrap; /* Mozilla */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* IE */
-  max-width: 15ch; /* Limit the width to 15 characters */
-}
-
-
-/* Ensure pagination buttons have the correct text color */
-.page-link {
-  color: #007bff; /* Change to your desired color */
-}
-
-/* Change color of page-link when hovered */
-.page-link:hover {
-  color: #0056b3; /* Change to your desired hover color */
-  background-color: #e9ecef; /* Light background for hover effect */
-}
-
-/* Styling for disabled state */
-.page-item.disabled .page-link {
-  color: #6c757d; /* Grey color for disabled state */
-  background-color: #f8f9fa; /* Light background for disabled state */
-  cursor: not-allowed; /* Cursor style for disabled state */
-}
-
+ 

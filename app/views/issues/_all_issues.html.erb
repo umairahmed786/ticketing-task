@@ -1,52 +1,66 @@
 <div class="container mt-4 table-responsive">
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th scope="col"><%= t('title') %></th>
-        <th scope="col"><%= t('project.description') %></th>
-        <th scope="col"><%= t('project.project_manager') %></th>
-        <th scope="col"><%= t('project_name') %></th>
-        <th scope="col"><%= t('issue_assignee') %></th>
-        <th scope="col"> <%= t('complexity_point') %> </th>
-        <th scope="col"> <%= t('state') %> </th>
-        <th scope="col"><%= t('actions') %></th>
-      </tr>
-    </thead>
-    <tbody class="table-group-divider">
-      <% @issues.find_each do |issue| %>
+  <% if @issues.empty? %>
+    <div class="min-vh-100 d-flex align-items-center justify-content-center ">
+      <img src="<%= asset_path('no_record_found.gif') %>" alt="No data found" class="img-fluid">
+    </div>
+  <% else %>
+    <table class="table table-hover table-striped">
+      <thead>
         <tr>
-          <td><%= issue.title %></td>
-          <td class="description" ><%= issue.description %></td>
-          <% if issue.project.project_manager.present? %>
-            <td><%= issue.project.project_manager.name %></td>
-          <% else %>
-            <td><%= t('project.no_project_manager_assigned') %></td>
-          <% end %>  
-          <td><%= issue.project.title %></td>
-          <% if issue.assignee %>
-            <td><%= issue.assignee&.name %></td>
-          <% else %>
-            <td><%= t('issues.no_assigned') %></td>
-          <% end %>
-          <td><%= issue.complexity_point %></td>
-          <td><%= issue.state %></td>
-
-          <td>
-            <%= link_to project_issue_path(issue.project_id, issue), class: 'btn btn-primary btn-sm', title: 'Show', data: { toggle: 'tooltip' } do %>
-              <i class="fas fa-eye"></i>
-            <% end %>
-            <%= link_to edit_project_issue_path(issue.project_id, issue), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
-              <i class="fas fa-edit"></i>
-            <% end %>
-            <%= link_to project_issue_path(issue.project_id, issue), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', title: 'Delete', data: { toggle: 'tooltip' } do %>
-              <i class="fas fa-trash-alt"></i>
-            <% end %>
-          </td>
+          <th scope="col"><%= t('title') %></th>
+          <th scope="col"><%= t('project.description') %></th>
+          <th scope="col"><%= t('project.project_manager') %></th>
+          <th scope="col"><%= t('project_name') %></th>
+          <th scope="col"><%= t('issue_assignee') %></th>
+          <th scope="col"> <%= t('complexity_point') %> </th>
+          <th scope="col"> <%= t('state') %> </th>
+          <th scope="col"><%= t('actions') %></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= will_paginate @issues, renderer: BootstrapPaginationRenderer %>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @issues.find_each do |issue| %>
+          <tr>
+            <td><%= issue.title %></td>
+            <td class="description" ><%= issue.description %></td>
+            <% if issue.project.project_manager.present? %>
+              <td><%= issue.project.project_manager.name %></td>
+            <% else %>
+              <td><%= t('project.no_project_manager_assigned') %></td>
+            <% end %>  
+            <td><%= issue.project.title %></td>
+            <% if issue.assignee %>
+              <td><%= issue.assignee&.name %></td>
+            <% else %>
+              <td><%= t('issues.no_assigned') %></td>
+            <% end %>
+            <td><%= issue.complexity_point %></td>
+            <td><%= issue.state %></td>
+
+              <td>
+                <% if can?(:read, Issue) %>
+                  <%= link_to project_issue_path(issue.project_id, issue), class: 'btn btn-primary btn-sm', title: 'Show', data: { toggle: 'tooltip' } do %>
+                    <i class="fas fa-eye"></i>
+                  <% end %>
+                <% end %>
+
+                <% if can?(:edit, Issue) %>
+                  <%= link_to edit_project_issue_path(issue.project_id, issue), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
+                    <i class="fas fa-edit"></i>
+                  <% end %>
+                <% end %>
+
+                <% if can?(:destroy, Issue) %>
+                  <%= link_to project_issue_path(issue.project_id, issue), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', title: 'Delete', data: { toggle: 'tooltip' } do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @issues, renderer: BootstrapPaginationRenderer %>
+  <% end %>
 </div>
 
 <script>

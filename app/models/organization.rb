@@ -4,6 +4,10 @@ class Organization < ApplicationRecord
   has_many :project_users
   validates :name, :subdomain, presence: true, uniqueness: true
   validates :subdomain, format: { without: /\s/, message: 'must not contain spaces' }
+  validates :subdomain, format: {
+    with: /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/,
+    message: 'must only contain alphabets and numbers, and must include at least one alphabet.'
+  }
 
   after_create :add_initial_states_and_transitions
 
@@ -36,4 +40,5 @@ class Organization < ApplicationRecord
     close_transition.from_transitions.create(state: new, organization_id: self.id)
 
   end
+  
 end

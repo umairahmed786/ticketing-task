@@ -1,6 +1,8 @@
 class IssuesController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource :project
   load_and_authorize_resource :issue, through: :project
+  
 
   before_action :set_users, only: %i[new edit update create] 
   before_action :set_states, only: %i[new edit update create] 
@@ -8,7 +10,7 @@ class IssuesController < ApplicationController
 
 
   def index
-    @issues = @issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
+    @issues = @project.issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
   end
 
   def new

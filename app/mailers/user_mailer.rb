@@ -54,4 +54,17 @@ class UserMailer < Devise::Mailer
       format.html { render 'users/mailer/invite_email' }
     end
   end
+
+  def data_updated_email(user, changes, options = {})
+    options[:subject] = 'Your account data has been updated'
+    options[:from] = 'your_email@example.com'
+    options[:to] = user.email
+    options[:template_path] = 'users/mailer'
+    options[:template_name] = 'data_updated_email'
+    @user = user
+    @changes = changes
+    mail(options) do |format|
+      format.html { render 'users/mailer/data_updated_email' }
+    end
+  end
 end
