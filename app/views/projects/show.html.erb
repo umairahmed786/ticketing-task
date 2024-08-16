@@ -20,7 +20,7 @@
           <% end %>
         <% end %>
         <% if can?(:destroy, Project) %>
-          <%= button_to project_path(@project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger me-2' do %>
+          <%= button_to project_path(@project), method: :delete, data: { confirm: t('confirm_delete') }, class: 'btn btn-danger me-2' do %>
             <i class="bi bi-trash"></i>
           <% end %>
         <% end %>

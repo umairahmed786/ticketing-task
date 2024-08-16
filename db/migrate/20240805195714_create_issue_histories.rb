@@ -5,7 +5,7 @@ class CreateIssueHistories < ActiveRecord::Migration[6.1]
       t.references :attachment, foreign_key: { to_table: :attachments }
       t.references :comment, foreign_key: { to_table: :comments }
       t.references :issue, null: false, foreign_key: { to_table: :issues }
-      t.references :user, null: false, foreign_key: { to_table: :users }
+      t.references :user, foreign_key: { to_table: :users }
       t.references :organization, null: false, foreign_key: true
 
       t.timestamps

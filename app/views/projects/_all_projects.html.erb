@@ -34,7 +34,7 @@
                 <%= link_to edit_project_path(project), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
                   <i class="fas fa-edit"></i>
                 <% end %>
-                <%= link_to project_path(project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger btn-sm', title: 'Delete', data: { toggle: 'tooltip' } do %>
+                <%= link_to project_path(project), method: :delete, data: { confirm: t('confirm_delete'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
                   <i class="fas fa-trash-alt"></i>
                 <% end %>
               <% end %>

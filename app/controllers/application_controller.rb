@@ -3,10 +3,6 @@ class ApplicationController < ActionController::Base
   before_action :set_tenant
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def routing_error
-    raise ActionController::RoutingError, 'Page not found'
-  end
-
   rescue_from CanCan::AccessDenied do
     respond_to do |format|
       format.html { redirect_to dashboards_path, alert: 'You are not authorized to access this page.' }
@@ -14,14 +10,7 @@ class ApplicationController < ActionController::Base
       format.js   { render json: { error: 'You are not authorized to access this page.' }, status: :forbidden }
     end
   end
-  # # Handle Routing Errors
-  # rescue_from ActionController::RoutingError do
-  #   respond_to do |format|
-  #     format.html { redirect_to dashboards_path, alert: 'Page not found.' }
-  #     format.json { render json: { error: 'Page not found.' }, status: :not_found }
-  #     format.js   { render json: { error: 'Page not found.' }, status: :not_found }
-  #   end
-  # end
+
   # Handle Record Not Found
   rescue_from ActiveRecord::RecordNotFound do
     respond_to do |format|
