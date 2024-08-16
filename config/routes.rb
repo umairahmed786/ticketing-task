@@ -45,5 +45,5 @@ Rails.application.routes.draw do
     get 'search', to: 'search#index'
   end
   # # Catch-all route for routing errors
-  # match '*unmatched', to: 'application#routing_error', via: :all
+  match '*path', to: 'errors#page_not_found', via: :all
 end
