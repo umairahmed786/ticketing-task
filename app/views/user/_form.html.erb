@@ -13,7 +13,7 @@
 
   <div class="form-group mt-2 mb-3">
     <%= form.label :email, "#{t('email')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
-    <%= form.email_field :email, class: "form-control", required: !@user.persisted? %>
+    <%= form.email_field :email, class: "form-control", required: !@user.persisted?, readonly: @user.persisted? %>
   </div>
 
   <% if @user.new_record? %>
@@ -48,6 +48,6 @@
   <%= form.hidden_field :organization_id, value: @organization.id %>
 
   <div class="actions mb-3 text-center">
-    <%= form.submit class: "btn btn-primary", style: 'width: 50%;' %>
+    <%= form.submit @user.new_record? ? t('user.invitation') : t('update_user'), class: "btn btn-primary", style: 'width: 50%;' %>
   </div>
 <% end %>

@@ -25,7 +25,7 @@ class DashboardsController < ApplicationController
   def add_custom_state
     state_name = custom_state_params[:state_name]
     if state_name.include?(' ')
-      flash[:alert] = 'State name cannot contain spaces.'
+      flash[:error] = 'State name cannot contain spaces.'
       return redirect_to '/dashboards'
     end
 
@@ -65,7 +65,7 @@ class DashboardsController < ApplicationController
         end
       end
     else
-      flash[:alert] = 'State name and at least one transition (from or to) must be provided.'
+      flash[:error] = 'State name and at least one transition (from or to) must be provided.'
     end
 
     redirect_to '/dashboards'

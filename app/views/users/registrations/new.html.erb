@@ -22,7 +22,7 @@
   </div>
 
   <%= form.hidden_field :organization_id, value: @organization.id %>
-  <%= form.hidden_field :role_id, value: params[:role_id] || params[:user][:role_id]%>
+  <%= form.hidden_field :role_id, value: (params[:role_id] || (params[:user] && params[:user][:role_id])) %>
 
   <div class="mb-3 text-center">
     <%= form.submit t('register'), class: 'btn btn-primary px-5 py-2'%>

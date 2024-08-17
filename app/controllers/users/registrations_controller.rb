@@ -18,7 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to new_user_session_path,
                   notice: t('devise.confirmations.send_instructions')
     else
-      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:error] = @user.errors.full_messages.join(', ')
       render :new
     end
   end

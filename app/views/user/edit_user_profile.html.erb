@@ -8,7 +8,7 @@
 
     <div class="form-group mt-2 mb-3">
       <%= form.label :email, "#{t('email')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
-      <%= form.email_field :email, class: "form-control", required: !@user.persisted? %>
+      <%= form.email_field :email, class: "form-control", required: !@user.persisted?, readonly: @user.persisted? %>
     </div>
 
     <div class="form-group mb-3">

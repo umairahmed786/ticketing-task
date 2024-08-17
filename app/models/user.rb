@@ -30,6 +30,14 @@ class User < ApplicationRecord
   before_save :update_organization_name, if: :organization_name_changed?
   before_destroy :nullify_project_manager, :nullify_assignee
 
+  def self.current
+    Thread.current[:current_user]
+  end
+
+  def self.current=(user)
+    Thread.current[:current_user] = user
+  end
+
   def admin?
     role == 'admin'
   end

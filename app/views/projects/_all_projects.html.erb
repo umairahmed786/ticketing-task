@@ -8,7 +8,6 @@
       <thead>
         <tr>
           <th scope="col"><%= t('title') %></th>
-          <th scope="col"><%= t('project.description') %></th>
           <th scope="col"><%= t('project.project_manager') %></th>
           <th scope="col"><%= t('project.admin') %></th>
           <th scope="col"><%= t('no_of_issues') %></th>
@@ -20,7 +19,6 @@
         <% @projects.find_each do |project| %>
           <tr>
             <td><%= project.title %></td>
-            <td class="description"><%= project.description %></td>
             <td><%= @project_project_managers[project.id] %></td>
             <td><%= @project_admins[project.id] %></td>
             <td><%= @project_issues_count[project.id] %></td>
@@ -34,9 +32,12 @@
                 <%= link_to edit_project_path(project), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
                   <i class="fas fa-edit"></i>
                 <% end %>
-                <%= link_to project_path(project), method: :delete, data: { confirm: t('confirm_delete'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
+                <%= link_to project_path(project), method: :delete, data: { confirm: t('confirm_delete_with_details_project'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
                   <i class="fas fa-trash-alt"></i>
                 <% end %>
+              <% end %>
+              <%= link_to project_issues_path(project), data: { toggle: 'tooltip' }, class: 'btn btn-secondary btn-sm', title: 'Issues' do %>
+                <i class="fas fa-bug"></i>
               <% end %>
             </td>
           </tr>

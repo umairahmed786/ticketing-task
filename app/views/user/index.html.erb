@@ -21,7 +21,7 @@
             <th scope="row"><%= index + 1 %></th>
             <td><%= user.name %></td>
             <td><%= user.email %></td>
-            <td><%= user.role.name %></td>
+            <td><%= user.role.name.humanize %></td>
             <td><%= user.total_projects_count %></td>
             <td>
               <div class="btn-group" role="group" aria-label="User Actions">

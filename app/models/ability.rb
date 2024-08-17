@@ -21,7 +21,7 @@ class Ability
         issue.project.users.include?(user)
       end
       can :update, Issue, [:state] do |issue|
-        issue.project.users.include?(user)
+        issue.assignee_id == user.id
       end
     end
   end
