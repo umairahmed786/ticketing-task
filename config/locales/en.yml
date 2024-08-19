@@ -82,6 +82,7 @@ en:
     view: "View Project"
     no_project_manager_assigned: "No project manager assigned"
     users: "Project Users"
+    select_manager: 'Select Project Manager'
   issues:
     header: "Project Issues"
     new: "New Issue"
@@ -91,6 +92,7 @@ en:
     assignee: "Assignee"
     no_assigned: "Not assigned to anyone."
     show: "Show Issues"
+    attachments_heading: 'Attachments:'
   projects_assigned_number: "No. of Projects Assigned"
   actions: "Actions"
   no_of_issues: "No. of Issues"
@@ -121,4 +123,7 @@ en:
   state:
     name_error_message: 'State name cannot contain spaces.'
     to_and_from_error_message: 'State name and at least one transition (from or to) must be provided.'
-   
+  
+  button: 
+    next: 'Next'
+    previous: 'Previous'

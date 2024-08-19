@@ -15,11 +15,11 @@ class CommentsController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      @comment = Comment.create(content: comment_params[:content])
+      @comment = Comment.create!(content: comment_params[:content])
       if comment_params[:files].present?
         @comment.files.attach(comment_params[:files])
       end
-      IssueHistory.create( user_id: current_user.id, issue_id: @issue.id, comment_id: @comment.id,  created_at: Time.now, updated_at: Time.now )
+      IssueHistory.create!( user_id: current_user.id, issue_id: @issue.id, comment_id: @comment.id,  created_at: Time.now, updated_at: Time.now )
 
     end
     flash[:error] = @comment.errors.full_messages_for(:content).first if @comment.errors.present?
