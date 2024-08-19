@@ -39,11 +39,15 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role.name == 'admin'
   end
 
   def project_manager?
-    role == 'project_manager'
+    role.name == 'project_manager'
+  end
+
+  def self.admins
+    where(role_id: Role.find_by_name('admin').id)
   end
 
   searchkick highlight: %i[name email role]

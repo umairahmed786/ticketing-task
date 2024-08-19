@@ -3,25 +3,18 @@ namespace :daily_summary do
   task send_emails: :environment do
     organizations = Organization.all
     organizations.find_each do |organization|
-      issues = IssueHistory.where('created_at >= ? AND organization_id = ?', 1.day.ago, organization.id)
-      issue_ids = issues.pluck(:id)
-      # Fetch admins of the organization
-      admins = User.where(organization_id: organization.id, role: 'admin')
+      issue_history = organization.issue_histories.where('created_at >= ?', 1.day.ago)
+      issue_history_ids = issue_history.pluck(:id)
 
-      # Fetch the owner of the organization
-      owner = User.where(organization_id: organization.id, role: 'owner').first
+      # Fetch users of the organization
+      users = organization.users.where(role: Role.where(name: %w[admin owner]))
+                          .or(organization.users.where(id: issue_history.map do |history|
+                            [history.issue.project.project_manager_id, history.issue.assignee_id]
+                          end.flatten.uniq))
 
-      # Fetch project managers and assignees of the issues
-      project_managers_and_assignees = issues.map do |issue_history|
-        issue = issue_history.issue
-        [issue.project.project_manager, issue.assignee]
-      end.flatten.compact.uniq
-
-      # Combine all users
-      users = (admins + [owner] + project_managers_and_assignees).compact.uniq
       # Send daily summary email to each user
       users.each do |user|
-        DailySummaryJob.perform_later(user.id, issue_ids)
+        DailySummaryJob.perform_later(user.id, issue_history_ids)
       end
     end
   end

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :organizations, only: %i[new create index] do
     collection do
       get 'render_login_form'
-      match 'login_existing', via: %i[get post]
+      post 'login_existing'
     end
   end
 
@@ -44,8 +44,7 @@ Rails.application.routes.draw do
     end
     get 'search', to: 'search#index'
   end
-  # # Catch-all route for routing errors
-  # match '*path', to: 'errors#page_not_found', via: :all
+
   # Exclude Active Storage routes from the catch-all
   # unless Rails.env.development? && ENV["DISABLE_PAGE_NOT_FOUND"]
     match '*path', to: 'errors#page_not_found', via: :all, constraints: lambda { |req|
