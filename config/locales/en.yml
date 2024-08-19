@@ -116,3 +116,8 @@ en:
   user_updated: "User updated successfully."
   user_exists: "User with this email already exists in your organization."
   organization_name: "Organization Name"
+
+
+  state:
+    name_error_message: 'State name cannot contain spaces.'
+    to_and_from_error_message: 'State name and at least one transition (from or to) must be provided.'
