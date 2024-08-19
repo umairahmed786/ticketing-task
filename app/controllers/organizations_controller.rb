@@ -1,5 +1,6 @@
 class OrganizationsController < ApplicationController
   skip_before_action :set_tenant
+  before_action :sanitize_params, only: :create
 
   def index
     redirect_to dashboards_path if user_signed_in?
@@ -16,7 +17,7 @@ class OrganizationsController < ApplicationController
       url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_registration_path)
       redirect_to url_with_subdomain
     else
-      flash.now[:alert] = generate_error_messages(@organization)
+      flash.now[:error] = generate_error_messages(@organization)
       render :new
     end
   end
@@ -27,18 +28,18 @@ class OrganizationsController < ApplicationController
 
   def login_existing
     if request.get?
-      flash.now[:alert] = t('organization.subdomain_required')
+      flash.now[:error] = t('organization.subdomain_required')
       render :render_login_form and return
     else
       subdomain = params[:subdomain]
 
       # Validate the subdomain format
       if subdomain.blank?
-        flash.now[:alert] = t('organization.subdomain_blank')
+        flash.now[:error] = t('organization.subdomain_blank')
         render :render_login_form and return
       end
       if subdomain !~ /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/
-        flash.now[:alert] = t('organization.subdomain_invalid')
+        flash.now[:error] = t('organization.subdomain_invalid')
         render :render_login_form and return
       end
 
@@ -48,7 +49,7 @@ class OrganizationsController < ApplicationController
         url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_session_path)
         redirect_to url_with_subdomain
       else
-        flash.now[:alert] = t('organization.not_found')
+        flash.now[:error] = t('organization.not_found')
         render :render_login_form
       end
     end
@@ -56,6 +57,11 @@ class OrganizationsController < ApplicationController
 
 
   private
+
+  def sanitize_params
+    params[:organization][:name].strip! if params[:organization][:name].present?
+    params[:organization][:subdomain].strip! if params[:organization][:subdomain].present?
+  end
 
   def organization_params
     params.require(:organization).permit(:name, :subdomain)

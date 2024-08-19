@@ -76,7 +76,7 @@ class Issue < ApplicationRecord
 
       IssueHistory.create(
         issue: self,
-        user: self.assignee, # or the user who made the change
+        user: User.current,
         organization: self.organization,
         field_change: field_change,
         created_at: Time.current

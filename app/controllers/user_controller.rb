@@ -35,7 +35,7 @@ class UserController < ApplicationController
     @user = User.new(user_params)
     @user.organization_id = current_user.organization_id
     if User.exists?(email: @user.email, organization_id: current_user.organization_id)
-      flash[:alert] = t('user_exists')
+      flash[:error] = t('user_exists')
       render :new
     else
       @user.mark_as_confirmed
@@ -43,7 +43,7 @@ class UserController < ApplicationController
         UserMailer.invite_email(@user).deliver_now
         redirect_to dashboards_path, notice: t('user.invite_email')
       else
-        flash.now[:alert] = @user.errors.full_messages.join(', ')
+        flash.now[:error] = @user.errors.full_messages.join(', ')
         render :new
       end
     end
@@ -62,7 +62,7 @@ class UserController < ApplicationController
       flash[:notice] = t('user_updated')
       redirect_to user_index_path
     else
-      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:error] = @user.errors.full_messages.join(', ')
       render :edit_user_profile
     end
   end
@@ -78,7 +78,7 @@ class UserController < ApplicationController
       flash[:notice] = t('devise.registrations.updated')
       redirect_to user_path(current_user)
     else
-      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:error] = @user.errors.full_messages.join(', ')
       render :edit
     end
   end

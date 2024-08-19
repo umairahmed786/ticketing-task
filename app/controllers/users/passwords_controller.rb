@@ -26,7 +26,7 @@ class Users::PasswordsController < Devise::PasswordsController
   private
 
   def handle_errors(resource)
-    flash.now[:alert] = if resource.errors[:email].include?("can't be blank")
+    flash.now[:error] = if resource.errors[:email].include?("can't be blank")
                           t('email_blank')
                         elsif resource.errors[:email] !~ /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
                           t('email_invalid')

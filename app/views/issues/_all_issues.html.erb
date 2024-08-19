@@ -8,7 +8,6 @@
       <thead>
         <tr>
           <th scope="col"><%= t('title') %></th>
-          <th scope="col"><%= t('project.description') %></th>
           <th scope="col"><%= t('project.project_manager') %></th>
           <th scope="col"><%= t('project_name') %></th>
           <th scope="col"><%= t('issue_assignee') %></th>
@@ -21,17 +20,16 @@
         <% @issues.find_each do |issue| %>
           <tr>
             <td><%= issue.title %></td>
-            <td class="description" ><%= issue.description %></td>
             <% if issue.project.project_manager.present? %>
               <td><%= issue.project.project_manager.name %></td>
             <% else %>
-              <td><%= t('project.no_project_manager_assigned') %></td>
+              <td><%= t('not_assigned') %></td>
             <% end %>  
             <td><%= issue.project.title %></td>
             <% if issue.assignee %>
               <td><%= issue.assignee&.name %></td>
             <% else %>
-              <td><%= t('issues.no_assigned') %></td>
+              <td><%= t('not_assigned') %></td>
             <% end %>
             <td><%= issue.complexity_point %></td>
             <td><%= issue.state.humanize %></td>
@@ -43,14 +41,14 @@
                   <% end %>
                 <% end %>
 
-                <% if can?(:edit, Issue) %>
+                <% if can?(:edit, Issue) && (current_user.role.name == "general_user"? issue.assignee_id == current_user.id : true) %>
                   <%= link_to edit_project_issue_path(issue.project_id, issue), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
                     <i class="fas fa-edit"></i>
                   <% end %>
                 <% end %>
 
                 <% if can?(:destroy, Issue) %>
-                  <%= link_to project_issue_path(issue.project_id, issue), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', title: 'Delete', data: { toggle: 'tooltip' } do %>
+                  <%= link_to project_issue_path(issue.project_id, issue), method: :delete, data: { confirm: t('confirm_delete_with_details'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
                     <i class="fas fa-trash-alt"></i>
                   <% end %>
                 <% end %>

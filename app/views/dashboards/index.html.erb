@@ -1,16 +1,18 @@
 <div class="container mt-5 p-3">
-  <div class="row">
-    <div class="col-md-12 d-flex justify-content-end">
-      <%= button_to "Custom State", '#', class: "btn btn-primary", data: { bs_toggle: "modal", bs_target: "#customStateModal" }, method: :get %>
+  <% if ['owner', 'admin'].include?(current_user.role.name) %>
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-end">
+        <%= button_to "Custom State", '#', class: "btn btn-primary", data: { bs_toggle: "modal", bs_target: "#customStateModal" }, method: :get %>
+      </div>
     </div>
-  </div>
+  <% end %>
   <%= render 'dashboards/custom_state_modal' %>
   <div class="row mt-4">
     <div class="<%= ['owner', 'admin'].include?(current_user.role.name) ? 'col-md-6' : 'col-md-12' %>">
       <% if @projects_count_by_day.present? %>
         <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% else %>
-        <h3>Projects Statistics by day</h3>
+        <h3><%= t('project_statistics') %></h3>
         <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% end %>
     </div>
@@ -20,7 +22,7 @@
         <% if @users_count_by_role.present? %>
           <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), download: true %>
         <% else %>
-          <h3>Users Statistics by role</h3>
+          <h3><%= t('users_statistics_by_role') %></h3>
           <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), download: true %>
         <% end %>
       </div>
@@ -40,7 +42,7 @@
         <% if @users_count_by_day.present? %>
           <%= area_chart @users_count_by_day, title: t('users_statistics'), download: true %>
         <% else %>
-          <h3>Users Statistics</h3>
+          <h3><%= t('users_statistics') %></h3>
           <%= area_chart @users_count_by_day, title: t('users_statistics'), download: true %>
         <% end %>
       </div>
@@ -52,7 +54,12 @@
       <% data << { name: t('project.header'), data: @projects_count_by_day } if @projects_count_by_day.present? %>
       <% data << { name: t('issues.header'), data: @issues_count_by_day } if @issues_count_by_day.present? %>
       <% data << { name: t('comments'), data: @comments_count_by_day } if @comments_count_by_day.present? %>
-      <%= line_chart data, title: t('project_issues_comments_stats'), loading: t('loading'), download: true %>
+      <% if data.present? %>
+        <%= line_chart data, title: t('project_issues_comments_stats'), loading: t('loading'), download: true %>
+      <% else %>
+        <h3><%= t('project_issues_comments_stats') %></h3>
+        <%= line_chart data, title: t('project_issues_comments_stats'), loading: t('loading'), download: true %>
+      <% end %>
     </div>
   </div>
 </div>

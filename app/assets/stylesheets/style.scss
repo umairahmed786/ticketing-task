@@ -74,17 +74,12 @@ $danger-color: #dc3545; // Define your danger color
   }
   .alert{
     background-color: #f2dede;
-    color: #a94442;
+    color: #F9D689;
   }
+  .error{
+    background-color: #f2dede;
+    color: #a94442;
  }
-
- .description {
-  white-space: pre-wrap; /* CSS3 */
-  white-space: -moz-pre-wrap; /* Mozilla */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* IE */
-  max-width: 15ch; /* Limit the width to 15 characters */
 }
 
 .main-content {

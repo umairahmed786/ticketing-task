@@ -34,7 +34,11 @@
           <i class="bi bi-pencil text-warning" style="font-size: 1.5rem;"></i>
         </div>
         <div class="flex-grow-1">
-          <strong><%= history.user.name %></strong> changed the field "<%= history.field_change.field %>" from "<%= history.field_change.old_value %>" to "<%= history.field_change.new_value %>".
+          <% if history.field_change.field == 'assignee_id' %>
+            <strong><%= history.user.name %></strong> assigned the issue to <strong><%= history.field_change.new_value.present? ? User.find(history.field_change.new_value).name : 'Unassigned' %></strong>.
+          <% else %>
+            <strong><%= history.user.name %></strong> changed the field "<%= history.field_change.field %>" from "<%= history.field_change.old_value&.humanize %>" to "<%= history.field_change.new_value&.humanize %>".
+          <% end %>
           <small class="text-muted d-block mt-1">
             <%= time_ago_in_words(history.created_at) %> ago
           </small>

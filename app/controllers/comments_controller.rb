@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
       IssueHistory.create( user_id: current_user.id, issue_id: @issue.id, comment_id: @comment.id,  created_at: Time.now, updated_at: Time.now )
 
     end
-    flash[:alert] = @comment.errors.full_messages_for(:content).first if @comment.errors.present?
+    flash[:error] = @comment.errors.full_messages_for(:content).first if @comment.errors.present?
     redirect_to project_issue_path(@issue.project_id, @issue )
   end
 

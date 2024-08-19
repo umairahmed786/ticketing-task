@@ -5,7 +5,7 @@ class IssuesController < ApplicationController
   
 
   before_action :set_users, only: %i[new edit update create] 
-  before_action :set_states, only: %i[new edit update create] 
+  before_action :set_states, only: %i[edit update create] 
 
 
 

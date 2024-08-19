@@ -8,7 +8,8 @@ class User < ApplicationRecord
   attr_accessor :organization_name
 
   has_many :project_users, dependent: :destroy
-  has_many :projects, through: :project_users, dependent: :destroy
+  has_many :projects, through: :project_users
+  has_many :issue_histories, dependent: :destroy
 
   belongs_to :role, class_name: 'Role', foreign_key: 'role_id'
   validates :name, presence: true
@@ -27,6 +28,15 @@ class User < ApplicationRecord
   end
   before_create :generate_invitation_token
   before_save :update_organization_name, if: :organization_name_changed?
+  before_destroy :nullify_project_manager, :nullify_assignee
+
+  def self.current
+    Thread.current[:current_user]
+  end
+
+  def self.current=(user)
+    Thread.current[:current_user] = user
+  end
 
   def admin?
     role == 'admin'
@@ -62,6 +72,14 @@ class User < ApplicationRecord
 
   def organization_name_changed?
     organization_name.present? && organization.name != organization_name
+  end
+
+  def nullify_project_manager
+    Project.where(project_manager_id: id).update_all(project_manager_id: nil)
+  end
+
+  def nullify_assignee
+    Issue.where(assignee_id: id).update_all(assignee_id: nil)
   end
 end
 
