@@ -3,8 +3,14 @@
 <p>Here is your daily summary of issues:</p>
 <ul>
   <% @issue.each do |issue_history| %>
-    <li>
-      Issue <%= issue_history.issue.title %> changed <%= issue_history.field_change&.field %> from <%= issue_history.field_change&.old_value %> to <%= issue_history.field_change&.new_value %> at <%= issue_history.created_at %>
-    </li>
+    <% if issue_history.field_change&.field == 'assignee_id'%>
+      <li>
+        Issue <%= issue_history.issue.title %> was assigned to <%= User.find(issue_history.field_change&.new_value).name %> at <%= issue_history.created_at %>
+      </li>
+    <% else %>
+      <li>
+        Issue <%= issue_history.issue.title %> changed <%= issue_history.field_change&.field.humanize %> from <%= issue_history.field_change&.old_value.humanize %> to <%= issue_history.field_change&.new_value.humanize %> at <%= issue_history.created_at %>
+      </li>
+    <% end %>
   <% end %>
 </ul>

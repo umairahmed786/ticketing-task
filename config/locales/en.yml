@@ -119,6 +119,7 @@ en:
 
 
   state:
+    title: "State"
     name_error_message: 'State name cannot contain spaces.'
     to_and_from_error_message: 'State name and at least one transition (from or to) must be provided.'
    
