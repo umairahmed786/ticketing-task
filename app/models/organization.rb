@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
   has_many :projects
   has_many :project_users
   validates :name, :subdomain, presence: true, uniqueness: true
+  has_many :states
   validates :subdomain, format: {
     with: /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/,
     message: 'must only contain alphabets and numbers, and must include at least one alphabet.'
@@ -10,7 +11,6 @@ class Organization < ApplicationRecord
 
   after_create :add_initial_states_and_transitions
 
-  private
 
   def add_initial_states_and_transitions
     # Initial States
