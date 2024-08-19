@@ -38,7 +38,6 @@ en:
   title: "Title"
   description: "Description"
   complexity_point: "Complexity Point"
-  state: "State"
   issue_assignee: "Issue Assignee"
   comments: "Comments"
   organization:
@@ -121,9 +120,18 @@ en:
 
 
   state:
+    title: "State"
     name_error_message: 'State name cannot contain spaces.'
     to_and_from_error_message: 'State name and at least one transition (from or to) must be provided.'
   
   button: 
     next: 'Next'
     previous: 'Previous'
+
+  label:
+    state: 'State'
+    attach_file: 'Attached Files'
+    issue_history: 'Issue History'
+    comments: 'Comments'
+    add_comment: 'Add Comment'
+    assignee: 'Assignee'
