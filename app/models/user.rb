@@ -39,11 +39,15 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role.name == 'admin'
   end
 
   def project_manager?
-    role == 'project_manager'
+    role.name == 'project_manager'
+  end
+
+  def general_user?
+    role.name == 'general_user'
   end
 
   searchkick highlight: %i[name email role]
