@@ -86,7 +86,7 @@ class Issue < ApplicationRecord
 
   def notify
     if(self.project.project_manager)
-      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_later
+      NotifierMailer.issue_mark_as_resolved(self.title, self.state, self.project.project_manager.email).deliver_later
     end
   end
 end

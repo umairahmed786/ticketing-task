@@ -45,5 +45,11 @@ Rails.application.routes.draw do
     get 'search', to: 'search#index'
   end
   # # Catch-all route for routing errors
-  match '*path', to: 'errors#page_not_found', via: :all
+  # match '*path', to: 'errors#page_not_found', via: :all
+  # Exclude Active Storage routes from the catch-all
+  # unless Rails.env.development? && ENV["DISABLE_PAGE_NOT_FOUND"]
+    match '*path', to: 'errors#page_not_found', via: :all, constraints: lambda { |req|
+      req.path.exclude?('/rails/active_storage/')
+    }
+  # end
 end
