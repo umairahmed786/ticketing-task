@@ -112,7 +112,7 @@ class UserController < ApplicationController
 
   def authorize_owner_or_admin
     unless current_user.role.name.in?(%w[owner admin])
-      redirect_to dashboards_path, alert: 'You are not authorized to access this page.'
+      redirect_to dashboards_path, alert: t(:access_denied, scope: :error)
     end
   end
 end

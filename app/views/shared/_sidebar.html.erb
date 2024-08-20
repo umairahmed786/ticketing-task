@@ -1,15 +1,15 @@
 <aside class="sidebar text-white" id="sidebar">
   <div class="sidebar-header d-flex align-items-center p-3">
     <button class="btn btn-link text-white" id="sidebarToggle">
-      <span class="material-symbols-outlined"><%= t('menu') %></span>
+      <span class="material-symbols-outlined">menu</span>
     </button>
   </div>
   <ul class="sidebar-links list-unstyled p-3">
     <li class="mb-2">
-      <a href="/dashboards" class="text-white d-flex align-items-center">
+      <%= link_to dashboards_path(locale: I18n.locale), class: "text-white d-flex align-items-center" do %>
         <span class="material-symbols-outlined me-2"><%= t('dashboard') %></span>
         <span class="link-text"><%= t('dashboard') %></span>
-      </a>
+      <% end %>
     </li>
     <% if can?(:read, Project) %>
       <h4 class="fw-bold mt-4">
@@ -18,7 +18,7 @@
     
       <li class="mb-2">
         <%= link_to projects_path, class: "text-white d-flex align-items-center" do %>
-          <span class="material-symbols-outlined me-2"><%= t('folder') %></span>
+          <span class="material-symbols-outlined me-2">folder</span>
           <span class="link-text"><%= t('project.header') %></span>
         <% end %>
       </li>
@@ -26,7 +26,7 @@
     <% if current_user.role.name == ('owner' || 'admin') %>
       <li class="mb-2">
         <%= link_to user_index_path, class: "text-white d-flex align-items-center" do %>
-          <span class="material-symbols-outlined me-2"><%= t('group') %></span>
+          <span class="material-symbols-outlined me-2">group</span>
           <span class="link-text"><%= t('users') %></span>
         <% end %>
       </li>
@@ -37,7 +37,7 @@
     <% if user_signed_in? %>
     <li class="mb-2">
       <%= button_to destroy_user_session_path, method: :delete, data: { confirm: t('logout_confirmation') }, class: "d-flex align-items-center no-border-button" do %>
-        <span class="material-symbols-outlined me-2"><%= t('logout') %></span>
+        <span class="material-symbols-outlined me-2">logout</span>
         <span class="link-text"><%= t('logout') %></span>
       <% end %>
     </li>
@@ -46,12 +46,12 @@
 </aside>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const mainContent = document.querySelector('.main-content');
 
-    sidebarToggle.addEventListener('click', () => {
+    sidebarToggle.addEventListener('click', function() {
       if (window.innerWidth <= 768) {
         sidebar.classList.toggle('expanded');
         mainContent.classList.toggle('expanded');

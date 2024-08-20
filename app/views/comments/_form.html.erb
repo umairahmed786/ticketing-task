@@ -5,11 +5,11 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :files, "Attach a file" %>
+    <%= form.label :files, t(:attach_file) %>
     <%= form.file_field :files, multiple: true, class: "form-control" %>
   </div>
 
   <div class="form-group d-flex justify-content-end mt-3">
-    <%= form.submit "Add Comment", class: "btn btn-primary" %>
+    <%= form.submit t(:add_comment), class: "btn btn-primary" %>
   </div>
 <% end %>
