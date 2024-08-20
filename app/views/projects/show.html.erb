@@ -20,7 +20,7 @@
           <% end %>
         <% end %>
         <% if can?(:destroy, Project) %>
-          <%= button_to project_path(@project), method: :delete, data: { confirm: t('confirm_delete_with_details_project') }, class: 'btn btn-danger me-2' do %>
+          <%= button_to project_path(@project), method: :delete, data: { confirm: t(:confirm_delete_with_details_project) }, class: 'btn btn-danger me-2' do %>
             <i class="bi bi-trash"></i>
           <% end %>
         <% end %>
@@ -30,9 +30,9 @@
           </button>
           <ul class="dropdown-menu">
             <% if can?(:create, Issue) || @project.project_manager.nil? %>
-              <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
+              <li><%= link_to t('issues.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
             <% end %>
-            <li><%= link_to t('issue.show'), project_issues_path(@project), class: 'dropdown-item' %></li>
+            <li><%= link_to t('issues.show'), project_issues_path(@project), class: 'dropdown-item' %></li>
           </ul>
         </div>
       </div>
@@ -69,10 +69,10 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col"><%= t('project.name') %></th>
-              <th scope="col"><%= t('project.email') %></th>
+              <th scope="col"><%= t('name') %></th>
+              <th scope="col"><%= t('email') %></th>
               <% if can?(:remove_user, Project) %>
-                <th scope="col"><%= t('project.actions') %></th>
+                <th scope="col"><%= t('actions') %></th>
               <% end %>
             </tr>
           </thead>
@@ -150,5 +150,13 @@
       var unselected_id = e.params.data.id;
       $(this).find('option[value="'+unselected_id+'"]').remove();
     });
+  });
+
+  document.addEventListener('turbolinks:load', function() {
+    // Initialize Bootstrap dropdowns
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl)
+    })
   });
 </script>

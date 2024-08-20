@@ -4,6 +4,9 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 APP_HOST = 'test.example.com'
 
+require 'devise'
+
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
@@ -33,6 +36,9 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+
+  APP_HOST = 'localhost'
+  config.include Devise::Test::ControllerHelpers, type: :controller
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -63,6 +69,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.include FactoryBot::Syntax::Methods
 end
 
 Shoulda::Matchers.configure do |config|

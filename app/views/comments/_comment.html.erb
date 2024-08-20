@@ -9,7 +9,7 @@
                 <%= comment.issue_history.user.name %>
               </h5>
               <!-- Delete icon -->
-              <%= link_to project_issue_comment_path(@issue.project, @issue, comment), method: :delete, data: { confirm: "Are you sure to delete the comment?" }, class: "text-danger" do %>
+              <%= link_to project_issue_comment_path(@issue.project, @issue, comment), method: :delete, data: { confirm: t(:confirm_delete_comment) }, class: "text-danger" do %>
                 <i class="fas fa-trash-alt"></i>
               <% end %>
             </div>
@@ -21,7 +21,7 @@
             <!-- Display attached files if present -->
             <% if comment.files.attached? %>
               <div class="mb-2">
-                <strong><%= t('issues.attachments_heading') %></strong>
+                <strong><%= t(:attachments) %></strong>
                 <div class="d-flex flex-wrap">
                   <% comment.files.each do |file| %>
                     <div class="me-2 mb-2">
@@ -33,7 +33,7 @@
             <% end %>
 
             <!-- Timestamp -->
-            <small class="text-muted"><%= time_ago_in_words(comment.created_at) %> ago</small>
+            <small class="text-muted"><%= time_ago_in_words(comment.created_at) %> <%= t(:ago) %></small>
           </div>
         </div>
       </li>
