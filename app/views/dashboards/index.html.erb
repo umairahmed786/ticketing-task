@@ -8,7 +8,7 @@
   <% end %>
   <%= render 'dashboards/custom_state_modal' %>
   <div class="row mt-4">
-    <div class="<%= ['owner', 'admin'].include?(current_user.role.name) ? 'col-md-6' : 'col-md-12' %>">
+    <div class="<%= (current_user.owner? || current_user.admin?) ? 'col-md-6' : 'col-md-12' %>">
       <% if @projects_count_by_day.present? %>
         <%= line_chart @projects_count_by_day, title: t('project_statistics'), download: true %>
       <% else %>
@@ -17,7 +17,7 @@
       <% end %>
     </div>
 
-    <% if ['owner', 'admin'].include?(current_user.role.name) %>
+    <% if current_user.owner? || current_user.admin? %>
       <div class="col-md-6">
         <% if @users_count_by_role.present? %>
           <%= column_chart @users_count_by_role, title: t('users_statistics_by_role'), download: true %>
@@ -29,7 +29,7 @@
     <% end %>
   </div>
   <div class="row mt-4">
-    <div class="<%= ['owner', 'admin'].include?(current_user.role.name) ? 'col-md-6' : 'col-md-12' %>">
+    <div class="<%= (current_user.owner? || current_user.admin?) ? 'col-md-6' : 'col-md-12' %>">
       <% if @issues_count_by_state.present? %>
         <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), download: true %>
       <% else %>
@@ -37,7 +37,7 @@
         <%= pie_chart @issues_count_by_state, title: t('issues_statistics'), download: true %>
       <% end %>
     </div>
-    <% if ['owner', 'admin'].include?(current_user.role.name) %>
+    <% if current_user.owner? || current_user.admin? %>
       <div class="col-md-6">
         <% if @users_count_by_day.present? %>
           <%= area_chart @users_count_by_day, title: t('users_statistics'), download: true %>

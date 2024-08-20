@@ -317,12 +317,12 @@ DEPENDENCIES
   cancancan (~> 3.6.1)
   capybara (>= 3.26)
   chartkick (= 5.0.7)
-  daemons
-  delayed_job
-  delayed_job_active_record
+  daemons (~> 1.4.1)
+  delayed_job (~> 4.1.12)
+  delayed_job_active_record (~> 4.1.9)
   devise (= 4.9.4)
-  elasticsearch-model
-  elasticsearch-rails
+  elasticsearch-model (~> 8.0.0)
+  elasticsearch-rails (~> 8.0.0)
   groupdate (= 6.4.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)
@@ -334,7 +334,7 @@ DEPENDENCIES
   rails (~> 6.1.7, >= 6.1.7.8)
   rails_real_favicon (~> 0.1.1)
   sass-rails (>= 6)
-  searchkick
+  searchkick (~> 5.3.1)
   select2-rails (= 4.0.13)
   selenium-webdriver (>= 4.0.0.rc1)
   spring

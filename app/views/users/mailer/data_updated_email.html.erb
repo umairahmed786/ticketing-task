@@ -4,7 +4,13 @@
 
 <ul>
   <% @changes.each do |attribute, values| %>
-    <li><%= attribute.humanize %>: <%= values.first %> -> <%= values.last %></li>
+    <li>
+      <% if attribute == 'role_id' %>
+        Role: <%= Role.find(values.first).name.humanize %> -> <%= Role.find(values.last).name.humanize %>
+      <% else %>
+        <%= attribute.humanize %>: <%= values.first %> -> <%= values.last %>
+      <% end %>
+    </li>
   <% end %>
 </ul>
 

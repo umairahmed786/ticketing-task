@@ -50,6 +50,10 @@ class User < ApplicationRecord
     role.name == 'general_user'
   end
 
+  def owner?
+    role.name == 'owner'
+  end
+
   searchkick highlight: %i[name email role]
 
   def search_data
