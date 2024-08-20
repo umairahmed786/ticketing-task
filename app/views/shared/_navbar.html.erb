@@ -45,8 +45,8 @@
             <%= I18n.locale == :en ? "English" : "Deutsch" %>
           </button>
           <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-            <li><%= link_to "English", root_path(locale: :en), class: "dropdown-item" %></li>
-            <li><%= link_to "Deutsch", root_path(locale: :de), class: "dropdown-item" %></li>
+            <li><%= link_to "English", url_for(request.params.merge(locale: :en)), class: "dropdown-item" %></li>
+            <li><%= link_to "Deutsch", url_for(request.params.merge(locale: :de)), class: "dropdown-item" %></li>
           </ul>
         </div>
       </div>
