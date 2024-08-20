@@ -16,15 +16,17 @@ class Issue < ApplicationRecord
   validates :description, length: { minimum: 10 }, if: -> { description.present? }
 
   validates :project_id, presence: true
-  validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
+  validates :complexity_point, inclusion: { in: 0..5, message: I18n.t('issues.complexity_inclusion_error') }
 
   include AASM
 
   after_initialize :load_states_and_events
 
   def load_states_and_events
+    
     self.class.aasm.states.clear
     self.class.aasm.events.clear
+    
     self.class.aasm column: 'state' do
       states = State.all
       transitions = Transition.all

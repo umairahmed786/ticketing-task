@@ -93,6 +93,7 @@ en:
     no_assigned: "Not assigned to anyone."
     show: "Show Issues"
     attachments_heading: 'Attachments:'
+    complexity_inclusion_error: 'must be between 0 and 5'
   projects_assigned_number: "No. of Projects Assigned"
   actions: "Actions"
   no_of_issues: "No. of Issues"
