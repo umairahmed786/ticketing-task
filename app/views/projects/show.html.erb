@@ -151,4 +151,12 @@
       $(this).find('option[value="'+unselected_id+'"]').remove();
     });
   });
+
+  document.addEventListener('turbolinks:load', function() {
+    // Initialize Bootstrap dropdowns
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl)
+    })
+  });
 </script>
