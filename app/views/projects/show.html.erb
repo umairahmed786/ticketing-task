@@ -29,7 +29,7 @@
             <%= t('issues.header') %>
           </button>
           <ul class="dropdown-menu">
-            <% if can?(:create, Issue) || @project.project_manager.nil? %>
+            <% if can?(:create, Issue) %>
               <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
             <% end %>
             <li><%= link_to t('issue.show'), project_issues_path(@project), class: 'dropdown-item' %></li>

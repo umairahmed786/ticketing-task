@@ -12,7 +12,7 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mx-auto">
-        <% if current_user.role.name != 'general_user' %>
+        <% unless current_user.general_user? %>
           <li class="nav-item me-3">
             <%= link_to t('home'), dashboards_path, class: "nav-link text-white" %>
           </li>

@@ -110,3 +110,8 @@ en:
   user_updated: "User updated successfully."
   user_exists: "User with this email already exists in your organization."
   organization_name: "Organization Name"
+  attached_files: "Attached Files"
+  issue_history: "Issue History"
+  comments:
+    header: "Comments"
+    add: "Add Comment"

@@ -29,11 +29,19 @@ class User < ApplicationRecord
   before_save :update_organization_name, if: :organization_name_changed?
 
   def admin?
-    role == 'admin'
+    role.name == 'admin'
   end
 
   def project_manager?
-    role == 'project_manager'
+    role.name == 'project_manager'
+  end
+
+  def owner?
+    role.name == 'owner'
+  end
+
+  def general_user?
+    role.name == 'general_user'
   end
 
   searchkick highlight: %i[name email role]

@@ -30,7 +30,7 @@
               <%= link_to project_path(project), class: 'btn btn-primary btn-sm', title: 'Show', data: { toggle: 'tooltip' } do %>
                 <i class="fas fa-eye"></i>
               <% end %>
-              <% if current_user.role.name == ('owner' || 'admin')%>
+              <% if can?(:update, Project) %>
                 <%= link_to edit_project_path(project), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
                   <i class="fas fa-edit"></i>
                 <% end %>
