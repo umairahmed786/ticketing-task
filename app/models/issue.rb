@@ -8,49 +8,87 @@ class Issue < ApplicationRecord
 
   has_many :comments, through: :issue_histories, dependent: :destroy
 
-  validates :title, presence: true 
+  validates :title, presence: true
   validates :title, length: { minimum: 3 }, if: -> { title.present? }
-  validates :title, uniqueness: true 
+  validates_uniqueness_to_tenant :title
 
   validates :description, presence: true
-  validates :description, length: { minimum: 10 }, if: -> { description.present? } 
+  validates :description, length: { minimum: 10 }, if: -> { description.present? }
 
   validates :project_id, presence: true
   validates :complexity_point, inclusion: { in: 0..5, message: "must be between 0 and 5" }
-  # validates :state, inclusion: { in: ["New", "In Progress", "Resolved"], message: "%{value} is not a valid state" }
-
 
   include AASM
 
-  aasm column: 'state' do
-    # after_all_transitions :notify_resolved
+  after_initialize :load_states_and_events
 
-    state :new, initial: true
-    state :in_progress
-    state :resolved
-    state :closed  
+  def load_states_and_events
+    self.class.aasm.states.clear
+    self.class.aasm.events.clear
+    self.class.aasm column: 'state' do
+      states = State.all
+      transitions = Transition.all
+      states.each do |state|
+        state state.name.to_sym, initial: state.initial
+      end
 
-    event :start do
-      transitions from: [:new, :resolved], to: :in_progress
-    end
+      transitions.each do |transition|
+        event_name = transition.event_name.to_sym
+        if transition.from_transitions.present?
+          from_states = transition.from_transitions.map { |ft| ft.state.name.to_sym }
+          to_state = transition.state.name.to_sym
 
-    event :resolved  do
-      transitions from: :in_progress, to: :resolved, after: :notify_resolved
-    end
+          event event_name do
+            transitions from: from_states, to: to_state
 
-    event :close do
-      transitions from: [:new, :resolved], to: :closed
-    end
-
-    event :reopen do
-      transitions from: :closed, to: :in_progress
+            after { notify if transition.notify }
+          end
+        end
+      end
     end
   end
 
-  def notify_resolved
+  after_update :track_changes
+
+  searchkick highlight: [:title, :description, :state]
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      state: state
+    }
+  end
+
+  private
+
+  def track_changes
+    saved_changes.each do |field, values|
+      next if field == 'updated_at' # Skip the updated_at field
+
+      old_value, new_value = values
+      field_change = FieldChange.create(
+        field: field,
+        old_value: old_value,
+        new_value: new_value,
+        organization_id: organization.id
+      )
+
+      IssueHistory.create(
+        issue: self,
+        user: User.current,
+        organization: self.organization,
+        field_change: field_change,
+        created_at: Time.current
+      )
+    end
+  end
+
+  def notify
     if(self.project.project_manager)
-      NotifierMailer.issue_mark_as_resoleved(self.title, self.project.project_manager.email).deliver_now
+      NotifierMailer.issue_mark_as_resolved(self.title, self.state, self.project.project_manager.email).deliver_later
     end
   end
 end
 
+Issue.reindex

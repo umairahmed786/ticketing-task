@@ -21,7 +21,7 @@
             <!-- Display attached files if present -->
             <% if comment.files.attached? %>
               <div class="mb-2">
-                <strong>Attachments:</strong>
+                <strong><%= t('issues.attachments_heading') %></strong>
                 <div class="d-flex flex-wrap">
                   <% comment.files.each do |file| %>
                     <div class="me-2 mb-2">

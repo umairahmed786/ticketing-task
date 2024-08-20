@@ -1,0 +1,19 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>Your account data has been updated. Here are the changes:</p>
+
+<ul>
+  <% @changes.each do |attribute, values| %>
+    <li>
+      <% if attribute == 'role_id' %>
+        Role: <%= Role.find(values.first).name.humanize %> -> <%= Role.find(values.last).name.humanize %>
+      <% else %>
+        <%= attribute.humanize %>: <%= values.first %> -> <%= values.last %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<p>If you did not make this change, please contact support immediately.</p>
+
+<p>Best regards</p>

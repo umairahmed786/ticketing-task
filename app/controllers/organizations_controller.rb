@@ -1,7 +1,10 @@
 class OrganizationsController < ApplicationController
   skip_before_action :set_tenant
+  before_action :sanitize_params, only: :create
 
-  def index; end
+  def index
+    redirect_to dashboards_path if user_signed_in?
+  end
 
   def new
     @organization = Organization.new
@@ -14,7 +17,7 @@ class OrganizationsController < ApplicationController
       url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_registration_path)
       redirect_to url_with_subdomain
     else
-      flash[:alert] = @organization.errors.full_messages.join(', ')
+      flash.now[:error] = generate_error_messages(@organization)
       render :new
     end
   end
@@ -24,18 +27,41 @@ class OrganizationsController < ApplicationController
   end
 
   def login_existing
-    @organization = Organization.find_by(subdomain: params[:subdomain])
-    owner_role_id = Role.find_by(name: 'owner').id
-    if @organization.present?
-      url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_session_path)
-      redirect_to url_with_subdomain
+    if request.get?
+      flash.now[:error] = t('organization.subdomain_required')
+      render :render_login_form and return
     else
-      flash[:alert] = t('organization.not_found')
-      render :render_login_form
+      subdomain = params[:subdomain]
+
+      # Validate the subdomain format
+      if subdomain.blank?
+        flash.now[:error] = t('organization.subdomain_blank')
+        render :render_login_form and return
+      end
+      if subdomain !~ /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/
+        flash.now[:error] = t('organization.subdomain_invalid')
+        render :render_login_form and return
+      end
+
+      @organization = Organization.find_by(subdomain: params[:subdomain])
+      owner_role_id = Role.find_by(name: 'owner').id
+      if @organization.present?
+        url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_session_path)
+        redirect_to url_with_subdomain
+      else
+        flash.now[:error] = t('organization.not_found')
+        render :render_login_form
+      end
     end
   end
 
+
   private
+
+  def sanitize_params
+    params[:organization][:name].strip! if params[:organization][:name].present?
+    params[:organization][:subdomain].strip! if params[:organization][:subdomain].present?
+  end
 
   def organization_params
     params.require(:organization).permit(:name, :subdomain)
@@ -51,5 +77,21 @@ class OrganizationsController < ApplicationController
       path: path,
       query: { role_id: owner_role_id }.to_query
     ).to_s
+  end
+
+  def generate_error_messages(organization)
+    if organization.name.blank?
+      t('organization.name_blank')
+    elsif organization.subdomain.blank?
+      t('organization.subdomain_blank')
+    elsif organization.subdomain !~ /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/
+      t('organization.subdomain_invalid')
+    elsif Organization.find_by(subdomain: organization.subdomain).present?
+      t('organization.subdomain_taken')
+    elsif Organization.find_by(name: organization.name).present?
+      t('organization.name_taken')
+    else
+      t('organization.unknown_error')
+    end
   end
 end

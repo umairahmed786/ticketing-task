@@ -1,0 +1,62 @@
+<div class="modal fade" id="customStateModal" tabindex="-1" aria-labelledby="customStateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customStateModalLabel">Add Custom State</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: State, url: custom_states_dashboards_path, method: :post, local: true do |form| %>
+          <div class="mb-3">
+            <%= form.label :state_name, "State Name" %>
+            <%= form.text_field :state_name, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <%= form.check_box :initial_state, class: "form-check-input", id: "initialStateSwitch" %>
+              <%= form.label :initial_state, "Is this an initial state?", class: "form-check-label" %>
+            </div>
+          </div>
+          <div class="mb-3" id="fromStateContainer">
+            <%= form.label :from_state, "From State" %>
+            <%= form.collection_select :from_state, @available_from_states, :id, :name, {}, { multiple: true, class: "form-select" } %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :to_state, "To State" %>
+            <%= form.collection_select :to_state, @available_to_states, :id, :name, {}, { multiple: true, class: "form-select" } %>
+          </div>
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <%= form.check_box :notify, class: "form-check-input", id: "notifySwitch" %>
+              <%= form.label :notify, "Notify users when this state is set", class: "form-check-label" %>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <%= form.submit "Add State", class: "btn btn-primary" %>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const initialStateSwitch = document.getElementById('initialStateSwitch');
+    const fromStateContainer = document.getElementById('fromStateContainer');
+    const fromStateSelect = fromStateContainer.querySelector('select');
+
+    function toggleFromState() {
+      if (initialStateSwitch.checked) {
+        fromStateContainer.style.display = 'none';
+        fromStateSelect.value = '';
+      } else {
+        fromStateContainer.style.display = 'block';
+      }
+    }
+
+    initialStateSwitch.addEventListener('change', toggleFromState);
+    toggleFromState(); // Initialize the state of the dropdown based on the default value of the switch
+  });
+</script>

@@ -7,22 +7,34 @@
         <li class="breadcrumb-item active" aria-current="page"><%= @project.title %></li>
       </ol>
     </nav>
-    <div class="mt-4">
-      <%= link_to t('View All Issues'), project_issues_path(@project), class: "btn btn-primary btn-sm me-2" %>
-    </div>
   </div>
 
   <!-- Project Details Card -->
   <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h1 class="card-title mb-0"><%= @project.title %></h1>
-      <div>
-        <%= link_to edit_project_path(@project), class: 'btn btn-warning me-2' do %>
-          <i class="bi bi-pencil"></i>
+      <div class="d-flex justify-content-end">
+        <% if can?(:edit, Project) %>
+          <%= link_to edit_project_path(@project), class: 'btn btn-warning me-2' do %>
+            <i class="bi bi-pencil"></i>
+          <% end %>
         <% end %>
-        <%= link_to project_path(@project), method: :delete, data: { confirm: t('confirmation_message') }, class: 'btn btn-danger' do %>
-          <i class="bi bi-trash"></i>
+        <% if can?(:destroy, Project) %>
+          <%= button_to project_path(@project), method: :delete, data: { confirm: t('confirm_delete_with_details_project') }, class: 'btn btn-danger me-2' do %>
+            <i class="bi bi-trash"></i>
+          <% end %>
         <% end %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= t('issues.header') %>
+          </button>
+          <ul class="dropdown-menu">
+            <% if can?(:create, Issue) || @project.project_manager.nil? %>
+              <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
+            <% end %>
+            <li><%= link_to t('issue.show'), project_issues_path(@project), class: 'dropdown-item' %></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -45,9 +57,11 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h3><%= t('project.users') %></h3>
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-        <i class="bi bi-plus-circle me-2"></i><%= t('project.add_user') %>
-      </button>
+      <% if can?(:add_user, Project) %>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+          <i class="bi bi-plus-circle me-2"></i><%= t('project.add_project_user') %>
+        </button>
+      <% end %>
     </div>
     <div class="card-body p-0">
       <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
@@ -57,7 +71,9 @@
               <th scope="col">#</th>
               <th scope="col"><%= t('project.name') %></th>
               <th scope="col"><%= t('project.email') %></th>
-              <th scope="col"><%= t('project.actions') %></th>
+              <% if can?(:remove_user, Project) %>
+                <th scope="col"><%= t('project.actions') %></th>
+              <% end %>
             </tr>
           </thead>
           <tbody>
@@ -66,11 +82,13 @@
                 <th scope="row"><%= index + 1 %></th>
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
-                <td>
-                  <%= link_to remove_user_project_path(@project, user_id: user.id), method: :delete, class: 'btn btn-danger btn-sm' do %>
-                    <i class="bi bi-trash"></i>
-                  <% end %>
-                </td>
+                <% if can?(:remove_user, Project) %>
+                  <td>
+                    <%= link_to remove_user_project_path(@project, user_id: user.id), method: :delete, class: 'btn btn-danger btn-sm' do %>
+                      <i class="bi bi-trash"></i>
+                    <% end %>
+                  </td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>
@@ -81,21 +99,23 @@
 
   <!-- Modal for Adding Users -->
   <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-white" style="background-color: #1679AB;">
           <h5 class="modal-title" id="addUserModalLabel"><%= t('project.add_user_to_project') %></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <% if @organization_general_users.empty? %>
-            <p class="badge bg-secondary"><%= t('project.no_users_exist') %></p>
+            <div class="alert alert-warning" role="alert">
+              <%= t('project.no_users_exist') %>
+            </div>
           <% else %>
             <%= form_with url: add_user_project_path(@project), method: :post, local: true do |form| %>
               <div class="mb-3">
-                <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true, class: 'form-select js-multiple-select', style: "width: 100%" } %>
+                <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true, class: 'form-select js-multiple-select' } %>
               </div>
-              <div class="mb-3">
+              <div class="d-grid gap-2">
                 <%= form.submit t('project.add_users'), class: 'btn btn-primary' %>
               </div>
             <% end %>
@@ -104,6 +124,9 @@
       </div>
     </div>
   </div>
+</div>
+
+
 
 <script>
   $(document).ready(function() {

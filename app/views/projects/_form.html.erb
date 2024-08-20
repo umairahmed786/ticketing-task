@@ -9,7 +9,7 @@
   </ol>
 </nav>
   <div class="mb-3">
-    <%= form.label :title, class: 'form-label' %>
+    <%= form.label :title, "#{t('title')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
     <%= form.text_field :title, class: 'form-control', required: true %>
     <% project.errors.full_messages_for(:title).each do |message| %>
       <div class="invalid-feedback d-block "><%= message %></div>
@@ -17,7 +17,7 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :description, class: 'form-label' %>
+    <%= form.label :description, "#{t('description')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
     <%= form.text_area :description, class: 'form-control', rows: 3, required: true %>
     <% project.errors.full_messages_for(:description).each do |message| %>
       <div class="invalid-feedback d-block"><%= message %></div>
@@ -26,7 +26,7 @@
 
   <div class="mb-3">
     <%= form.label :project_manager_id, "Project Manager", class: 'form-label' %>
-    <%= form.select :project_manager_id, options_from_collection_for_select(@project_managers, 'id', 'name', project.project_manager_id), {}, { class: 'form-select', required: true } %>
+    <%= form.select :project_manager_id, options_for_select([[t('project.select_manager'), '']] + @project_managers.map { |manager| [manager.name, manager.id] }, project.project_manager_id), {}, class: 'form-select' %>
     <% project.errors.full_messages_for(:project_manager).each do |message| %>
       <div class="invalid-feedback d-block"><%= message %></div>
     <% end %>

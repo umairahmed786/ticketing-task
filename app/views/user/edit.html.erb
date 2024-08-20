@@ -1,2 +1,4 @@
-<h1><%= t('edit_account') %></h1>
-<%= render 'form', all_users: @users %>
+<div class= "container mt-4 p-4 bg-light w-50">
+  <h1 class="text-center"><%= t('edit_account') %></h1>
+  <%= render 'form', user: @user %>
+</div>

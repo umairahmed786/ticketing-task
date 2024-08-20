@@ -1,19 +1,20 @@
 class IssuesController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource :project
   load_and_authorize_resource :issue, through: :project
+  
 
   before_action :set_users, only: %i[new edit update create] 
-  before_action :set_states, only: %i[new edit update create] 
+  before_action :set_states, only: %i[edit update create] 
 
 
 
   def index
-    @issues = @issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
+    @issues = @project.issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
   end
 
   def new
-    
-    @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
+    @available_states = @issue.aasm.states.select { |s| s.options[:initial] == true }.map(&:name)
   end
 
   def create
@@ -21,8 +22,7 @@ class IssuesController < ApplicationController
     if @issue.save
       redirect_to project_issues_path
     else
-      # @project_users = @project.project_users+ [@project.project_manager, @project.admin].compact
-      @available_states = [ @issue.aasm.states.find { |s| s.options[:initial]}.name ]
+      @available_states = @issue.aasm.states.select { |s| s.options[:initial] == true }.map(&:name)
       render :new
     end
   end
@@ -57,11 +57,16 @@ class IssuesController < ApplicationController
     if params[:files].present?
       ActiveRecord::Base.transaction do
         attachments = @issue.files.attach(params[:files])
-        new_file_ids = @issue.files.last(params[:files].size).pluck(:id) if @issue.files.attached?
-        issue_histories = new_file_ids.map { |file_id|
-          { user_id: current_user.id, issue_id: @issue.id, active_storage_attachment_id: file_id , created_at: Time.now, updated_at: Time.now }
-        }
-        IssueHistory.insert_all(issue_histories)        
+        new_file_ids = @issue.files.last(params[:files].size).pluck(:id) if attachments
+        new_file_ids.each do |file_id|
+          IssueHistory.create!(
+            user_id: current_user.id,
+            issue_id: @issue.id,
+            active_storage_attachment_id: file_id,
+            created_at: Time.now,
+            updated_at: Time.now
+          )
+        end
       end
     redirect_to project_issue_path(@issue.project_id, @issue)
     end
@@ -74,17 +79,11 @@ class IssuesController < ApplicationController
   end
 
   def trigger_state_event(new_state)
-    case new_state
-    when 'new'
-    when 'in_progress'
-        @issue.start! 
-    when 'resolved'
-        @issue.resolved! unless @issue.aasm.current_state == 'resolved'
-    when 'closed'
-        @issue.close! unless @issue.aasm.current_state == 'closed'
-    when 'reopened'
-        @issue.reopen! unless @issue.aasm.current_state == 'in_progress'
-    end
+    event_method = "#{ new_state }!"
+
+    if @issue.respond_to?(event_method)
+      @issue.send( event_method )
+    end 
   end
 
   def set_states

@@ -7,14 +7,22 @@ ruby '3.1.4'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 # Use cancancan for authorization
 gem 'cancancan', '~> 3.6.1'
+gem 'chartkick', '=5.0.7'
+gem 'groupdate', '=6.4.0'
 # Use sqlite3 as the database for Active Record
 gem 'bootstrap_form', '~> 5.4'
 gem 'bootstrap', '~> 5.3.3'
 
-gem 'select2-rails'
+gem 'select2-rails', '=4.0.13'
+gem 'whenever', require: false
 
 gem 'aasm', '~> 5.3.1'
-
+gem 'daemons', '~> 1.4.1'
+gem 'delayed_job', '~> 4.1.12'
+gem 'delayed_job_active_record', '~> 4.1.9'
+gem 'elasticsearch-model', '~> 8.0.0'
+gem 'elasticsearch-rails', '~> 8.0.0'
+gem 'searchkick', '~> 5.3.1'
 gem 'will_paginate-bootstrap', '~> 1.0'
 
 gem 'devise', '=4.9.4'
@@ -58,6 +66,9 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'rails_real_favicon', '~> 0.1.1'
+
 end
 
 group :test do
