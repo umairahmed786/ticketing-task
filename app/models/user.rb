@@ -90,4 +90,5 @@ class User < ApplicationRecord
 end
 
 # Ensure the index is created
-User.reindex
+# User.reindex
+end
