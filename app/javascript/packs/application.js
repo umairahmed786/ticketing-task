@@ -29,3 +29,30 @@ document.addEventListener('shown.bs.modal', function () {
     dropdownParent: $('#addUserModal') // Ensures the dropdown is correctly placed within the modal
   });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  var selectElements = document.querySelectorAll('.js-multiple-select');
+  
+  selectElements.forEach(function(selectElement) {
+    $(selectElement).select2({
+      placeholder: selectUsersPlaceholder,
+      allowClear: true,
+      tags: true,
+      width: 'resolve',
+      language: {
+        noResults: function() {
+          return noUsersToShowMessage;
+        }
+      },
+      escapeMarkup: function(markup) {
+        return markup;
+      }
+    });
+
+    $(selectElement).on('select2:unselect', function(e) {
+      var unselected_id = e.params.data.id;
+      $(this).find('option[value="'+unselected_id+'"]').remove();
+    });
+  });
+});
+

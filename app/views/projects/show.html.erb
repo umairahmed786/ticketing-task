@@ -124,29 +124,12 @@
   </div>
 </div>
 
+<div id="js-multiple-select-container"
+     data-placeholder="<%= t('project.select_users') %>"
+     data-no-results="<%= t('project.no_users_to_show') %>">
+</div>
 
 
-<script>
-  $(document).ready(function() {
-    $('.js-multiple-select').select2({
-      placeholder: "<%= t('project.select_users') %>",
-      allowClear: true,
-      tags: true,
-      width: 'resolve',
-      language: {
-        noResults: function() {
-          return "<%= t('project.no_users_to_show') %>";
-        }
-      },
-      escapeMarkup: function(markup) {
-        return markup;
-      }
-    });
 
-    // Functionality to remove selected users
-    $('.js-multiple-select').on('select2:unselect', function(e) {
-      var unselected_id = e.params.data.id;
-      $(this).find('option[value="'+unselected_id+'"]').remove();
-    });
-  });
-</script>
+
+
