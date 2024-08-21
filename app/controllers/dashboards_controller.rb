@@ -14,6 +14,10 @@ class DashboardsController < ApplicationController
     @projects_count_by_day = Project.group_by_day(:created_at, format: '%b %d, %Y').count
     @issues_count_by_day = Issue.group_by_day(:created_at, format: '%b %d, %Y').count
     @comments_count_by_day = Comment.group_by_day(:created_at, format: '%b %d, %Y').count
+
+    # respond_to do |format|
+    #   format.html
+    # end
   end
 
   def add_custom_state

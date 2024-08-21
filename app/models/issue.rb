@@ -10,7 +10,7 @@ class Issue < ApplicationRecord
 
   validates :title, presence: true
   validates :title, length: { minimum: 3 }, if: -> { title.present? }
-  validates_uniqueness_to_tenant :title
+  validates_uniqueness_of :title, scope: [:organization_id, :project_id]
 
   validates :description, presence: true
   validates :description, length: { minimum: 10 }, if: -> { description.present? }

@@ -48,6 +48,7 @@ class User < ApplicationRecord
 
   def self.admins
     where(role_id: Role.find_by_name('admin').id)
+  end
   def owner?
     role.name == 'owner'
   end
@@ -95,4 +96,4 @@ end
 
 # Ensure the index is created
 # User.reindex
-end
+# end
