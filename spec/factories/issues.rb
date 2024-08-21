@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :issue do
-    title { "New Issue" }
+    sequence(:title) { |n| "Issue Title #{n}" }
     description { "A detailed description of the issue." }
     state { 'new' }
     complexity_point { 3 }

@@ -6,13 +6,15 @@ RSpec.describe UserController, type: :controller do
 
   before do
     allow_any_instance_of(ActionDispatch::Request).to receive(:subdomain).and_return(organization.subdomain.to_s)
+    ActsAsTenant.current_tenant = organization
     sign_in owner
   end
 
+  after do
+    ActsAsTenant.current_tenant = nil
+  end
+
   describe 'GET #index' do
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     it 'displays users' do
       get :index
     end
@@ -20,12 +22,6 @@ RSpec.describe UserController, type: :controller do
 
   describe 'GET #show' do
     let(:user) { create(:user) }
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     it 'assigns the requested user' do
       get :show, params: { id: user.id }
       expect(assigns(:user)).to eq(user)
@@ -33,9 +29,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'GET #new' do
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     it 'assigns a new user' do
       get :new
       expect(response).to have_http_status(:ok)
@@ -44,12 +37,6 @@ RSpec.describe UserController, type: :controller do
 
   describe 'POST #create' do
     context 'when the user already exists in the organization' do
-      before do
-        ActsAsTenant.current_tenant = organization
-      end
-      after do
-        ActsAsTenant.current_tenant = nil
-      end
       let(:user) { create(:user) }
       let(:user_params) { attributes_for(:user) }
       let!(:existing_user) { create(:user, email: user_params[:email]) }
@@ -74,12 +61,6 @@ RSpec.describe UserController, type: :controller do
         user.save!
         post :create, params: { user: valid_attributes }
       end
-      before do
-        ActsAsTenant.current_tenant = organization
-      end
-      after do
-        ActsAsTenant.current_tenant = nil
-      end
       it 'creates a new user and sends an invite email' do
         expect do
           subject
@@ -91,12 +72,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'GET #edit_user_profile' do
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     let(:user) { create(:user) }
     it 'assigns the requested user' do
       get :edit_user_profile, params: { id: user.id }
@@ -105,12 +80,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'PATCH #update_user_profile' do
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     let(:user) { create(:user) }
     context 'with valid attributes' do
       it 'updates the user and sends a data updated email' do
@@ -123,12 +92,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     let(:user) { create(:user) }
     it 'assigns the requested user' do
       get :edit, params: { id: user.id }
@@ -137,12 +100,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     let(:user) { create(:user) }
     context 'with valid attributes' do
       it 'updates the user' do
@@ -155,12 +112,6 @@ RSpec.describe UserController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before do
-      ActsAsTenant.current_tenant = organization
-    end
-    after do
-      ActsAsTenant.current_tenant = nil
-    end
     let(:user) { create(:user) }
     it 'deletes the user and redirects to index' do
       delete :destroy, params: { id: user.id }

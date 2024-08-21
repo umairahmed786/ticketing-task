@@ -170,7 +170,7 @@ RSpec.describe OrganizationsController, type: :controller do
       it 'redirects to the login page with the correct subdomain' do
         post :login_existing, params: { subdomain: 'existing' }
 
-        expected_url = "http://existing.localhost:3000/en/users/sign_in?role_id=#{owner_role.id}"
+        expected_url = "http://existing.test.example.com:3000/en/users/sign_in?role_id=#{owner_role.id}"
         expect(response).to redirect_to(expected_url)
       end
     end
