@@ -29,3 +29,11 @@ document.addEventListener('shown.bs.modal', function () {
     dropdownParent: $('#addUserModal') // Ensures the dropdown is correctly placed within the modal
   });
 });
+
+
+document.addEventListener("turbolinks:load", () => {
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+    return new bootstrap.Dropdown(dropdownToggleEl)
+    })
+});
