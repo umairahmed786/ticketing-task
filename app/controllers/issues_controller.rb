@@ -57,11 +57,16 @@ class IssuesController < ApplicationController
     if params[:files].present?
       ActiveRecord::Base.transaction do
         attachments = @issue.files.attach(params[:files])
-        new_file_ids = @issue.files.last(params[:files].size).pluck(:id) if @issue.files.attached?
-        issue_histories = new_file_ids.map { |file_id|
-          { user_id: current_user.id, issue_id: @issue.id, active_storage_attachment_id: file_id , created_at: Time.now, updated_at: Time.now }
-        }
-        IssueHistory.insert_all(issue_histories)        
+        new_file_ids = @issue.files.last(params[:files].size).pluck(:id) if attachments
+        new_file_ids.each do |file_id|
+          IssueHistory.create!(
+            user_id: current_user.id,
+            issue_id: @issue.id,
+            active_storage_attachment_id: file_id,
+            created_at: Time.now,
+            updated_at: Time.now
+          )
+        end
       end
     redirect_to project_issue_path(@issue.project_id, @issue)
     end

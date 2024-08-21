@@ -355,7 +355,7 @@ DEPENDENCIES
   devise (= 4.9.4)
   elasticsearch-model
   elasticsearch-rails
-  factory_bot_rails (= 6.4.3)
+  factory_bot_rails (~> 6.2)
   groupdate (= 6.4.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)

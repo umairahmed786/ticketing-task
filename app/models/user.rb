@@ -46,6 +46,10 @@ class User < ApplicationRecord
     role.name == 'project_manager'
   end
 
+  def general_user?
+    role.name == 'general_user'
+  end
+
   def self.admins
     where(role_id: Role.find_by_name('admin').id)
   end

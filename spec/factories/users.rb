@@ -5,7 +5,7 @@ FactoryBot.define do
     password { 'password123' }
     password_confirmation { 'password123' }
     confirmed_at { Time.now }
-    association :role
-    organization
+    role { create(:role) }
+    association :organization
   end
 end
