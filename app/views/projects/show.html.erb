@@ -29,8 +29,8 @@
             <%= t('issues.header') %>
           </button>
           <ul class="dropdown-menu">
-            <% if can?(:create, Issue) || @project.project_manager.nil? %>
-              <li><%= link_to t('issues.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
+            <% if can?(:create, Issue) %>
+              <li><%= link_to t('issue.create'), new_project_issue_path(@project), class: 'dropdown-item' %></li>
             <% end %>
             <li><%= link_to t('issues.show'), project_issues_path(@project), class: 'dropdown-item' %></li>
           </ul>
@@ -126,37 +126,12 @@
   </div>
 </div>
 
+<div id="js-multiple-select-container"
+     data-placeholder="<%= t('project.select_users') %>"
+     data-no-results="<%= t('project.no_users_to_show') %>">
+</div>
 
 
-<script>
-  $(document).ready(function() {
-    $('.js-multiple-select').select2({
-      placeholder: "<%= t('project.select_users') %>",
-      allowClear: true,
-      tags: true,
-      width: 'resolve',
-      language: {
-        noResults: function() {
-          return "<%= t('project.no_users_to_show') %>";
-        }
-      },
-      escapeMarkup: function(markup) {
-        return markup;
-      }
-    });
 
-    // Functionality to remove selected users
-    $('.js-multiple-select').on('select2:unselect', function(e) {
-      var unselected_id = e.params.data.id;
-      $(this).find('option[value="'+unselected_id+'"]').remove();
-    });
-  });
 
-  document.addEventListener('turbolinks:load', function() {
-    // Initialize Bootstrap dropdowns
-    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-      return new bootstrap.Dropdown(dropdownToggleEl)
-    })
-  });
-</script>
+

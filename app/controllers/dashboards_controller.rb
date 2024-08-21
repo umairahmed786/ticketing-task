@@ -5,16 +5,10 @@ class DashboardsController < ApplicationController
     @available_to_states = State.where.not(initial: true)
     @projects = @organization.projects
     @issues_count_by_state = Issue.group(:state).count
-    if %w[owner admin].include? current_user.role.name
-      @users_count_by_role = User.joins(:role).where(users: { organization_id: @organization.id })
-                                 .group('roles.name').count
-    end
-    @projects_count_by_day = Project.where(projects: { organization_id: @organization.id })
-                                    .group_by_day(:created_at, format: '%d %b %Y').count
-
-    if %w[owner admin].include? current_user.role.name
-      @users_count_by_day = User.where(users: { organization_id: @organization.id })
-                                .group_by_day(:created_at, format: '%d %b %Y').count
+    @users_count_by_role = User.joins(:role).group('roles.name').count if current_user.owner? || current_user.admin?
+    @projects_count_by_day = Project.group_by_day(:created_at, format: '%d %b %Y').count
+    if current_user.owner? || current_user.admin?
+      @users_count_by_day = User.group_by_day(:created_at, format: '%d %b %Y').count
     end
 
     @projects_count_by_day = Project.group_by_day(:created_at, format: '%b %d, %Y').count

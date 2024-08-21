@@ -10,7 +10,7 @@ class IssuesController < ApplicationController
 
 
   def index
-    @issues = @project.issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
+    @issues = @project.issues.paginate(page: params[:page], per_page: 10)
   end
 
   def new

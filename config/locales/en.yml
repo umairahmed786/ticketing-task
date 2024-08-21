@@ -150,3 +150,8 @@ en:
   add_comment: "Add Comment"
   close: "Close"
   search: "Search..."
+  attached_files: "Attached Files"
+  issue_history: "Issue History"
+  comments:
+    header: "Comments"
+    add: "Add Comment"
