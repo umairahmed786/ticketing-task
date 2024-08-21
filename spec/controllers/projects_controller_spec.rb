@@ -1,0 +1,175 @@
+require 'rails_helper'
+
+RSpec.describe ProjectsController, type: :controller do
+  let(:user) { create(:user) }
+  let(:project_manager) { create(:user, role: create(:role, :project_manager)) }
+  let(:general_user) { create(:user, role: create(:role, :general_user)) }
+  let(:admin) { create(:user, role: create(:role, :admin)) }
+  let(:project) { create(:project, admin: admin, project_manager: project_manager) }
+
+  before do
+    sign_in user
+    allow(controller).to receive(:current_user).and_return(user)
+    allow(controller).to receive(:current_tenant).and_return(user.organization)
+  end
+
+  describe 'GET #index' do
+    context 'when user is a project manager' do
+      it 'assigns @projects' do
+        get :index
+        expect(assigns(:projects)).to eq([project])
+      end
+    end
+
+    # context 'when user is a general user' do
+    #   before do
+    #     user.update(role: general_user.role)
+    #     project.users << user
+    #     get :index
+    #   end
+
+    #   it 'assigns @projects' do
+    #     expect(assigns(:projects)).to eq([project])
+    #   end
+    # end
+
+    # context 'when user is an admin' do
+    #   before do
+    #     user.update(role: admin.role)
+    #     get :index
+    #   end
+
+    #   it 'assigns @projects' do
+    #     expect(assigns(:projects)).to eq([project])
+    #   end
+    # end
+  end
+
+  # describe 'GET #new' do
+  #   it 'renders the new template' do
+  #     get :new
+  #     expect(response).to render_template(:new)
+  #   end
+  # end
+
+  # describe 'POST #create' do
+  #   context 'with valid attributes' do
+  #     it 'creates a new project' do
+  #       expect {
+  #         post :create, params: { project: attributes_for(:project) }
+  #       }.to change(Project, :count).by(1)
+  #     end
+
+  #     it 'redirects to the new project' do
+  #       post :create, params: { project: attributes_for(:project) }
+  #       expect(response).to redirect_to(Project.last)
+  #     end
+  #   end
+
+  #   context 'with invalid attributes' do
+  #     it 'does not create a new project' do
+  #       expect {
+  #         post :create, params: { project: attributes_for(:project, title: nil) }
+  #       }.not_to change(Project, :count)
+  #     end
+
+  #     it 're-renders the new template' do
+  #       post :create, params: { project: attributes_for(:project, title: nil) }
+  #       expect(response).to render_template(:new)
+  #     end
+  #   end
+  # end
+
+  # describe 'GET #show' do
+  #   before do
+  #     get :show, params: { id: project.id }
+  #   end
+
+  #   it 'assigns @organization_general_users' do
+  #     expect(assigns(:organization_general_users)).to be_present
+  #   end
+
+  #   it 'assigns @project_general_users' do
+  #     expect(assigns(:project_general_users)).to be_present
+  #   end
+
+  #   it 'assigns @issues' do
+  #     expect(assigns(:issues)).to eq(project.issues)
+  #   end
+  # end
+
+  # describe 'GET #edit' do
+  #   it 'renders the edit template' do
+  #     get :edit, params: { id: project.id }
+  #     expect(response).to render_template(:edit)
+  #   end
+  # end
+
+  # describe 'PATCH #update' do
+  #   context 'with valid attributes' do
+  #     it 'updates the project' do
+  #       patch :update, params: { id: project.id, project: { title: 'New Title' } }
+  #       project.reload
+  #       expect(project.title).to eq('New Title')
+  #     end
+
+  #     it 'redirects to the project' do
+  #       patch :update, params: { id: project.id, project: { title: 'New Title' } }
+  #       expect(response).to redirect_to(project)
+  #     end
+  #   end
+
+  #   context 'with invalid attributes' do
+  #     it 'does not update the project' do
+  #       patch :update, params: { id: project.id, project: { title: nil } }
+  #       project.reload
+  #       expect(project.title).not_to be_nil
+  #     end
+
+  #     it 're-renders the edit template' do
+  #       patch :update, params: { id: project.id, project: { title: nil } }
+  #       expect(response).to render_template(:edit)
+  #     end
+  #   end
+  # end
+
+  # describe 'DELETE #destroy' do
+  #   it 'deletes the project' do
+  #     project
+  #     expect {
+  #       delete :destroy, params: { id: project.id }
+  #     }.to change(Project, :count).by(-1)
+  #   end
+
+  #   it 'redirects to projects path' do
+  #     delete :destroy, params: { id: project.id }
+  #     expect(response).to redirect_to(projects_path)
+  #   end
+  # end
+
+  # describe 'POST #add_user' do
+  #   it 'adds users to the project' do
+  #     user_to_add = create(:user)
+  #     post :add_user, params: { id: project.id, to_be_added_users: [user_to_add.id] }
+  #     expect(project.users).to include(user_to_add)
+  #   end
+
+  #   it 'redirects to the project' do
+  #     post :add_user, params: { id: project.id, to_be_added_users: [user.id] }
+  #     expect(response).to redirect_to(project)
+  #   end
+  # end
+
+  # describe 'DELETE #remove_user' do
+  #   it 'removes users from the project' do
+  #     project.users << user
+  #     delete :remove_user, params: { id: project.id, user_id: user.id }
+  #     expect(project.users).not_to include(user)
+  #   end
+
+  #   it 'redirects to the project' do
+  #     delete :remove_user, params: { id: project.id, user_id: user.id }
+  #     expect(response).to redirect_to(project)
+  #   end
+  # end
+end
