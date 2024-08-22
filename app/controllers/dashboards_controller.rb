@@ -32,7 +32,7 @@ class DashboardsController < ApplicationController
     from_states = custom_state_params[:from_state]&.reject(&:blank?)
     to_states = custom_state_params[:to_state]&.reject(&:blank?)
     is_initial = custom_state_params[:initial_state]
-    
+
     if state_name.present? && (is_initial == "1" ?  from_states.blank? && to_states.present? : from_states.present?)
       ActiveRecord::Base.transaction do
         @state = State.create(name: state_name, initial: is_initial)

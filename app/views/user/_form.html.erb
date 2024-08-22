@@ -39,7 +39,7 @@
   <% end %>
 
   <% if @user.new_record? %>
-    <div class="form-group mb-3">
+    <div class="mb-3">
       <%= form.label :role_id, "#{t('role')} <span class='text-danger'>*</span>".html_safe, class: "form-label" %>
       <%= form.select :role_id, options_for_select([['Select Role', '']] + @roles.map { |role| [role.name.humanize, role.id] }, @user.role_id), {}, class: "form-select", required: !@user.persisted? %>
     </div>
