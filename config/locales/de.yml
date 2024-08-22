@@ -122,6 +122,11 @@ de:
   user_updated: "Benutzer erfolgreich aktualisiert."
   user_exists: "Benutzer mit dieser E-Mail existiert bereits in Ihrer Organisation."
   organization_name: "Organisationsname"
+  select_assignee: 'Wähle einen Verantwortlichen'
+  add_attachment: 'Datei hinzufügen'
+  upload: 'Hochladen'
+
+
 
   state:
     title: "Status"
@@ -150,6 +155,8 @@ de:
   search: "Suche..."
   attached_files: "Angefügte Dateien"
   issue_history: "Aufgabenhistorie"
+  search_issues: 'Suche nach Problemen...'
+
   comments:
     header: "Kommentare"
     add: "Kommentar hinzufügen"

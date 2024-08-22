@@ -59,13 +59,13 @@ class User < ApplicationRecord
 
   searchkick highlight: %i[name email role]
 
-  def search_data
-    {
-      name: name,
-      email: email,
-      role: role&.name
-    }
-  end
+  # def search_data
+  #   {
+  #     name: name,
+  #     email: email,
+  #     role: role&.name
+  #   }
+  # end
 
   private
 

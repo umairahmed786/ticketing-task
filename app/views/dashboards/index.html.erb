@@ -53,7 +53,7 @@
       <% data = [] %>
       <% data << { name: t('project.header'), data: @projects_count_by_day } if @projects_count_by_day.present? %>
       <% data << { name: t('issues.header'), data: @issues_count_by_day } if @issues_count_by_day.present? %>
-      <% data << { name: t('comments'), data: @comments_count_by_day } if @comments_count_by_day.present? %>
+      <% data << { name: t('comments.header'), data: @comments_count_by_day } if @comments_count_by_day.present? %>
       <% if data.present? %>
         <%= line_chart data, title: t('project_issues_comments_stats'), loading: t('loading'), download: true %>
       <% else %>

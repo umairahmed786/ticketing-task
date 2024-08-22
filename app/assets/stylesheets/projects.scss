@@ -19,3 +19,76 @@
 }
 
 
+/* Custom styles for selected users within the Select2 dropdown */
+.selected-user-badge {
+  display: inline-block;
+  background-color: #1679AB;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-right: 5px;
+  font-size: 0.85rem;
+}
+
+/* Hide the search field in Select2 */
+.select2-container .select2-search--inline {
+  display: none !important;
+}
+
+/* Adjust the dropdown styling */
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+  padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+}
+
+/* Ensure the dropdown menu is properly aligned and visible */
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  min-height: 38px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #1679AB; /* Adjust background color */
+  color: #fff; /* Adjust text color */
+  border: 1px solid #1679AB; /* Match border color */
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+
+/* Ensure the placeholder is styled */
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Ensure the placeholder is styled */
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Style the dropdown arrow */
+.select2-container--default .select2-selection--multiple .select2-selection__arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+}
+
+/* Style the dropdown */
+.custom-dropdown .select2-results__option {
+  padding: 5px 10px;
+}
+
+/* Style the selected user text */
+.selected-user {
+  padding: 2px 5px;
+  border-radius: 3px;
+  background-color: #e4f0fe;
+  color: #1679AB;
+  margin-right: 5px;
+}
+

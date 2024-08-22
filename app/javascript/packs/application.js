@@ -46,24 +46,69 @@ document.addEventListener("DOMContentLoaded", function() {
   
   selectElements.forEach(function(selectElement) {
     $(selectElement).select2({
-      placeholder: selectUsersPlaceholder,
+      placeholder: "Select user",
       allowClear: true,
-      tags: true,
-      width: 'resolve',
-      language: {
-        noResults: function() {
-          return noUsersToShowMessage;
-        }
-      },
-      escapeMarkup: function(markup) {
-        return markup;
-      }
+      tags: false, // Disable adding new tags
+      width: '100%', // Adjust width
+      dropdownCssClass: 'custom-dropdown', // Custom dropdown class
+      templateResult: formatState,
+      templateSelection: formatSelection
     });
-
+    
+    // Handle unselect event
     $(selectElement).on('select2:unselect', function(e) {
       var unselected_id = e.params.data.id;
       $(this).find('option[value="'+unselected_id+'"]').remove();
     });
   });
+  
+  // Custom template for options
+  function formatState(state) {
+    if (!state.id) {
+      return state.text;
+    }
+    return $('<span>' + state.text + '</span>');
+  }
+
+  // Custom template for selected options
+  function formatSelection(data) {
+    return $('<span class="selected-user">' + data.text + '</span>');
+  }
 });
+
+
+let debounceTimer;
+
+$(document).on('keyup', '#search-input', function(e) {
+  const searchInput = $(this);
+  const query = searchInput.val();
+
+  // Clear the previous timeout
+  clearTimeout(debounceTimer);
+
+  // Set a new timeout
+  debounceTimer = setTimeout(function() {
+    console.log("Search initiated with query: ", query);
+
+    searchInput.focus();
+
+    $.ajax({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      },
+      url: searchInput.data('url'),
+      type: "GET",
+      data: { search: query },
+      dataType: "script",
+      success: function(response) {
+        eval(response);
+        $('#search-input').val(query);
+        $('#search-input').focus();
+      }
+    });
+  }, 500);
+});
+
+
+
 

@@ -99,31 +99,32 @@
 
   <!-- Modal for Adding Users -->
   <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header text-white" style="background-color: #1679AB;">
-          <h5 class="modal-title" id="addUserModalLabel"><%= t('project.add_user_to_project') %></h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <% if @organization_general_users.empty? %>
-            <div class="alert alert-warning" role="alert">
-              <%= t('project.no_users_exist') %>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header text-white" style="background-color: #1679AB;">
+        <h5 class="modal-title" id="addUserModalLabel"><%= t('project.add_user_to_project') %></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% if @organization_general_users.empty? %>
+          <div class="alert alert-warning" role="alert">
+            <%= t('project.no_users_exist') %>
+          </div>
+        <% else %>
+          <%= form_with url: add_user_project_path(@project), method: :post, local: true do |form| %>
+            <div class="mb-3">
+              <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true, class: 'form-select js-multiple-select' } %>
             </div>
-          <% else %>
-            <%= form_with url: add_user_project_path(@project), method: :post, local: true do |form| %>
-              <div class="mb-3">
-                <%= form.select 'to_be_added_users', options_from_collection_for_select(@organization_general_users, 'id', 'name'), {}, { multiple: true, class: 'form-select js-multiple-select' } %>
-              </div>
-              <div class="d-grid gap-2">
-                <%= form.submit t('project.add_users'), class: 'btn btn-primary' %>
-              </div>
-            <% end %>
+            <div class="d-grid gap-2">
+              <%= form.submit t('project.add_users'), class: 'btn btn-primary' %>
+            </div>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
+
 </div>
 
 

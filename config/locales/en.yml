@@ -123,6 +123,10 @@ en:
   user_updated: "User updated successfully."
   user_exists: "User with this email already exists in your organization."
   organization_name: "Organization Name"
+  select_assignee: 'Select an Assignee'
+  add_attachment: 'Add Attachment'
+  upload: Upload
+  search_issues: 'Search issues...'
 
 
   state:

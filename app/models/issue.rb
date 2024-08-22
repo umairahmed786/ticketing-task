@@ -26,7 +26,6 @@ class Issue < ApplicationRecord
     
     self.class.aasm.states.clear
     self.class.aasm.events.clear
-    
     self.class.aasm column: 'state' do
       states = State.all
       transitions = Transition.all
