@@ -1,31 +1,46 @@
 <div class= "container mt-5 p-4 bg-light w-50">
-  <h2 class= "text-center" ><%= t('register_form') %></h2>
+  <div class="logo text-center">
+    <%= image_tag 'TT logo.png', alt: 'TicketTask' %>
+  </div>
+  <div class="text-center mt-4 mb-4 name">
+    <%= t('organization.create_org') %>
+  </div>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |form| %>
-  <div class="mb-3">
-    <%= form.label :name, "#{t('name')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
-    <%= form.text_field :name, class: 'form-control', autofocus: true, autocomplete: "name", required: true %>
-  </div>
+    <%= form.fields_for :organization do |org_form| %>
+      <div class="mb-3">
+        <%= org_form.label :name, "#{t('organization_name')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+        <%= org_form.text_field :name, class: "form-control", autofocus: true, required: true, id: 'organization_name' %>
+      </div>
+      <div class="mb-3">
+        <%= org_form.label :subdomain, "#{t('organization.subdomain')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+        <%= org_form.text_field :subdomain, class: "form-control", autofocus: true, required: true, id: 'organization_subdomain' %>
+      </div>
+    <% end %>
 
-  <div class="mb-3">
-    <%= form.label :email, "#{t('email')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
-    <%= form.email_field :email, class: 'form-control',  autofocus: true, autocomplete: "email", required: true %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :name, "#{t('name')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.text_field :name, class: 'form-control', autofocus: true, autocomplete: "name", required: true %>
+    </div>
 
-  <div class="mb-3">
-    <%= form.label :password, "#{t('password')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
-    <%= form.password_field :password, class: 'form-control', autocomplete: "new-password", required: true %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :email, "#{t('email')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.email_field :email, class: 'form-control',  autofocus: true, autocomplete: "email", required: true %>
+    </div>
 
-  <div class="mb-3">
-    <%= form.label :password_confirmation, "#{t('password_confirmation')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
-    <%= form.password_field :password_confirmation, class: 'form-control', autocomplete: "new-password", required: true %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :password, "#{t('password')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.password_field :password, class: 'form-control', autocomplete: "new-password", required: true, id: 'password' %>
+    </div>
 
-  <%= form.hidden_field :organization_id, value: @organization.id %>
-  <%= form.hidden_field :role_id, value: (params[:role_id] || (params[:user] && params[:user][:role_id])) %>
+    <div class="mb-3">
+      <%= form.label :password_confirmation, "#{t('password_confirmation')} <span class='text-danger'>*</span>".html_safe, class: 'form-label' %>
+      <%= form.password_field :password_confirmation, class: 'form-control', autocomplete: "new-password", required: true, id: 'password_confirmation' %>
+    </div>
 
-  <div class="mb-3 text-center">
-    <%= form.submit t('register'), class: 'btn btn-primary px-5 py-2'%>
+    <div class="mb-3 text-center">
+      <%= form.submit t('organization.create.title'), class: 'btn btn-primary px-5 py-2'%>
+    </div>
+  <% end %>
 </div>
-<% end %>
-</div>
+
+<%= javascript_include_tag 'form_validation' %>

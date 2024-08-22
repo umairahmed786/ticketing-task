@@ -20,7 +20,7 @@
                   <tr>
                     <td><%= user.try(:highlight).try(:name).try(:first) || user.name %></td>
                     <td><%= user.try(:highlight).try(:email).try(:first) || user.email %></td>
-                    <td><%= user.role.name %></td>
+                    <td><%= user.role.name.humanize %></td>
                   </tr>
                 <% end %>
               </tbody>
