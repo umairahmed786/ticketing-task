@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     root 'organizations#index' # root path
-    resources :organizations, only: %i[new create index] do
+    resources :organizations, only: :index do
       collection do
         get 'render_login_form'
         post 'login_existing'

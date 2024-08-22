@@ -1,25 +1,8 @@
 class OrganizationsController < ApplicationController
   skip_before_action :set_tenant
-  before_action :sanitize_params, only: :create
 
   def index
     redirect_to dashboards_path if user_signed_in?
-  end
-
-  def new
-    @organization = Organization.new
-  end
-
-  def create
-    @organization = Organization.new(organization_params)
-    owner_role_id = Role.find_by(name: 'owner').id
-    if @organization.save
-      url_with_subdomain = build_url_with_subdomain(owner_role_id, new_user_registration_path)
-      redirect_to url_with_subdomain
-    else
-      flash.now[:error] = generate_error_messages(@organization)
-      render :new
-    end
   end
 
   def render_login_form
@@ -55,13 +38,7 @@ class OrganizationsController < ApplicationController
     end
   end
 
-
   private
-
-  def sanitize_params
-    params[:organization][:name].strip! if params[:organization][:name].present?
-    params[:organization][:subdomain].strip! if params[:organization][:subdomain].present?
-  end
 
   def organization_params
     params.require(:organization).permit(:name, :subdomain)
@@ -77,21 +54,5 @@ class OrganizationsController < ApplicationController
       path: path,
       query: { role_id: owner_role_id }.to_query
     ).to_s
-  end
-
-  def generate_error_messages(organization)
-    if organization.name.blank?
-      t('organization.name_blank')
-    elsif organization.subdomain.blank?
-      t('organization.subdomain_blank')
-    elsif organization.subdomain !~ /\A(?=.*[a-zA-Z])[a-zA-Z0-9]+\z/
-      t('organization.subdomain_invalid')
-    elsif Organization.find_by(subdomain: organization.subdomain).present?
-      t('organization.subdomain_taken')
-    elsif Organization.find_by(name: organization.name).present?
-      t('organization.name_taken')
-    else
-      t('organization.unknown_error')
-    end
   end
 end
