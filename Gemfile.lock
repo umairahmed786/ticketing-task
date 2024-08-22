@@ -291,6 +291,7 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    sequenceid (0.0.6)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     spring (4.2.1)
@@ -378,6 +379,7 @@ DEPENDENCIES
   searchkick
   select2-rails (= 4.0.13)
   selenium-webdriver (>= 4.0.0.rc1)
+  sequenceid (~> 0.0.6)
   shoulda-matchers (~> 5.0)
   spring
   turbolinks (~> 5)

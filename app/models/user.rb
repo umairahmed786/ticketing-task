@@ -1,5 +1,7 @@
 require 'elasticsearch/model'
 class User < ApplicationRecord
+  # sequenceid :organization, :users
+
   acts_as_tenant :organization
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,

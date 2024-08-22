@@ -25,7 +25,7 @@ class UserController < ApplicationController
   end
 
   def show
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by_sequence_num!(params[:id])
   end
 
   def new
@@ -50,11 +50,11 @@ class UserController < ApplicationController
   end
 
   def edit_user_profile
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by_sequence_num!(params[:id])
   end
 
   def update_user_profile
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by_sequence_num!(params[:id])
     @user.skip_reconfirmation!
     if @user.update(user_params)
       changes = @user.previous_changes.slice(:name, :email, :role_id)
@@ -68,11 +68,11 @@ class UserController < ApplicationController
   end
 
   def edit
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by_sequence_num!(params[:id])
   end
 
   def update
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by_sequence_num!(params[:id])
     @user.skip_reconfirmation!
     if @user.update(user_params)
       flash[:notice] = t('devise.registrations.updated')
