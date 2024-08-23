@@ -1,12 +1,14 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project_managers, only: %i[new create edit update] 
-  load_and_authorize_resource
+  before_action :set_project_managers, only: %i[new create edit update]
+  load_and_authorize_resource find_by: :sequence_num
 
   def index
     @projects = if current_user.role.name == 'project_manager'
                   Project.includes(:project_manager, :admin, :issues, :users)
+                         .left_joins(:project_users)
                          .where(project_manager_id: current_user.id)
+                         .or(Project.where(project_users: { user_id: current_user.id }))
                          .paginate(page: params[:page], per_page: 10)
                 elsif current_user.role.name == 'general_user'
                   Project.includes(:project_manager, :admin, :issues, :users)
@@ -89,11 +91,11 @@ class ProjectsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find_by_sequence_num!(params[:id])
   end
 
   def project_params
-    params.require(:project).permit(:title, :description, :project_manager_id)
+    params.require(:project).permit(:title, :description, :project_manager_id, :sequence_num)
   end
 
   def set_project_managers

@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource :project
-  load_and_authorize_resource :issue, through: :project
+  load_and_authorize_resource :project, find_by: :sequence_num
+  load_and_authorize_resource :issue, through: :project, find_by: :sequence_num
   load_and_authorize_resource :comment, through: :issue
 
   def index
@@ -23,12 +23,12 @@ class CommentsController < ApplicationController
 
     end
     flash[:error] = @comment.errors.full_messages_for(:content).first if @comment.errors.present?
-    redirect_to project_issue_path(@issue.project_id, @issue )
+    redirect_to project_issue_path(@issue.project, @issue)
   end
 
   def destroy
     @comment.destroy
-    redirect_to project_issue_path(@issue.project_id, @issue )
+    redirect_to project_issue_path(@issue.project, @issue)
   end
 
 

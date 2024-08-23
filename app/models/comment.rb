@@ -5,5 +5,4 @@ class Comment < ApplicationRecord
 
   validates :content, presence: true 
   validates :content, length: { minimum: 3 }, if: -> { content.present? }
-
 end

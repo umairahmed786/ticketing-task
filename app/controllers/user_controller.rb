@@ -1,7 +1,7 @@
 class UserController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_owner_or_admin, only: [:index]
-  load_and_authorize_resource class: 'User'
+  load_and_authorize_resource class: 'User', find_by: :sequence_num
   before_action :find_user_by_invitation_token, only: [:edit]
   before_action :set_roles, only: %i[new create edit update edit_user_profile update_user_profile]
 

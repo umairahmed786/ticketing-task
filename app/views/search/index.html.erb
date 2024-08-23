@@ -82,7 +82,7 @@
                   <tr>
                     <td><%= issue.try(:highlight).try(:title).try(:first) || issue.title %></td>
                     <td><%= issue.try(:highlight).try(:description).try(:first) || issue.description %></td>
-                    <td><%= issue.state %></td>
+                    <td><%= issue.state.humanize %></td>
                   </tr>
                 <% end %>
               </tbody>

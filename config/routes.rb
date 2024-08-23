@@ -33,10 +33,8 @@ Rails.application.routes.draw do
           post 'add_custom_state', to: 'dashboards#add_custom_state', as: 'custom_states'
         end
       end
-      resources :user
       resources :issues, only: %i[show index]
 
-      resources :dashboards, only: %i[index]
       resources :user do
         member do
           get 'edit_user_profile'

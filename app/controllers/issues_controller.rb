@@ -1,7 +1,7 @@
 class IssuesController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource :project
-  load_and_authorize_resource :issue, through: :project
+  load_and_authorize_resource :project, find_by: :sequence_num
+  load_and_authorize_resource :issue, through: :project, find_by: :sequence_num
   
 
   before_action :set_users, only: %i[new edit update create] 
@@ -18,7 +18,6 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.new(issue_params.merge(project_id: params[:project_id]))
     if @issue.save
       redirect_to project_issues_path
     else
@@ -40,9 +39,9 @@ class IssuesController < ApplicationController
     @issue.assign_attributes(issue_params.except(:state))
     if @issue.state != issue_params[:state]
       trigger_state_event(issue_params[:state])
-      redirect_to project_issue_path(@issue.project_id, @issue)
+      redirect_to project_issue_path(@issue.project, @issue)
     elsif @issue.save
-      redirect_to project_issue_path(@issue.project_id, @issue)
+      redirect_to project_issue_path(@issue.project, @issue)
     else
       render :edit  
     end
@@ -68,7 +67,7 @@ class IssuesController < ApplicationController
           )
         end
       end
-    redirect_to project_issue_path(@issue.project_id, @issue)
+    redirect_to project_issue_path(@issue.project, @issue)
     end
   end
 

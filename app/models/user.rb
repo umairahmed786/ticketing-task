@@ -1,8 +1,7 @@
 require 'elasticsearch/model'
 class User < ApplicationRecord
-  # sequenceid :organization, :users
-
   acts_as_tenant :organization
+  sequenceid :organization, :users
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
          :confirmable
@@ -57,14 +56,6 @@ class User < ApplicationRecord
   end
 
   searchkick highlight: %i[name email role]
-
-  def search_data
-    {
-      name: name,
-      email: email,
-      role: role&.name
-    }
-  end
 
   private
 

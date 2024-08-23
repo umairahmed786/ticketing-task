@@ -6,7 +6,7 @@ ruby '3.1.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.8'
 gem 'rails-i18n', '=7.0.9'
-gem 'sequenceid', '~> 0.0.6'
+gem 'sequenceid', '=0.0.7', git: 'https://github.com/alisyed/sequenceid.git', branch: 'feature/change_activerecord_base_to_applicationrecord_in_sti_parent_class_method'
 # Use cancancan for authorization
 gem 'cancancan', '~> 3.6.1'
 gem 'chartkick', '=5.0.7'

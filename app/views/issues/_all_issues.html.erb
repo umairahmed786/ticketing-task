@@ -36,19 +36,19 @@
 
               <td>
                 <% if can?(:read, Issue) %>
-                  <%= link_to project_issue_path(issue.project_id, issue), class: 'btn btn-primary btn-sm', title: 'Show', data: { toggle: 'tooltip' } do %>
+                  <%= link_to project_issue_path(issue.project, issue), class: 'btn btn-primary btn-sm', title: 'Show', data: { toggle: 'tooltip' } do %>
                     <i class="fas fa-eye"></i>
                   <% end %>
                 <% end %>
 
                 <% if can?(:edit, Issue) && (current_user.role.name == "general_user"? issue.assignee_id == current_user.id : true) %>
-                  <%= link_to edit_project_issue_path(issue.project_id, issue), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
+                  <%= link_to edit_project_issue_path(issue.project, issue), class: 'btn btn-warning btn-sm', title: 'Edit', data: { toggle: 'tooltip' } do %>
                     <i class="fas fa-edit"></i>
                   <% end %>
                 <% end %>
 
                 <% if can?(:destroy, Issue) %>
-                  <%= link_to project_issue_path(issue.project_id, issue), method: :delete, data: { confirm: t('confirm_delete_with_details'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
+                  <%= link_to project_issue_path(issue.project, issue), method: :delete, data: { confirm: t('confirm_delete_with_details'), toggle: 'tooltip' }, class: 'btn btn-danger btn-sm', title: 'Delete' do %>
                     <i class="fas fa-trash-alt"></i>
                   <% end %>
                 <% end %>
