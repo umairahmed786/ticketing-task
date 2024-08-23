@@ -16,8 +16,6 @@
       <thead>
         <tr>
           <th scope="col"><%= t('title') %></th>
-          <th scope="col"><%= t('project.project_manager') %></th>
-          <th scope="col"><%= t('project_name') %></th>
           <th scope="col"><%= t('issue_assignee') %></th>
           <th scope="col"> <%= t('complexity_point') %> </th>
           <th scope="col"> <%= t('state.title') %> </th>
@@ -28,12 +26,7 @@
         <% @issues.each do |issue| %>
           <tr>
             <td><%= issue.title %></td>
-            <% if issue.project.project_manager.present? %>
-              <td><%= issue.project.project_manager.name %></td>
-            <% else %>
-              <td><%= t('not_assigned') %></td>
-            <% end %>  
-            <td><%= issue.project.title %></td>
+            
             <% if issue.assignee %>
               <td><%= issue.assignee&.name %></td>
             <% else %>

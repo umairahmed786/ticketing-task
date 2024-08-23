@@ -13,10 +13,8 @@ class IssuesController < ApplicationController
     # @issues = @project.issues.paginate(page: params[:page], per_page: 10)
     search_query = params[:search].to_s.strip.downcase
     if search_query.present?
-     @issues = Issue.joins(:project)
-               .left_joins(:assignee)
+     @issues = Issue.left_joins(:assignee)
                .where("LOWER(issues.title) LIKE :search OR
-                       LOWER(projects.title) LIKE :search OR
                        LOWER(users.name) LIKE :search OR
                        CAST(issues.complexity_point AS CHAR) LIKE :search OR
                        LOWER(issues.state) LIKE :search",
@@ -25,7 +23,7 @@ class IssuesController < ApplicationController
                .paginate(page: params[:page], per_page: 10)
     else
       @issues = Issue.where(project_id: @project.id).paginate(page: params[:page], per_page: 10)
-      end  
+    end
     respond_to do |format|
       format.html
       format.js

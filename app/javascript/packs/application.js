@@ -88,10 +88,6 @@ $(document).on('keyup', '#search-input', function(e) {
 
   // Set a new timeout
   debounceTimer = setTimeout(function() {
-    console.log("Search initiated with query: ", query);
-
-    searchInput.focus();
-
     $.ajax({
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
