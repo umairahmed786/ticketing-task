@@ -10,7 +10,24 @@ class IssuesController < ApplicationController
 
 
   def index
-    @issues = @project.issues.includes(:assignee, :project).paginate(page: params[:page], per_page: 10)
+    # @issues = @project.issues.paginate(page: params[:page], per_page: 10)
+    search_query = params[:search].to_s.strip.downcase
+    if search_query.present?
+     @issues = Issue.left_joins(:assignee)
+               .where("LOWER(issues.title) LIKE :search OR
+                       LOWER(users.name) LIKE :search OR
+                       CAST(issues.complexity_point AS CHAR) LIKE :search OR
+                       LOWER(issues.state) LIKE :search",
+                      search: "%#{search_query}%")
+               .rewhere(project_id: @project.id)
+               .paginate(page: params[:page], per_page: 10)
+    else
+      @issues = Issue.where(project_id: @project.id).paginate(page: params[:page], per_page: 10)
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

@@ -3,7 +3,7 @@
   <div class="modal-dialog">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="addAttachmentModalLabel">Add Attachment</h5>
+        <h5 class="modal-title" id="addAttachmentModalLabel"><%= t(:add_attachment)%></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -13,7 +13,7 @@
           </div>
 
           <div class="text-end">
-            <%= form.submit 'Upload', class: 'btn btn-primary' %>
+            <%= form.submit t(:upload), class: 'btn btn-primary' %>
           </div>
         <% end %>
       </div>

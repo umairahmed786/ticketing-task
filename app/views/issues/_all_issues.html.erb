@@ -1,4 +1,12 @@
 <div class="container mt-4 table-responsive">
+  <div class="d-flex justify-content-end mb-3">
+    <div class="input-group" style="max-width: 300px;">
+      <input type="text" id="search-input" class="form-control" placeholder=<%= t('search_issues') %>>
+      <span class="input-group-text">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+  </div>
   <% if @issues.empty? %>
     <div class="min-vh-100 d-flex align-items-center justify-content-center ">
       <img src="<%= asset_path('no_record_found.gif') %>" alt="No data found" class="img-fluid">
@@ -8,24 +16,17 @@
       <thead>
         <tr>
           <th scope="col"><%= t('title') %></th>
-          <th scope="col"><%= t('project.project_manager') %></th>
-          <th scope="col"><%= t('project_name') %></th>
           <th scope="col"><%= t('issue_assignee') %></th>
           <th scope="col"> <%= t('complexity_point') %> </th>
-          <th scope="col"> <%= t('label.state') %> </th>
+          <th scope="col"> <%= t('state.title') %> </th>
           <th scope="col"><%= t('actions') %></th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <% @issues.find_each do |issue| %>
+        <% @issues.each do |issue| %>
           <tr>
             <td><%= issue.title %></td>
-            <% if issue.project.project_manager.present? %>
-              <td><%= issue.project.project_manager.name %></td>
-            <% else %>
-              <td><%= t('not_assigned') %></td>
-            <% end %>  
-            <td><%= issue.project.title %></td>
+            
             <% if issue.assignee %>
               <td><%= issue.assignee&.name %></td>
             <% else %>
@@ -61,13 +62,4 @@
   <% end %>
 </div>
 
-<script>
-  // Initialize Bootstrap tooltips
-  document.addEventListener('DOMContentLoaded', function () {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-  });
-</script>
 

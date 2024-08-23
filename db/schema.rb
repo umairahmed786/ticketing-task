@@ -211,8 +211,7 @@ ActiveRecord::Schema.define(version: 2024_08_22_191311) do
   add_foreign_key "issues", "projects"
   add_foreign_key "issues", "users", column: "assignee_id"
   add_foreign_key "project_users", "organizations"
-  add_foreign_key "project_users", "organizations", name: "fk_organization_id"
-  add_foreign_key "project_users", "projects", name: "fk_project_id"
+  add_foreign_key "project_users", "projects", on_delete: :cascade
   add_foreign_key "project_users", "users"
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users", column: "admin_id"

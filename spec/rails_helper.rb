@@ -1,11 +1,12 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
-require 'devise'
-APP_HOST = 'test.example.com'
-
-
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+APP_HOST = 'test.example.com'
+
+require 'devise'
+
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
@@ -87,7 +88,19 @@ end
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
+    # Choose a test framework:
     with.test_framework :rspec
+
+    # Choose one or more libraries:
     with.library :rails
+
+    # Or, choose the following (if you use ActiveRecord):
+    with.library :active_record
   end
 end
+
+# spec/rails_helper.rb
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+

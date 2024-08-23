@@ -83,10 +83,10 @@ en:
     view: "View Project"
     no_project_manager_assigned: "No project manager assigned"
     users: "Project Users"
+    select_manager: 'Select Project Manager'
     project_manager: "Project Manager"
     select_users: "Select Users"
     no_users_to_show: "No users to show."
-    select_manager: 'Select Project Manager'
   issues:
     header: "Project Issues"
     new: "New Issue"
@@ -123,12 +123,20 @@ en:
   user_updated: "User updated successfully."
   user_exists: "User with this email already exists in your organization."
   organization_name: "Organization Name"
+  select_assignee: 'Select an Assignee'
+  add_attachment: 'Add Attachment'
+  upload: Upload
+  search_issues: 'Search issues...'
 
 
   state:
     title: "State"
     name_error_message: 'State name cannot contain spaces.'
     to_and_from_error_message: 'State name and at least one transition (from or to) must be provided.'
+  
+  button: 
+    next: 'Next'
+    previous: 'Previous'
     add_custom_state: "Add Custom State"
     state_name: "State Name"
     is_initial_state: "Is this an initial state?"
@@ -146,7 +154,8 @@ en:
   add_comment: "Add Comment"
   close: "Close"
   search: "Search..."
-  
-  button: 
-    next: 'Next'
-    previous: 'Previous'
+  attached_files: "Attached Files"
+  issue_history: "Issue History"
+  comments:
+    header: "Comments"
+    add: "Add Comment"
