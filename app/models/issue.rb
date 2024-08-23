@@ -1,4 +1,5 @@
 class Issue < ApplicationRecord
+  sequenceid :project, :issues
   belongs_to :project, class_name: 'Project', foreign_key: 'project_id'
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id', optional: true
   acts_as_tenant :organization
@@ -53,14 +54,6 @@ class Issue < ApplicationRecord
   after_update :track_changes
 
   searchkick highlight: [:title, :description, :state]
-
-  def search_data
-    {
-      title: title,
-      description: description,
-      state: state
-    }
-  end
 
   private
 

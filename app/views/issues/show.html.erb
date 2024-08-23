@@ -29,12 +29,12 @@
               <%= link_to '#', class: 'btn btn-primary me-2', data: { bs_toggle: "modal", bs_target: "#addAttachmentModal" } do %>
                 <i class="bi bi-paperclip"></i> 
               <% end %>
-                <%= link_to edit_project_issue_path(@issue.project_id, @issue), class: 'btn btn-warning me-2' do %>
+                <%= link_to edit_project_issue_path(@issue.project, @issue), class: 'btn btn-warning me-2' do %>
                   <i class="bi bi-pencil"></i> 
                 <% end %>
             <% end %>
             <% if can?(:destroy, @issue) %>
-              <%= button_to project_issue_path(@issue.project_id, @issue),
+              <%= button_to project_issue_path(@issue.project, @issue),
                           method: :delete,
                           data: { confirm: t(:confirm_delete_with_details) },
                           class: 'btn btn-danger' do %>
