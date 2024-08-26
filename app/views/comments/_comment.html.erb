@@ -9,8 +9,10 @@
                 <%= comment.issue_history.user.name %>
               </h5>
               <!-- Delete icon -->
-              <%= link_to project_issue_comment_path(@issue.project, @issue, comment), method: :delete, data: { confirm: t(:confirm_delete_comment) }, class: "text-danger" do %>
-                <i class="fas fa-trash-alt"></i>
+              <% if can?(:destroy, Comment) %>
+                <%= link_to project_issue_comment_path(@issue.project, @issue, comment), method: :delete, data: { confirm: t(:confirm_delete_comment) }, class: "text-danger" do %>
+                  <i class="fas fa-trash-alt"></i>
+                <% end %>
               <% end %>
             </div>
             <!-- Comment Content -->

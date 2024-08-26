@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-
 let debounceTimer;
 
 $(document).on('keyup', '#search-input', function(e) {

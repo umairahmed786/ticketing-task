@@ -2,15 +2,11 @@ class IssuesController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource :project, find_by: :sequence_num
   load_and_authorize_resource :issue, through: :project, find_by: :sequence_num
-  
 
-  before_action :set_users, only: %i[new edit update create] 
-  before_action :set_states, only: %i[edit update create] 
-
-
+  before_action :set_users, only: %i[new edit update create]
+  before_action :set_states, only: %i[edit update create]
 
   def index
-    # @issues = @project.issues.paginate(page: params[:page], per_page: 10)
     search_query = params[:search].to_s.strip.downcase
     if search_query.present?
      @issues = Issue.left_joins(:assignee)
@@ -60,7 +56,7 @@ class IssuesController < ApplicationController
     elsif @issue.save
       redirect_to project_issue_path(@issue.project, @issue)
     else
-      render :edit  
+      render :edit
     end
   end
 
@@ -79,8 +75,8 @@ class IssuesController < ApplicationController
             user_id: current_user.id,
             issue_id: @issue.id,
             active_storage_attachment_id: file_id,
-            created_at: Time.now,
-            updated_at: Time.now
+            created_at: Time.current,
+            updated_at: Time.current
           )
         end
       end

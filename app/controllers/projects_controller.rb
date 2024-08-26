@@ -4,27 +4,14 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource find_by: :sequence_num
 
   def index
-    @projects = if current_user.role.name == 'project_manager'
-                  Project.includes(:project_manager, :admin, :issues, :users)
-                         .left_joins(:project_users)
-                         .where(project_manager_id: current_user.id)
-                         .or(Project.where(project_users: { user_id: current_user.id }))
-                         .paginate(page: params[:page], per_page: 10)
-                elsif current_user.role.name == 'general_user'
-                  Project.includes(:project_manager, :admin, :issues, :users)
-                         .joins(:users)
-                         .where(users: { id: current_user.id })
-                         .paginate(page: params[:page], per_page: 10)
-                else
-                  Project.includes(:project_manager, :admin, :issues, :users)
-                         .paginate(page: params[:page], per_page: 10)
-                end
     @project_issues_count = {}
     @project_users_count = {}
     @project_admins = {}
     @project_project_managers = {}
 
-    @projects.find_each do |project|
+    @projects = @projects.paginate(page: params[:page], per_page: 10)
+
+    @projects.includes(:project_manager, :admin).find_each do |project|
       @project_issues_count[project.id] = project.issues.size
       @project_users_count[project.id] = project.users.size
       @project_admins[project.id] = project.admin&.name || t('not_assigned')
@@ -36,7 +23,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params.merge(admin_id: current_user.id))
+    @project.admin_id = current_user.id
     if @project.save
       redirect_to @project
     else
@@ -74,8 +61,8 @@ class ProjectsController < ApplicationController
           user_id: id,
           project_id: @project.id,
           organization_id: @organization.id,
-          created_at: Time.now,
-          updated_at: Time.now
+          created_at: Time.current,
+          updated_at: Time.current
         }
       }
       ProjectUser.insert_all(project_users)
@@ -89,10 +76,6 @@ class ProjectsController < ApplicationController
   end
 
   private
-
-  def set_project
-    @project = Project.find_by_sequence_num!(params[:id])
-  end
 
   def project_params
     params.require(:project).permit(:title, :description, :project_manager_id, :sequence_num)

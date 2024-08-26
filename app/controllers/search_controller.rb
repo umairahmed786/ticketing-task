@@ -14,7 +14,7 @@ class SearchController < ApplicationController
         fragment_size: 150,
         number_of_fragments: 3
       }
-    ) if current_user.role.name == ('owner' || 'admin')
+    ) if current_user.owner? || current_user.admin?
 
     @issues = Issue.search(
       @query, highlight: {

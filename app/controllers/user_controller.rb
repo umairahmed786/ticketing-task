@@ -19,6 +19,7 @@ class UserController < ApplicationController
              .joins('LEFT JOIN projects AS project_managers ON project_managers.project_manager_id = users.id')
              .joins('LEFT JOIN project_users ON project_users.user_id = users.id')
              .joins('LEFT JOIN projects AS project_users_projects ON project_users_projects.id = project_users.project_id')
+             .includes(:role)
              .group('users.id')
              .paginate(page: params[:page], per_page: 10)
              .to_a

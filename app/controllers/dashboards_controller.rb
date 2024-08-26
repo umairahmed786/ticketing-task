@@ -24,7 +24,7 @@ class DashboardsController < ApplicationController
     state_name = custom_state_params[:state_name]
     if state_name.include?(' ')
       flash[:error] = t('state.name_error_message')
-    return redirect_to dashboards_path
+      return redirect_to dashboards_path
     end
 
     from_states = custom_state_params[:from_state]&.reject(&:blank?)
@@ -45,7 +45,7 @@ class DashboardsController < ApplicationController
           if @transition.persisted?
             if from_states.present?
               @from_transitions = from_states.map do |from_state_id|
-                { state_id: from_state_id, transition_id: @transition.id, created_at: Time.now, updated_at: Time.now }
+                { state_id: from_state_id, transition_id: @transition.id, created_at: Time.current, updated_at: Time.current }
               end
               FromTransition.insert_all(@from_transitions)
             end
@@ -54,7 +54,7 @@ class DashboardsController < ApplicationController
               @to_transitions = to_states.map do |to_state_id|
                 existing_transition = Transition.find_by_to_state_id(to_state_id)
                 if existing_transition
-                  { transition_id: existing_transition.id, state_id: @state.id, created_at: Time.now, updated_at: Time.now }
+                  { transition_id: existing_transition.id, state_id: @state.id, created_at: Time.current, updated_at: Time.current }
                 end
               end.compact
               FromTransition.insert_all(@to_transitions) 

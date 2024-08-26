@@ -25,7 +25,7 @@ class User < ApplicationRecord
 
   def mark_as_confirmed
     self.confirmation_token = nil
-    self.confirmed_at = Time.now
+    self.confirmed_at = Time.current
   end
   before_create :generate_invitation_token
   before_save :update_organization_name, if: :organization_name_changed?
@@ -50,6 +50,7 @@ class User < ApplicationRecord
   def self.admins
     where(role_id: Role.find_by_name('admin').id)
   end
+
   def owner?
     role.name == 'owner'
   end

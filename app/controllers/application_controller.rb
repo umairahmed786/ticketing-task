@@ -6,7 +6,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do
     respond_to do |format|
-      format.html { redirect_to dashboards_path, error: t(:access_denied, scope: :error) }
+      format.html do
+        flash[:error] = t(:access_denied, scope: :error)
+        redirect_to dashboards_path
+      end
       format.json { render json: { error: t(:access_denied, scope: :error) }, status: :forbidden }
       format.js   { render json: { error: t(:access_denied, scope: :error) }, status: :forbidden }
     end
@@ -15,7 +18,10 @@ class ApplicationController < ActionController::Base
   # Handle Record Not Found
   rescue_from ActiveRecord::RecordNotFound do
     respond_to do |format|
-      format.html { redirect_to dashboards_path, error: t(:record_not_found, scope: :error) }
+      format.html do
+        flash[:error] = t(:record_not_found, scope: :error)
+        redirect_to dashboards_path
+      end
       format.json { render json: { error: t(:record_not_found, scope: :error) }, status: :not_found }
       format.js   { render json: { error: t(:record_not_found, scope: :error) }, status: :not_found }
     end

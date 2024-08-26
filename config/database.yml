@@ -9,10 +9,10 @@ development:
   <<: *default
   database: ticketing_system
   username: root
-  password: umair786*
+  password: 7vals
 
 test:
   <<: *default
   database: ticketing_system_test
   username: root
-  password: umair786*
+  password: 7vals
