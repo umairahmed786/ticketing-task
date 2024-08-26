@@ -77,17 +77,17 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-let debounceTimer;
+let issuesDebounceTimer;
+let projectsDebounceTimer;
 
-$(document).on('keyup', '#search-input', function(e) {
+
+$(document).on('keyup', '#search-issues', function(e) {
   const searchInput = $(this);
   const query = searchInput.val();
 
-  // Clear the previous timeout
-  clearTimeout(debounceTimer);
+  clearTimeout(issuesDebounceTimer);
 
-  // Set a new timeout
-  debounceTimer = setTimeout(function() {
+  issuesDebounceTimer = setTimeout(function() {
     $.ajax({
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -104,6 +104,33 @@ $(document).on('keyup', '#search-input', function(e) {
     });
   }, 500);
 });
+
+
+
+$(document).on('keyup', '#search-projects', function(e) {
+  const searchInput = $(this);
+  const query = searchInput.val();
+
+  clearTimeout(projectsDebounceTimer);
+
+  projectsDebounceTimer = setTimeout(function() {
+    $.ajax({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      },
+      url: searchInput.data('url'),
+      type: "GET",
+      data: { search: query },
+      dataType: "script",
+      success: function(response) {
+        eval(response);
+        $('#search-input').val(query);
+        $('#search-input').focus();
+      }
+    });
+  }, 500);
+});
+
 
 
 

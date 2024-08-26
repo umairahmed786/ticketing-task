@@ -23,17 +23,14 @@ class Issue < ApplicationRecord
   after_initialize :load_states_and_events
 
   def load_states_and_events
-    
     self.class.aasm.states.clear
     self.class.aasm.events.clear
-    self.class.aasm column: 'state' do
-      states = State.all
-      transitions = Transition.all
-      states.each do |state|
-        state state.name.to_sym, initial: state.initial
-      end
 
-      transitions.each do |transition|
+    self.class.aasm column: 'state' do
+      State.find_each do |custom_state|
+        state custom_state.name.to_sym, initial: custom_state.initial
+      end
+      Transition.includes(:state, from_transitions: [:state]).find_each do |transition|
         event_name = transition.event_name.to_sym
         if transition.from_transitions.present?
           from_states = transition.from_transitions.map { |ft| ft.state.name.to_sym }
